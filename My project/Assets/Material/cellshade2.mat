@@ -131,7 +131,7 @@ Material:
     - _BaseColor: {r: 0.8301887, g: 0.31719476, b: 0.53094774, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _RimColor: {r: 0.727685, g: 0.8584906, b: 0.7005607, a: 1}
+    - _RimColor: {r: 0, g: 0.9150943, b: 0.7533881, a: 1}
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
