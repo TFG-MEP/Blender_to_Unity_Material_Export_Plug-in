@@ -53,6 +53,7 @@ Shader "Custom/CelShadingWithLighting"
                 half ndotl = max(0, dot(normal, lightDir));
                 half threshold = 0.5; // Ajusta este valor para controlar la intensidad del sombreado
                 half4 shadedColor= (1, 1, 1, 1);;
+         
                 if (ndotl >= 0.95) { 
                     shadedColor = (1, 1, 1, 1)* (ambientColor,1);
                 }
