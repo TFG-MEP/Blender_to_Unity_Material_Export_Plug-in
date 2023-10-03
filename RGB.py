@@ -20,3 +20,5 @@ if len(obj.data.materials) > 0:
                 print("GREEN Color:", base_color[1])
                 print("BLUE Color:", base_color[2])
                 print("ALPHA Color:", base_color[3])
+
+

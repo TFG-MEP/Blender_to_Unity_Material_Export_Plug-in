@@ -66,6 +66,7 @@
     <None Include="Assets\Free Stylized Skybox\ReadMe.txt" />
     <None Include="Assets\Shader\Celshade.shader" />
     <None Include="Assets\Shader\MyFirstShader.shader" />
+    <None Include="Assets\Shader\Madera.shader" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
