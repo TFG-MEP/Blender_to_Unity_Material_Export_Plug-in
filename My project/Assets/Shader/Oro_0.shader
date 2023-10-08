@@ -1,8 +1,8 @@
-Shader "Custom/ColorShader"
+Shader "Custom/ShaderOro_0"
 {
     Properties
     {
-        _MyColor ("Color", Color) = (1, 1, 1, 1)
+        _MyColor ("Color", Color) = (0.5970404148101807, 0.3983665704727173, 0.0070016030222177505, 1.0)
     }
 
     SubShader

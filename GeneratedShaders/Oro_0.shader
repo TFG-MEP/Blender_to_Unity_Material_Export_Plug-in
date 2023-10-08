@@ -1,9 +1,8 @@
-Shader "Custom/ColorShader"
+Shader "Custom/ShaderOro_0"
 {
     Properties
     {
-        //[HideInInspector]
-        _MyOwnColor ("Color", Color) = (.8, .6, 0, 1)
+        _MyColor ("Color", Color) = (0.5970404148101807, 0.3983665704727173, 0.0070016030222177505, 1.0)
     }
 
     SubShader
@@ -38,7 +37,7 @@ Shader "Custom/ColorShader"
                 float3 normal : NORMAL;
             };
 
-            fixed4 _MyOwnColor = fixed4(0.8, 0.06, 0.0, 1.0);
+            fixed4 _MyColor;
 
             v2f vert (appdata_t v)
             {
@@ -52,7 +51,7 @@ Shader "Custom/ColorShader"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                return _MyOwnColor;
+                return _MyColor;
             }
             ENDCG
         }

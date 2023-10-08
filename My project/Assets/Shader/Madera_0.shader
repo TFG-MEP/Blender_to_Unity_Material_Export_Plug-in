@@ -1,8 +1,8 @@
-Shader "Custom/ColorShader"
+Shader "Custom/ShaderMadera_0"
 {
     Properties
     {
-        _MyColor ("Color", Color) = (1, 1, 1, 1)
+        _MyColor ("Color", Color) = (0.8000000715255737, 0.06040734797716141, 0.0, 1.0)
     }
 
     SubShader
