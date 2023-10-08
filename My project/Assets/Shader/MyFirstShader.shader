@@ -4,7 +4,9 @@ Shader "Unlit/MyShaderWithMovingTexture"
     {
         _BaseColor("Base Color", Color) = (1, 1, 1, 1)
         _BaseTex("Base Texture", 2D) = "white" {}
+     _NormalMap("Normal Map", 2D) = "bump" {} // Agregamos la propiedad para el normal map
         _ScrollSpeed("Scroll Speed", Range(-10, 10)) = 1
+        _Tiling("Tiling", Int) = 1
     }
 
         SubShader
@@ -44,14 +46,14 @@ Shader "Unlit/MyShaderWithMovingTexture"
                 float4 _BaseTex_ST;
                 float4 _BaseColor;
                 float _ScrollSpeed;
-
+                int _Tiling;
                 v2f vert(appdata v)
                 {
                     v2f o;
                     o.positionCS = TransformObjectToHClip(v.positionOS);
 
                     // Aplicar movimiento a las coordenadas de textura en la dirección horizontal (u)
-                    o.uv = v.uv + float2(_Time.y * _ScrollSpeed, 0);
+                    o.uv =( v.uv + float2(_Time.y * _ScrollSpeed, 0))* _Tiling;
                     o.uv = TRANSFORM_TEX(o.uv, _BaseTex);
 
                     return o;
