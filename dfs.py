@@ -12,20 +12,21 @@ def dfs(node, visited):
                 dfs(next_node, visited)
 
 obj = bpy.context.active_object
-print("hollaa:")
+print("Hola")
 # Asegúrate de que el objeto tenga un material
 if obj.data.materials:
     # Accede al primer material asignado al objeto (índice 0)
     material = obj.data.materials[0]
-
+    print("Hola2")
     # Accede al nodo del material en el Shader Editor
     material.use_nodes = True
     node_tree = material.node_tree
     nodes = node_tree.nodes
 
     # Nodo raíz (puedes cambiarlo según tus necesidades)
-    root_node = nodes.get("Shader Output")
+    root_node = nodes.get("Material Output")
     if root_node:
+        print("Hola3")
         visited = set()
         dfs(root_node, visited)
 
