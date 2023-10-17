@@ -7,6 +7,8 @@ Shader "Unlit/MyShaderWithMovingTexture"
      _NormalMap("Normal Map", 2D) = "bump" {} // Agregamos la propiedad para el normal map
         _ScrollSpeed("Scroll Speed", Range(-10, 10)) = 1
         _Tiling("Tiling", Int) = 1
+        _Rotation("Rotation Amount", Float) = 0.0
+         _Center("Rotation Center", Vector) = (0,0,0,0)
     }
 
         SubShader
@@ -47,14 +49,22 @@ Shader "Unlit/MyShaderWithMovingTexture"
                 float4 _BaseColor;
                 float _ScrollSpeed;
                 int _Tiling;
+                float _Rotation;
+                float2 _Center;
                 v2f vert(appdata v)
                 {
                     v2f o;
+                    float c = cos(_Rotation);
+                    float s = sin(_Rotation);
+                    float2x2 rotMatrix = float2x2(c, -s, s, c);
                     o.positionCS = TransformObjectToHClip(v.positionOS);
-
+                    o.uv = TRANSFORM_TEX(v.uv, _BaseTex);
+                    o.uv -= _Center;
+                    o.uv = mul(rotMatrix, o.uv);
+                    o.uv += _Center;
                     // Aplicar movimiento a las coordenadas de textura en la dirección horizontal (u)
-                    o.uv =( v.uv + float2(_Time.y * _ScrollSpeed, 0))* _Tiling;
-                    o.uv = TRANSFORM_TEX(o.uv, _BaseTex);
+                    //o.uv =( v.uv + float2(_Time.y * _ScrollSpeed, 0))* _Tiling;
+                   // o.uv = TRANSFORM_TEX(o.uv, _BaseTex);
 
                     return o;
                 }
