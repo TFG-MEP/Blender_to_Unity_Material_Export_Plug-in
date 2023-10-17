@@ -23,7 +23,7 @@ for i, material in enumerate(obj.data.materials):
     base_color = material.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value
     
     # Reemplazar el valor del color en la plantilla
-    shader_content = shader_content.replace("(1, 1, 1, 1)", f"({base_color[0]}, {base_color[1]}, {base_color[2]}, {base_color[3]})")
+    shader_content = shader_content.replace("{color_template}", f"({base_color[0]}, {base_color[1]}, {base_color[2]}, {base_color[3]})")
     
     # Guardar el archivo .shader con el nombre del material
     shader_filename = f"{material.name}_{i}.shader"

@@ -2,7 +2,7 @@ Shader "Custom/ColorShader"
 {
     Properties
     {
-        _MyColor ("Color", Color) = (1, 1, 1, 1)
+        _MyColor ("Color", Color) = {color_template}
     }
 
     SubShader
