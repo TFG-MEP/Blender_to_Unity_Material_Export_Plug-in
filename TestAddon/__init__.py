@@ -5,17 +5,18 @@ bl_info = {
 }
 
 import bpy
+from .PythonScripts.generate_shader import generate_shader
 
 class GenerarCuboEnOrigen(bpy.types.Operator):
     bl_idname = "object.generar_cubo_en_origen"
     bl_label = "Generar Cubo en Origen"
     
     def execute(self, context):
-        bpy.ops.mesh.primitive_cube_add(location=(0, 0, 0))
+        generate_shader()
         return {'FINISHED'}
 
 class OVADILLO_PT_Panel(bpy.types.Panel):
-    bl_label = "OVAashdsak"
+    bl_label = "OVA"
     bl_idname = "OVADILLO_PT_Panel"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'

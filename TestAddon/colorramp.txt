@@ -1,0 +1,8 @@
+fixed4 ColorRamp(float t, fixed4 color1, fixed4 color2)
+{
+    // Asegúrate de que t esté en el rango [0, 1]
+    t = saturate(t); // limita entre [0,1]
+
+    // Interpolación lineal entre color1 y color2
+    return lerp(color1, color2, t);
+}

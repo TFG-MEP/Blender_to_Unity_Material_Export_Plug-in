@@ -15,6 +15,12 @@ Shader "Custom/ColorShader"
 
         LOD 100
 
+        float4 image_texture(string path){
+            Texture2D tex;
+            Sampler sampler;
+            return tex.Sample(sampler, uv)
+        }
+
         Pass
         {
             CGPROGRAM
@@ -51,7 +57,8 @@ Shader "Custom/ColorShader"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                return _MyColor;
+                fixed4 color;
+                return color;
             }
             ENDCG
         }

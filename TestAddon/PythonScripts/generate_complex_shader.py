@@ -1,5 +1,30 @@
 import bpy
 
+from dfs import dfs
+
+# Recorrer los nodos en profundidad
+def dfs(node, visited, hlsl_functions):
+    visited.add(node)
+    print("Nombre del nodo: ", node.name)
+
+    if (node.name == 'Color Ramp') : 
+        with open("color_ramp_template.txt", "r") as color_ramp_file:
+            color_ramp_template = color_ramp_file.read()
+    elif (node.name == 'Image Texture'):
+        # do something
+        i = 0
+        
+
+    hlsl_functions.append()
+
+    # Recorre los nodos conectados
+    for input_socket in node.inputs:
+        for link in input_socket.links:
+            next_node = link.from_node
+            if next_node not in visited:
+                dfs(next_node, visited)
+
+
 # Define la ruta donde se guardarán los archivos .shader
 output_path = "./GeneratedShaders/"
 
