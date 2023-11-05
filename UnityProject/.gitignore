@@ -1,0 +1,49 @@
+# Unity generated
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]serSettings/
+
+# VS/MD solution and project files
+*.sln
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+
+# User-specific files
+*.user
+*.userprefs
+
+# Auto-generated Jetbrains Rider plugin
+.idea/
+
+# macOS generated files
+.DS_Store
+
+# Windows thumbnail file
+Thumbs.db
+
+# Android generated files
+build/
+[Ll]ibrary/
+[Tt]emp/
+Thumbs.db
+
+# iOS Xcode generated files
+build/
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+Thumbs.db
+
+# Gradle files
+.gradle/
+
+# Visual Studio Code generated files
+.vscode/
