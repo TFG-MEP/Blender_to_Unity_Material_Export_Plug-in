@@ -28,7 +28,7 @@ Shader "Custom/VoronoiTexture"
             #define SHD_VORONOI_MANHATTAN 1
             #define SHD_VORONOI_CHEBYCHEV 2
             #define SHD_VORONOI_MINKOWSKI 3
-
+            #define FLT_MAX 3.40282347e+38
             #define SHD_VORONOI_F1 0
             #define SHD_VORONOI_F2 1
             #define SHD_VORONOI_SMOOTH_F1 2
@@ -110,11 +110,14 @@ Shader "Custom/VoronoiTexture"
                     return 0.0;
                 }
             }
-            float simpleHash(float value) {
-                value = frac(value * 0.1031);
-                value *= (value + 1.0) * 0.5;
-                return frac(value * 0.003);
+            float2 simpleHash(float value)
+            {
+                float2 result;
+                result.x = frac(sin(dot(value, float2(12.9898, 78.233)) * 43758.5453);
+                result.y = frac(cos(dot(value, float2(23.1407, 93.324)) * 34567.8912);
+                return result;
             }
+          
             float4 voronoi_position(float coord)
             {
                 return float4(0.0, 0.0, 0.0, coord);
@@ -145,6 +148,45 @@ Shader "Custom/VoronoiTexture"
                 octave.Position = voronoi_position(targetPosition + cellPosition);
                 return octave;
             }
+            VoronoiOutput voronoi_f2(VoronoiParams params, float2 coord)
+            {
+                float2 cellPosition = floor(coord);
+                float2 localPosition = coord - cellPosition;
+
+                float distanceF1 = FLT_MAX;
+                float distanceF2 = FLT_MAX;
+                float2 offsetF1 = float2(0.0, 0.0);
+                float2 positionF1 = float2(0.0, 0.0);
+                float2 offsetF2 = float2(0.0, 0.0);
+                float2 positionF2 = float2(0.0, 0.0);
+                for (int j = -1; j <= 1; j++) {
+                    for (int i = -1; i <= 1; i++) {
+                        float2 cellOffset = float2(i, j);
+                        float2 pointPosition = cellOffset + simpleHash(cellPosition + cellOffset) *
+                            params.randomness;
+                        float distanceToPoint = voronoi_distance(pointPosition, localPosition, params);
+                        if (distanceToPoint < distanceF1) {
+                            distanceF2 = distanceF1;
+                            distanceF1 = distanceToPoint;
+                            offsetF2 = offsetF1;
+                            offsetF1 = cellOffset;
+                            positionF2 = positionF1;
+                            positionF1 = pointPosition;
+                        }
+                        else if (distanceToPoint < distanceF2) {
+                            distanceF2 = distanceToPoint;
+                            offsetF2 = cellOffset;
+                            positionF2 = pointPosition;
+                        }
+                    }
+                }
+
+                VoronoiOutput octave;
+                octave.Distance = distanceF2;
+                octave.Color = simpleHash(cellPosition + offsetF2);
+                octave.Position = voronoi_position(positionF2 + cellPosition);
+                return octave;
+            }
 
             fixed4 frag(v2f i) : SV_Target
             {
@@ -165,7 +207,7 @@ Shader "Custom/VoronoiTexture"
                 params_.metric = _metric;
    
               
-                return(voronoi_f1(params_, uv.y).Color, 1);
+                return(voronoi_f2(params_, uv).Color, 1);
                
               
             }
