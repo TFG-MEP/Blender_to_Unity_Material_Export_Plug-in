@@ -1,8 +1,19 @@
 Shader "Custom/VoronoiTexture"
 {
     Properties
-    {
-        _NumPoints("Number of Points", Range(1, 50)) = 10
+    {      
+        _Scale("Scale",Float) = 5
+        _Detail("_Detail",Float) = 10
+        _roughness("roughness",Float) = 5
+        _lacunarity("lacunarity",Float) = 5
+        _smoothness("smoothness",Float) = 1
+        _exponent("exponent",Float) = 1
+        _randomness("randomnesss",Float) = 1
+        _max_distance("max_distance",Float) = 1
+        _normalize("normalize", Range(0, 1)) = 1
+        _feature("feature",Float) = 1
+        _metric("metric",Float) = 1
+        
     }
 
         SubShader
@@ -56,7 +67,17 @@ Shader "Custom/VoronoiTexture"
                 float4 Position;
             };
 
-            float _NumPoints;
+            float _Scale;
+            float _Detail;
+            float _roughness;
+            float _lacunarity;
+            float _smoothness;
+            float _exponent;
+            float _randomness;
+            float _max_distance;
+            float _normalize;
+            float _feature;
+            float _metric;
 
             v2f vert(appdata_t v)
             {
@@ -131,18 +152,20 @@ Shader "Custom/VoronoiTexture"
                 float2 cell = float2(0.0, 0.0);
                 float min_dist = 1.0;
                 VoronoiParams params_;
-                params_.scale = 5;
-                params_.detail=10;
-                params_.roughness=1;
-                params_.lacunarity=1;
-                params_.smoothness=1;
-                params_.exponent=1;
-                params_.randomness=1;
-                params_.max_distance=3;
+                params_.scale = _Scale;
+                params_.detail= _Detail;
+                params_.roughness= _roughness;
+                params_.lacunarity= _lacunarity;
+                params_.smoothness= _smoothness;
+                params_.exponent= _exponent;
+                params_.randomness= _randomness;
+                params_.max_distance= _max_distance;
                 params_.normalize=true;
-                params_.feature=1;
-                params_.metric = 1;
-                return(voronoi_f1(params_, i.uv.x).Color, 1);
+                params_.feature= _feature;
+                params_.metric = _metric;
+   
+              
+                return(voronoi_f1(params_, uv.y).Color, 1);
                
               
             }
