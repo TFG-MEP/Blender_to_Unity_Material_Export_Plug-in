@@ -66,6 +66,7 @@
   <ItemGroup>
     <None Include="Assets\Shaders\Oro_0.shader" />
     <None Include="Assets\Shaders\CelShading.shader" />
+    <None Include="Assets\Shaders\TextureShader.shader" />
     <None Include="Assets\Shaders\VoronaiTexture.shader" />
     <None Include="Assets\Shaders\NormalMat.shader" />
     <None Include="Assets\Free Stylized Skybox\ReadMe.txt" />
