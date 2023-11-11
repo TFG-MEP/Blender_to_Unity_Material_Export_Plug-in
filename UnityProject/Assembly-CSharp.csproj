@@ -74,6 +74,7 @@
     <None Include="Assets\Shaders\Celshade.shader" />
     <None Include="Assets\Shaders\NormalVectors.shader" />
     <None Include="Assets\Shaders\MyFirstShader.shader" />
+    <None Include="Assets\Shaders\chequerShader.shader" />
     <None Include="Assets\Shaders\wavetexture.shader" />
   </ItemGroup>
   <ItemGroup>
