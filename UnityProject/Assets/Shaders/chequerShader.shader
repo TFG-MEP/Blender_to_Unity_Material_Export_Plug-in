@@ -29,9 +29,8 @@ Shader "Unlit/chequerShader"
 
             struct v2f
             {
-                float2 uv : TEXCOORD0;
-                UNITY_FOG_COORDS(1)
-                float4 vertex : SV_POSITION;
+                float4 position : SV_POSITION;
+                float3 worldPos : TEXCOORD0;
             };
 
             fixed4 _MyColor;
@@ -40,12 +39,14 @@ Shader "Unlit/chequerShader"
             v2f vert (appdata v)
             {
                 v2f o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
+                o.position = UnityObjectToClipPos(v.vertex);
+                //calculate the position of the vertex in the world
+                o.worldPos = mul(unity_ObjectToWorld, v.vertex);
              
             
                 return o;
             }
-            float checker(float4  ip)
+            float checker(float3  ip)
             {
                 float3 p;
                 p[0] = (ip[0] + 0.000001) * 0.999999;
@@ -55,7 +56,7 @@ Shader "Unlit/chequerShader"
                 int xi = (int)abs(floor(p[0]));
                 int yi = (int)abs(floor(p[1]));
                 int zi = (int)abs(floor(p[2]));
-
+                //SI SON PARES
                 if ((xi % 2 == yi % 2) == (zi % 2)) {
                     return 1.0;
                 }
@@ -67,7 +68,7 @@ Shader "Unlit/chequerShader"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                 float Fac = checker(i.vertex* _Scale);
+                 float Fac = checker(i.worldPos * _Scale);
                   if (Fac == 1.0)  return _MyColor;
                      
                 
