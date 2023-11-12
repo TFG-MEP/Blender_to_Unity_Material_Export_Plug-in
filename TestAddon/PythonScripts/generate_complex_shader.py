@@ -37,6 +37,16 @@ def nodeSelector(node,shader_content):
             property_line = f'{var_type} {var_name};\n'
             shader_content = shader_content[:index] + property_line + shader_content[index:]
 
+        hlsl_file_path = "checker.txt"
+        # Lee el contenido del archivo HLSL
+        with open(hlsl_file_path, "r") as hlsl_file:
+            hlsl_method_content = hlsl_file.read()
+
+        index = shader_content.find("// Add methods")
+
+        # Agrega el contenido del método HLSL
+        shader_content = shader_content[:index] + hlsl_method_content + shader_content[index:]
+
 
     elif(node.name== 'Principled BSDF'):
         # Reemplazar el valor del color en la plantilla

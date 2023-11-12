@@ -60,7 +60,7 @@ Shader "Custom/ColorShader"
                 o.lightDir = normalize(_WorldSpaceLightPos0.xyz - v.vertex.xyz);
                 return o;
             }
-
+             // Add methods
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 color;
