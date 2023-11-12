@@ -1592,6 +1592,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 05a0b7bb5ac1eb94285aa70f6ca9685b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 127.4974
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 05a0b7bb5ac1eb94285aa70f6ca9685b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 11.315967
       objectReference: {fileID: 0}
@@ -1634,7 +1638,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 05a0b7bb5ac1eb94285aa70f6ca9685b, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 4a947206c0eff9b4f863e5e67e2b9528, type: 2}
+      objectReference: {fileID: 2100000, guid: 786a3273d1638f6488196c17b164e580, type: 2}
     - target: {fileID: 919132149155446097, guid: 05a0b7bb5ac1eb94285aa70f6ca9685b, type: 3}
       propertyPath: m_Name
       value: melon

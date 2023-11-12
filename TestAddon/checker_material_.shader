@@ -2,7 +2,7 @@ Shader "Custom/Shaderchecker_material_"
 {
      Properties
     {
-        _MyColor ("Color", Color) = {color_template}
+        //_MyColor ("Color", Color) = {color_template}
         _Scale ("_Scale", Float) = 6.899999618530273
 _Color2 ("_Color2", Color) = (0.0, 0.0, 0.0, 1.0)
 _Color1 ("_Color1", Color) = (0.800000011920929, 0.800000011920929, 0.800000011920929, 1.0)
@@ -23,11 +23,11 @@ _Color1 ("_Color1", Color) = (0.800000011920929, 0.800000011920929, 0.8000000119
 
         LOD 100
 
-        float4 image_texture(string path){
-            Texture2D tex;
-            Sampler sampler;
-            return tex.Sample(sampler, uv)
-        }
+        //float4 image_texture(string path){
+            //Texture2D tex;
+            //Sampler sampler;
+          //  return tex.Sample(sampler, uv)
+       /// }
 
         Pass
         {
@@ -37,21 +37,22 @@ _Color1 ("_Color1", Color) = (0.800000011920929, 0.800000011920929, 0.8000000119
 
             #include "UnityCG.cginc"
 
+            
+            struct appdata_t
+            {
+                float4 vertex : POSITION;
+                float2 uv : TEXCOORD0;
+                float3 normal : NORMAL;
+               
+            };
             struct v2f
             {
                 float2 uv : TEXCOORD0;
                 float4 vertex : SV_POSITION;
                 float3 normal : TEXCOORD1;
                 float3 lightDir : TEXCOORD2;
+                float3 worldPos : TEXCOORD3;
             };
-            struct appdata_t
-            {
-                float4 vertex : POSITION;
-                float2 uv : TEXCOORD0;
-                float3 normal : NORMAL;
-                float3 worldPos : TEXCOORD1;
-            };
-
             fixed4 _MyColor;
             float _Scale;
 fixed4 _Color2;
@@ -80,10 +81,10 @@ fixed4 _Color1;
     int zi = (int)abs(floor(p[2]));
     //SI SON PARES
     if ((xi % 2 == yi % 2) == (zi % 2)) {
-        return _MyColor;
+        return color2;
     }
     else {
-        return _MyColor2;
+        return color1;
     }
 
     

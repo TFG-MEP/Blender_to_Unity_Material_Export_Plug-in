@@ -1,9 +1,12 @@
-Shader "Custom/ColorShader"
+Shader "Custom/Shaderchecker_material_"
 {
      Properties
     {
         //_MyColor ("Color", Color) = {color_template}
-        // Add properties
+        _Scale ("_Scale", Float) = 6.899999618530273
+_Color2 ("_Color2", Color) = (0.0, 0.0, 0.0, 1.0)
+_Color1 ("_Color1", Color) = (0.800000011920929, 0.800000011920929, 0.800000011920929, 1.0)
+// Add properties
     }
 
     SubShader
@@ -51,7 +54,10 @@ Shader "Custom/ColorShader"
                 float3 worldPos : TEXCOORD3;
             };
             fixed4 _MyColor;
-            // Add variables
+            float _Scale;
+fixed4 _Color2;
+fixed4 _Color1;
+// Add variables
             v2f vert (appdata_t v)
             {
                 v2f o;
@@ -62,11 +68,33 @@ Shader "Custom/ColorShader"
                 o.lightDir = normalize(_WorldSpaceLightPos0.xyz - v.vertex.xyz);
                 return o;
             }
-             // Add methods
+             float4 checker(float3  ip, fixed4 color1, fixed4 color2,float Scale)
+{
+    ip *= Scale;
+    float3 p;
+    p[0] = (ip[0] + 0.000001) * 0.999999;
+    p[1] = (ip[1] + 0.000001) * 0.999999;
+    p[2] = (ip[2] + 0.000001) * 0.999999;
+
+    int xi = (int)abs(floor(p[0]));
+    int yi = (int)abs(floor(p[1]));
+    int zi = (int)abs(floor(p[2]));
+    //SI SON PARES
+    if ((xi % 2 == yi % 2) == (zi % 2)) {
+        return color2;
+    }
+    else {
+        return color1;
+    }
+
+    
+}
+// Add methods
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 color;
-                // Call methods
+                color=checker(i.worldPos,_Color1,_Color2,_Scale);
+// Call methods
                 return color;
             }
             ENDCG

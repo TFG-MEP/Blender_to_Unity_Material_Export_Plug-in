@@ -11,10 +11,10 @@ float4 checker(float3  ip, fixed4 color1, fixed4 color2,float Scale)
     int zi = (int)abs(floor(p[2]));
     //SI SON PARES
     if ((xi % 2 == yi % 2) == (zi % 2)) {
-        return _MyColor;
+        return color2;
     }
     else {
-        return _MyColor2;
+        return color1;
     }
 
     

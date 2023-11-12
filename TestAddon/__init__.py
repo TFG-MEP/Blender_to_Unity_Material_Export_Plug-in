@@ -13,7 +13,8 @@ class GeneraShader(bpy.types.Operator):
     bl_label = "Generar Shader"
     
     def execute(self, context):
-        generateShader(".")
+        print(context.scene.selected_directory)
+        generateShader("")
         return {'FINISHED'}
 
 class SeleccionarDirectorio(bpy.types.Operator):
