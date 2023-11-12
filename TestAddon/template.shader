@@ -41,6 +41,7 @@ Shader "Custom/ColorShader"
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
                 float3 normal : NORMAL;
+                float3 worldPos : TEXCOORD1;
             };
 
             fixed4 _MyColor;

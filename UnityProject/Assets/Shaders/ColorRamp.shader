@@ -1,9 +1,10 @@
-Shader "Custom/TextureShader"
+Shader "Custom/ColorRamp"
 {
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-      
+        _MyColor2("Color", Color) = (0.8000000715255737, 0.06040734797716141, 0.0, 1.0)
+         _MyColor("Color", Color) = (0.8000000715255737, 0.06040734797716141, 0.0, 1.0)
     }
 
     SubShader
@@ -31,7 +32,8 @@ Shader "Custom/TextureShader"
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
-     
+            fixed4 _MyColor;
+            fixed4 _MyColor2;
             v2f vert (appdata_t v)
             {
                 v2f o;
@@ -44,9 +46,9 @@ Shader "Custom/TextureShader"
             {
                 float4 colorImage=tex2D(_MainTex, i.texcoord);
            
-      
+                float4 outcol = lerp(_MyColor, _MyColor2, colorImage);
           
-                return colorImage;
+                return outcol;
             }
             ENDCG
         }

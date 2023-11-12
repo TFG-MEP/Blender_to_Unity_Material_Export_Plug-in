@@ -1,9 +1,9 @@
 import bpy
 
-def generate_shader() : 
+def generate_shader(path_) : 
 
     # Define la ruta donde se guardarán los archivos .shader
-    output_path = "./GeneratedShaders/"
+    output_path = path_
 
     # Cargar la plantilla .shader
     template_shader_path = "template.shader"

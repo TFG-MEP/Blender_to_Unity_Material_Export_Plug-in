@@ -13,6 +13,10 @@ def dfs(node, visited, hlsl_functions):
     elif (node.name == 'Image Texture'):
         # do something
         i = 0
+    elif(node.name== 'Checker Texture'):
+         # do something
+        i = 0
+
         
 
     hlsl_functions.append()

@@ -30,7 +30,8 @@ Shader "Unlit/chequerShader"
             struct v2f
             {
                 float4 position : SV_POSITION;
-                float3 worldPos : TEXCOORD0;
+                float3 worldPos : TEXCOORD1;
+                float2 uv : TEXCOORD0;
             };
 
             fixed4 _MyColor;
@@ -46,7 +47,7 @@ Shader "Unlit/chequerShader"
             
                 return o;
             }
-            float checker(float3  ip)
+            float4 checker(float3  ip)
             {
                 float3 p;
                 p[0] = (ip[0] + 0.000001) * 0.999999;
@@ -58,21 +59,22 @@ Shader "Unlit/chequerShader"
                 int zi = (int)abs(floor(p[2]));
                 //SI SON PARES
                 if ((xi % 2 == yi % 2) == (zi % 2)) {
-                    return 1.0;
+                    return _MyColor;
                 }
                 else {
-                    return 0.0;
+                    return _MyColor2;
                 }
+           
+             
             }
 
 
             fixed4 frag (v2f i) : SV_Target
             {
-                 float Fac = checker(i.worldPos * _Scale);
-                  if (Fac == 1.0)  return _MyColor;
-                     
                 
-                  else  return _MyColor2;
+                     
+                return checker(i.worldPos* _Scale);
+                
                      
                 
             }
