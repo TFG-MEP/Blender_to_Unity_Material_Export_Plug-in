@@ -1,9 +1,12 @@
-Shader "Custom/ColorShader"
+Shader "Custom/Shaderchecker_material_"
 {
      Properties
     {
         _MyColor ("Color", Color) = {color_template}
-        // Add properties
+        _Scale ("_Scale", Float) = 6.899999618530273
+_Color2 ("_Color2", Color) = (0.0, 0.0, 0.0, 1.0)
+_Color1 ("_Color1", Color) = (0.800000011920929, 0.800000011920929, 0.800000011920929, 1.0)
+// Add properties
     }
 
     SubShader

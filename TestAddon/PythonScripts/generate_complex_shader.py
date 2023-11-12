@@ -14,11 +14,22 @@ def nodeSelector(node,shader_content):
         color1 = node.inputs['Color1'].default_value
         color2 = node.inputs['Color2'].default_value
         scale = node.inputs['Scale'].default_value
-        # Imprime los valores de los parámetros
-        print(f"Vector: {vector[0],vector[1],vector[2]}")
-        print(f"Color1: {color1[0], color1[1], color1[2]}")
-        print(f"Color2: {color2}")
-        print(f"sclale: {scale}")
+     
+        properties_list = [
+        ("_Color1", "Color", f"({color1[0]}, {color1[1]}, {color1[2]}, {color1[3]})"),
+        ("_Color2", "Color", f"({color2[0]}, {color2[1]}, {color2[2]}, {color2[3]})"),
+        ("_Scale", "Float", scale)
+        ]
+
+       # Encuentra la posición de la cadena "// Añadir más propiedades aquí según sea necesario"
+        index = shader_content.find("// Add properties")
+
+        for prop_name, prop_type, prop_default in properties_list:
+            property_line = f'{prop_name} ("{prop_name}", {prop_type}) = {prop_default}\n'
+            shader_content = shader_content[:index] + property_line + shader_content[index:]
+
+
+
     elif(node.name== 'Principled BSDF'):
         # Reemplazar el valor del color en la plantilla
 
@@ -91,40 +102,3 @@ def generateShader(path):
 
         print(f"Archivo {shader_filename} generado con éxito.")
         print("Proceso completado.")
-
-def ruteo():
-    # Define la ruta donde se guardarán los archivos .shader
-    output_path = "./GeneratedShaders/"
-
-    # Cargar la plantilla .shader
-    template_shader_path = "template.shader"
-
-    with open(template_shader_path, "r") as template_file:
-        template_shader = template_file.read()
-
-    # Iterar a través de los materiales del objeto activo
-    obj = bpy.context.active_object
-    for i, material in enumerate(obj.data.materials):
-        
-        # Crear una copia de la plantilla para trabajar en ella
-        shader_content = template_shader
-        
-        # Cambiar el nombre del shader
-        shader_content = shader_content.replace("Custom/ColorShader", f"Custom/Shader{material.name}_{i}")
-
-        # Obtener el color base del material
-        base_color = material.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value
-        
-        # Reemplazar el valor del color en la plantilla
-        shader_content = shader_content.replace("{color_template}", f"({base_color[0]}, {base_color[1]}, {base_color[2]}, {base_color[3]})")
-        
-        # Guardar el archivo .shader con el nombre del material
-        shader_filename = f"{material.name}_{i}.shader"
-        shader_filepath = output_path + shader_filename
-        
-        with open(shader_filepath, "w") as shader_file:
-            shader_file.write(shader_content)
-        
-        print(f"Archivo {shader_filename} generado con éxito.")
-
-    print("Proceso completado.")

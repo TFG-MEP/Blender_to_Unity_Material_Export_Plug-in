@@ -3,7 +3,7 @@ Shader "Unlit/chequerShader"
     Properties
     {
           _MyColor("Color", Color) = (0.8000000715255737, 0.06040734797716141, 0.0, 1.0)
-           _MyColor2("Color", Color) = (0.8000000715255737, 0.06040734797716141, 0.0, 1.0)
+_MyColor2("Color", Color) = (0.8000000715255737, 0.06040734797716141, 0.0, 1.0)
            _Scale("Scale",Float) = 1
     }
     SubShader
