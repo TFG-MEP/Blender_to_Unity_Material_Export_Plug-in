@@ -10,7 +10,9 @@ Shader "Custom/ColorShader"
         Tags
         {
             "RenderType" = "Opaque"
-            "RenderPipeline" = "UniversalPipeline"
+            "RenderPipeline" = "UniversalPipe
+            
+        line"
         }
 
         LOD 100

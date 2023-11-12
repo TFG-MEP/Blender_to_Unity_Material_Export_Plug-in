@@ -6,14 +6,14 @@ bl_info = {
 
 import bpy
 from bpy.props import StringProperty
-from .PythonScripts.generate_shader import generate_shader
+from .PythonScripts.generate_complex_shader import generateShader
 
 class GeneraShader(bpy.types.Operator):
     bl_idname = "object.generar_cubo_en_origen"
     bl_label = "Generar Shader"
     
     def execute(self, context):
-        generate_shader(".")
+        generateShader(".")
         return {'FINISHED'}
 
 class SeleccionarDirectorio(bpy.types.Operator):
@@ -50,6 +50,10 @@ class PT_Panel(bpy.types.Panel):
         layout = self.layout
         layout.operator("object.seleccionar_directorio")
         layout.operator("object.generar_cubo_en_origen")
+
+
+
+
 
 def menu_func(self, context):
     self.layout.operator(GeneraShader.bl_idname)
