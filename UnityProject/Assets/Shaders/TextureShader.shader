@@ -43,9 +43,6 @@ Shader "Custom/TextureShader"
             fixed4 frag (v2f i) : SV_Target
             {
                 float4 colorImage=tex2D(_MainTex, i.texcoord);
-           
-      
-          
                 return colorImage;
             }
             ENDCG

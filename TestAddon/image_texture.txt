@@ -1,5 +1,5 @@
-float4 image_texture(string path){
-	Texture2D tex;
-	Sampler sampler;
-	return tex.Sample(sampler, uv)
+// función que crea una textura a partir de un sampler2D
+float4 image_texture(sampler2D texture, float2 texcoord){
+	float4 colorImage=tex2D(texture, texcoord);
+	return colorImage;
 }
