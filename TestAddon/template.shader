@@ -50,7 +50,7 @@ Shader "Custom/ColorShader"
             };
 
             fixed4 _MyColor;
-
+            // Add variables
             v2f vert (appdata_t v)
             {
                 v2f o;

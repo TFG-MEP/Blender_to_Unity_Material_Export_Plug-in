@@ -53,7 +53,9 @@ _Color1 ("_Color1", Color) = (0.800000011920929, 0.800000011920929, 0.8000000119
             };
 
             fixed4 _MyColor;
-
+            fixed4 _Color2;
+fixed4 _Color1;
+// Add variables
             v2f vert (appdata_t v)
             {
                 v2f o;
@@ -63,7 +65,7 @@ _Color1 ("_Color1", Color) = (0.800000011920929, 0.800000011920929, 0.8000000119
                 o.lightDir = normalize(_WorldSpaceLightPos0.xyz - v.vertex.xyz);
                 return o;
             }
-
+            //Add methods
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 color;

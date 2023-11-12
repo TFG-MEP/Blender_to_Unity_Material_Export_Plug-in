@@ -28,6 +28,14 @@ def nodeSelector(node,shader_content):
             property_line = f'{prop_name} ("{prop_name}", {prop_type}) = {prop_default}\n'
             shader_content = shader_content[:index] + property_line + shader_content[index:]
 
+        index = shader_content.find("// Add variables")
+        var_list = [
+        ("fixed4", "_Color1"),
+         ("fixed4", "_Color2")
+        ]
+        for var_type, var_name in var_list:
+            property_line = f'{var_type} {var_name};\n'
+            shader_content = shader_content[:index] + property_line + shader_content[index:]
 
 
     elif(node.name== 'Principled BSDF'):
