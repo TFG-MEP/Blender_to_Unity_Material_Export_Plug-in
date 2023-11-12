@@ -57,6 +57,7 @@ Shader "Custom/ColorShader"
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
                 o.normal = v.normal;
+                o.worldPos = mul(unity_ObjectToWorld, v.vertex);
                 o.lightDir = normalize(_WorldSpaceLightPos0.xyz - v.vertex.xyz);
                 return o;
             }
@@ -64,6 +65,7 @@ Shader "Custom/ColorShader"
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 color;
+                // Call methods
                 return color;
             }
             ENDCG

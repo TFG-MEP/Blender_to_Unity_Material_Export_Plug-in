@@ -31,7 +31,8 @@ def nodeSelector(node,shader_content):
         index = shader_content.find("// Add variables")
         var_list = [
         ("fixed4", "_Color1"),
-         ("fixed4", "_Color2")
+         ("fixed4", "_Color2"),
+         ("float", "_Scale")
         ]
         for var_type, var_name in var_list:
             property_line = f'{var_type} {var_name};\n'
@@ -46,6 +47,14 @@ def nodeSelector(node,shader_content):
 
         # Agrega el contenido del método HLSL
         shader_content = shader_content[:index] + hlsl_method_content + shader_content[index:]
+
+        index = shader_content.find("// Call methods")
+        
+      
+        property_line = f'color=checker(i.worldPos,_Color1,_Color2,_Scale);\n'
+        shader_content = shader_content[:index] + property_line + shader_content[index:]
+
+        
 
 
     elif(node.name== 'Principled BSDF'):
