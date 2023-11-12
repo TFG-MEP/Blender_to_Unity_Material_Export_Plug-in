@@ -12,6 +12,8 @@ Shader "Custom/ColorShader"
             "RenderType" = "Opaque"
             "RenderPipeline" = "UniversalPipe
             
+        
+        
         line"
         }
 

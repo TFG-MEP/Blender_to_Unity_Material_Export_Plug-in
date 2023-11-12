@@ -2,23 +2,30 @@ import bpy
 
 
 
-def nodeSelector(nodeName):
-    if (nodeName == 'Color Ramp') : 
+def nodeSelector(node):
+    if (node.name == 'Color Ramp') : 
      with open("color_ramp_template.txt", "r") as color_ramp_file:
         color_ramp_template = color_ramp_file.read()
-    elif (nodeName == 'Image Texture'):
+    elif (node.name == 'Image Texture'):
         # do something
          i = 0
-    elif(nodeName== 'Checker Texture'):
-        # do something
-        i = 0
+    elif(node.name== 'Checker Texture'):
+        vector = node.inputs['Vector'].default_value
+        color1 = node.inputs['Color1'].default_value
+        color2 = node.inputs['Color2'].default_value
+        scale = node.inputs['Scale'].default_value
+        # Imprime los valores de los parámetros
+        print(f"Vector: {vector[0],vector[1],vector[2]}")
+        print(f"Color1: {color1[0], color1[1], color1[2]}")
+        print(f"Color2: {color2}")
+        print(f"sclale: {scale}")
 
 
 # Recorrer los nodos en profundidad
 def dfs(node, visited):
     visited.add(node)
     print("Nombre del nodo: ", node.name)
-    nodeSelector(node.name)
+    nodeSelector(node)
     ##hlsl_functions.append()
 
     # Recorre los nodos conectados
