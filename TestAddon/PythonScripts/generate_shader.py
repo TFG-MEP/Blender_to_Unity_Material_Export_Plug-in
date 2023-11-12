@@ -1,6 +1,6 @@
 import bpy
 
-def generate_shader(path_) : 
+def generateShader(path_) : 
 
     # Define la ruta donde se guardarán los archivos .shader
     output_path = path_

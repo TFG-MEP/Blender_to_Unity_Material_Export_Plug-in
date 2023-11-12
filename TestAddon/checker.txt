@@ -1,0 +1,21 @@
+float4 checker(float3  ip, fixed4 color1, fixed4 color2,float Scale)
+{
+    ip *= Scale;
+    float3 p;
+    p[0] = (ip[0] + 0.000001) * 0.999999;
+    p[1] = (ip[1] + 0.000001) * 0.999999;
+    p[2] = (ip[2] + 0.000001) * 0.999999;
+
+    int xi = (int)abs(floor(p[0]));
+    int yi = (int)abs(floor(p[1]));
+    int zi = (int)abs(floor(p[2]));
+    //SI SON PARES
+    if ((xi % 2 == yi % 2) == (zi % 2)) {
+        return _MyColor;
+    }
+    else {
+        return _MyColor2;
+    }
+
+    
+}

@@ -47,8 +47,9 @@ Shader "Unlit/chequerShader"
             
                 return o;
             }
-            float4 checker(float3  ip)
+            float4 checker(float3  ip, fixed4 color1, fixed4 color2,float Scale)
             {
+                ip *= Scale;
                 float3 p;
                 p[0] = (ip[0] + 0.000001) * 0.999999;
                 p[1] = (ip[1] + 0.000001) * 0.999999;
@@ -73,7 +74,7 @@ Shader "Unlit/chequerShader"
             {
                 
                      
-                return checker(i.worldPos* _Scale);
+                return checker(i.worldPos,_MyColor,_MyColor2,_Scale);
                 
                      
                 

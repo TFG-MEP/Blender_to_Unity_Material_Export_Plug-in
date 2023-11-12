@@ -2,7 +2,7 @@ import bpy
 
 
 
-def nodeSelector(node):
+def nodeSelector(node,shader_content):
     if (node.name == 'Color Ramp') : 
      with open("color_ramp_template.txt", "r") as color_ramp_file:
         color_ramp_template = color_ramp_file.read()
@@ -19,13 +19,21 @@ def nodeSelector(node):
         print(f"Color1: {color1[0], color1[1], color1[2]}")
         print(f"Color2: {color2}")
         print(f"sclale: {scale}")
+    elif(node.name== 'Principled BSDF'):
+        # Reemplazar el valor del color en la plantilla
+
+        base_color = node.inputs['Base Color'].default_value
+        print(f"Vector: {base_color[0],base_color[1],base_color[2]}")
+        shader_content = shader_content.replace("{color_template}", f"({base_color[0]}, {base_color[1]}, {base_color[2]}, {base_color[3]})")
+       
+    return shader_content 
 
 
 # Recorrer los nodos en profundidad
-def dfs(node, visited):
+def dfs(node, visited,shader_content):
     visited.add(node)
     print("Nombre del nodo: ", node.name)
-    nodeSelector(node)
+    shader_content= nodeSelector(node,shader_content)
     ##hlsl_functions.append()
 
     # Recorre los nodos conectados
@@ -33,7 +41,9 @@ def dfs(node, visited):
         for link in input_socket.links:
             next_node = link.from_node
             if next_node not in visited:
-                dfs(next_node, visited)
+                shader_content=dfs(next_node, visited,shader_content)
+
+    return shader_content
 
 def generateShader(path):
      # Obtiene una referencia al objeto que tiene el material
@@ -43,17 +53,44 @@ def generateShader(path):
     if obj.data.materials:
         # Accede al primer material asignado al objeto (índice 0)
         material = obj.data.materials[0]
+        
+        output_path = path
+
+        # Cargar la plantilla .shader
+        template_shader_path = "template.shader"
+
+        with open(template_shader_path, "r") as template_file:
+            template_shader = template_file.read()
+
+        # Iterar a través de los materiales del objeto activo
+        obj = bpy.context.active_object
+   
+        # Crear una copia de la plantilla para trabajar en ella
+        shader_content = template_shader
+            
+        # Cambiar el nombre del shader
+        shader_content = shader_content.replace("Custom/ColorShader", f"Custom/Shader{material.name}_")
+
 
         # Accede al nodo del material en el Shader Editor
         material.use_nodes = True
         node_tree = material.node_tree
         nodes = node_tree.nodes
 
-        # Nodo raíz (puedes cambiarlo según tus necesidades)
+        # Nodo raíz
         root_node = nodes.get("Material Output")
         if root_node:
             visited = set()
-            dfs(root_node, visited)
+            shader_content=dfs(root_node, visited,shader_content)
+
+        shader_filename = f"{material.name}_.shader"
+        shader_filepath = output_path + shader_filename
+
+        with open(shader_filepath, "w") as shader_file:
+            shader_file.write(shader_content)
+
+        print(f"Archivo {shader_filename} generado con éxito.")
+        print("Proceso completado.")
 
 def ruteo():
     # Define la ruta donde se guardarán los archivos .shader
