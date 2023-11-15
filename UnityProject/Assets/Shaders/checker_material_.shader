@@ -64,7 +64,7 @@ fixed4 _Color1;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
                 o.normal = v.normal;
-                o.worldPos = mul(unity_ObjectToWorld, v.vertex);
+                o.worldPos = v.vertex.xyz;
                 o.lightDir = normalize(_WorldSpaceLightPos0.xyz - v.vertex.xyz);
                 return o;
             }
