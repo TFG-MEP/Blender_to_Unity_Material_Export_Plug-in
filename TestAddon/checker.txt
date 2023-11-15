@@ -16,6 +16,4 @@ float4 checker(float3  ip, fixed4 color1, fixed4 color2,float Scale)
     else {
         return color1;
     }
-
-    
 }

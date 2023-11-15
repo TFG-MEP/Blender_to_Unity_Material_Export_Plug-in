@@ -4,7 +4,7 @@ using UnityEditor;
 public class MaterialGenerator : EditorWindow
 {
     // Nombres por defecto
-    private string shaderPath = "Custom/GeneratedShader";
+    private string shaderPath = "Shaders/GeneratedShader";
     private string materialName = "GeneratedMaterial";
     private string destinationFolder = "Assets/";
 
