@@ -16,12 +16,6 @@ Shader "Custom/ColorShader"
 
         LOD 100
 
-        //float4 image_texture(string path){
-            //Texture2D tex;
-            //Sampler sampler;
-          //  return tex.Sample(sampler, uv)
-       /// }
-
         Pass
         {
             CGPROGRAM

@@ -4,9 +4,7 @@ from jinja2 import Template
 def generate_unity_style_guid():
     generated_uuid = uuid.uuid4()
     # Obtiene la representación hexadecimal sin guiones
-    unity_style_guid = generated_uuid.hex
-
-    return unity_style_guid
+    return generated_uuid.hex
 
 def render_template(template_str, context):
     template = Template(template_str, variable_start_string="${", variable_end_string="}$")

@@ -1,14 +1,13 @@
 import bpy
 
+def nodeSelector(node, shader_content):
 
-
-def nodeSelector(node,shader_content):
     if (node.name == 'Color Ramp') : 
-     with open("color_ramp_template.txt", "r") as color_ramp_file:
-        color_ramp_template = color_ramp_file.read()
+        with open("color_ramp_template.txt", "r") as color_ramp_file:
+            color_ramp_template = color_ramp_file.read()        
     elif (node.name == 'Image Texture'):
         # do something
-         i = 0
+        i = 0
     elif(node.name== 'Checker Texture'):
         vector = node.inputs['Vector'].default_value
         color1 = node.inputs['Color1'].default_value
@@ -18,8 +17,7 @@ def nodeSelector(node,shader_content):
         properties_list = [
         ("_Color1", "Color", f"({color1[0]}, {color1[1]}, {color1[2]}, {color1[3]})"),
         ("_Color2", "Color", f"({color2[0]}, {color2[1]}, {color2[2]}, {color2[3]})"),
-        ("_Scale", "Float", scale)
-        ]
+        ("_Scale", "Float", scale)]
 
        # Encuentra la posición de la cadena "// Añadir más propiedades aquí según sea necesario"
         index = shader_content.find("// Add properties")
@@ -50,13 +48,8 @@ def nodeSelector(node,shader_content):
 
         index = shader_content.find("// Call methods")
         
-      
         property_line = f'color=checker(i.worldPos,_Color1,_Color2,_Scale);\n'
         shader_content = shader_content[:index] + property_line + shader_content[index:]
-
-        
-
-
     elif(node.name== 'Principled BSDF'):
         # Reemplazar el valor del color en la plantilla
 
@@ -71,7 +64,7 @@ def nodeSelector(node,shader_content):
 def dfs(node, visited,shader_content):
     visited.add(node)
     print("Nombre del nodo: ", node.name)
-    shader_content= nodeSelector(node,shader_content)
+    shader_content = nodeSelector(node, shader_content)
     ##hlsl_functions.append()
 
     # Recorre los nodos conectados
@@ -79,13 +72,19 @@ def dfs(node, visited,shader_content):
         for link in input_socket.links:
             next_node = link.from_node
             if next_node not in visited:
-                shader_content=dfs(next_node, visited,shader_content)
+                shader_content=dfs(next_node, visited, shader_content)
 
     return shader_content
 
+
+# recorrido de los nodos(nodo desde el cual empiezo a recorrer):
+#     recorro cada propiedad del nodo(aka cada arista)
+#         para cada propiedad, hago lo mismo hasta llegar a una que no tenga aristas
+#             voy devolviendo lo que obtenga en el nodo 
+
 def generateShader(path):
-     # Obtiene una referencia al objeto que tiene el material
-    obj = bpy.context.object  # Cambia esto al nombre o índice de tu objeto
+    # Obtiene una referencia al objeto que tiene el material
+    obj = bpy.context.object
 
     # Asegúrate de que el objeto tenga un material
     if obj.data.materials:
@@ -108,7 +107,6 @@ def generateShader(path):
             
         # Cambiar el nombre del shader
         shader_content = shader_content.replace("Custom/ColorShader", f"Custom/Shader{material.name}_")
-
 
         # Accede al nodo del material en el Shader Editor
         material.use_nodes = True
