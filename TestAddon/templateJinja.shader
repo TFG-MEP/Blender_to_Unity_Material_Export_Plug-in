@@ -55,14 +55,15 @@ Shader "Custom/{{ shader_name }}"
                 o.lightDir = normalize(_WorldSpaceLightPos0.xyz - v.vertex.xyz);
                 return o;
             }
-
-            {{ methods }}
-
+            {% for meth in methods %}
+            {{ meth }};
+            {% endfor %}
             fixed4 frag(v2f i) : SV_Target
             {
                 fixed4 color;
                 // Use the color variable in your shader logic
                 // For example: color = {{ color_variable }};
+                {{ frag }}
                 return color;
             }
             ENDCG
