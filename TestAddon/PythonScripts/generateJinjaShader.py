@@ -17,9 +17,9 @@ class DfsBlender:
             color1 = node.inputs['Color1'].default_value
             color2 = node.inputs['Color2'].default_value
             scale = node.inputs['Scale'].default_value
-            DfsBlender.properties+=[("_Color1", "Color", f"({color1[0]}, {color1[1]}, {color1[2]}, {color1[3]})"),
-                        ("_Color2", "Color", f"({color2[0]}, {color2[1]}, {color2[2]}, {color2[3]})"),
-                          ("_Scale", "Float", scale) ]
+            DfsBlender.properties+=[("_Color1","Color1" ,"Color", f"({color1[0]}, {color1[1]}, {color1[2]}, {color1[3]})"),
+                      ("_Color2","Color2"  ,"Color", f"({color2[0]}, {color2[1]}, {color2[2]}, {color2[3]})"),
+                          ("_Scale","Scale", "Float", scale) ]
    
 
             DfsBlender.variables+=[ ("fixed4", "_Color1"),
@@ -33,7 +33,7 @@ class DfsBlender:
             with open(hlsl_file_path, "r") as hlsl_file:
                 hlsl_method_content = hlsl_file.read()
 
-            DfsBlender.methods+=hlsl_method_content;
+            DfsBlender.methods.append(hlsl_method_content);
            
             
             # property_line = f'color=checker(i.worldPos,_Color1,_Color2,_Scale);\n'
@@ -106,7 +106,8 @@ def generateShader(path):
        
         shader_filename = f"{material.name}_.shader"
         shader_filepath = output_path + shader_filename
-
+        print(DfsBlender.properties)
+        print(DfsBlender.methods)
         shader_data = {
         "shader_name": f"Shader{material.name}_",
         "properties":DfsBlender.properties,

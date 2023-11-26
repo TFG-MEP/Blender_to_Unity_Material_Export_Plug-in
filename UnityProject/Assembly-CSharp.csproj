@@ -78,6 +78,7 @@
     <None Include="Assets\Shaders\NormalVectors.shader" />
     <None Include="Assets\ShaderGraph\ShaderCopia.shader" />
     <None Include="Assets\Shaders\MyFirstShader.shader" />
+    <None Include="Assets\Shaders\aaa.shader" />
     <None Include="Assets\Shaders\chequerShader.shader" />
     <None Include="Assets\Shaders\wavetexture.shader" />
   </ItemGroup>

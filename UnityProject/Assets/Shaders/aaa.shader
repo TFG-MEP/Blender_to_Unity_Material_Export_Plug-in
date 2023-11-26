@@ -1,10 +1,14 @@
-Shader "Custom/{{ shader_name }}"
+Shader "Custom/Shaderchecker_aaa_"
 {
     Properties
     {
-        {% for propertyname,display_name,variable,value in properties %}
-        {{ propertyname }} ("{{ display_name }}", {{variable }}) = {{ value }}
-        {% endfor %}
+        
+        _Color1 ("Color1", Color) = (0.800000011920929, 0.800000011920929, 0.800000011920929, 1.0)
+        
+        _Color2 ("Color2", Color) = (0.0, 0.0, 0.0, 1.0)
+        
+        _Scale ("Scale", Float) = 6.899999618530273
+        
     }
 
     SubShader
@@ -41,9 +45,13 @@ Shader "Custom/{{ shader_name }}"
                 float3 worldPos : TEXCOORD3;
             };
 
-            {% for data_type, variable in variables %}
-            {{ data_type }} {{ variable }};
-            {% endfor %}
+            
+            fixed4 _Color1;
+            
+            fixed4 _Color2;
+            
+            float _Scale;
+            
 
             v2f vert(appdata_t v)
             {
@@ -55,15 +63,34 @@ Shader "Custom/{{ shader_name }}"
                 o.lightDir = normalize(_WorldSpaceLightPos0.xyz - v.vertex.xyz);
                 return o;
             }
-            {% for meth in methods %}
-            {{ meth }}
-            {% endfor %}
+            
+            float4 checker(float3  ip, fixed4 color1, fixed4 color2,float Scale)
+{
+    ip *= Scale;
+    float3 p;
+    p[0] = (ip[0] + 0.000001) * 0.999999;
+    p[1] = (ip[1] + 0.000001) * 0.999999;
+    p[2] = (ip[2] + 0.000001) * 0.999999;
+
+    int xi = (int)abs(floor(p[0]));
+    int yi = (int)abs(floor(p[1]));
+    int zi = (int)abs(floor(p[2]));
+    //SI SON PARES
+    if ((xi % 2 == yi % 2) == (zi % 2)) {
+        return color2;
+    }
+    else {
+        return color1;
+    }
+}
+
+            
             fixed4 frag(v2f i) : SV_Target
             {
                 fixed4 color;
                 // Use the color variable in your shader logic
-                // For example: color = {{ color_variable }};
-                {{ frag }}
+                // For example: color = ;
+                
                 return color;
             }
             ENDCG
