@@ -1,12 +1,14 @@
 Shader "Custom/Shaderchecker_material_"
 {
-     Properties
+    Properties
     {
-        //_MyColor ("Color", Color) = {color_template}
-        _Scale ("_Scale", Float) = 6.899999618530273
-        _Color2 ("_Color2", Color) = (0.0, 0.0, 0.0, 1.0)
-        _Color1 ("_Color1", Color) = (0.800000011920929, 0.800000011920929, 0.800000011920929, 1.0)
-// Add properties
+        
+        _Color1 ("Color1", Color) = (0.5, 0.13017061352729797, 0.1206531748175621, 1.0)
+        
+        _Color2 ("Color2", Color) = (0.014197751879692078, 0.6382833123207092, 0.07232849299907684, 1.0)
+        
+        _Scale ("Scale", Float) = 6.899999618530273
+        
     }
 
     SubShader
@@ -14,20 +16,10 @@ Shader "Custom/Shaderchecker_material_"
         Tags
         {
             "RenderType" = "Opaque"
-            "RenderPipeline" = "UniversalPipe
-            
-        
-        
-        line"
+            "RenderPipeline" = "UniversalPipeline"
         }
 
         LOD 100
-
-        //float4 image_texture(string path){
-            //Texture2D tex;
-            //Sampler sampler;
-          //  return tex.Sample(sampler, uv)
-       /// }
 
         Pass
         {
@@ -37,14 +29,13 @@ Shader "Custom/Shaderchecker_material_"
 
             #include "UnityCG.cginc"
 
-            
             struct appdata_t
             {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
                 float3 normal : NORMAL;
-               
             };
+
             struct v2f
             {
                 float2 uv : TEXCOORD0;
@@ -53,22 +44,27 @@ Shader "Custom/Shaderchecker_material_"
                 float3 lightDir : TEXCOORD2;
                 float3 worldPos : TEXCOORD3;
             };
-            fixed4 _MyColor;
+
+            
+            fixed4 _Color1;
+            
+            fixed4 _Color2;
+            
             float _Scale;
-fixed4 _Color2;
-fixed4 _Color1;
-// Add variables
-            v2f vert (appdata_t v)
+            
+
+            v2f vert(appdata_t v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
                 o.normal = v.normal;
-                o.worldPos = v.vertex.xyz;
+                o.worldPos = mul(unity_ObjectToWorld, v.vertex);
                 o.lightDir = normalize(_WorldSpaceLightPos0.xyz - v.vertex.xyz);
                 return o;
             }
-             float4 checker(float3  ip, fixed4 color1, fixed4 color2,float Scale)
+            
+            float4 checker(float3  ip, fixed4 color1, fixed4 color2,float Scale)
 {
     ip *= Scale;
     float3 p;
@@ -86,15 +82,15 @@ fixed4 _Color1;
     else {
         return color1;
     }
-
-    
 }
-// Add methods
-            fixed4 frag (v2f i) : SV_Target
+
+            
+            fixed4 frag(v2f i) : SV_Target
             {
                 fixed4 color;
-                color=checker(i.worldPos,_Color1,_Color2,_Scale);
-// Call methods
+                // Use the color variable in your shader logic
+                // For example: color = ;
+                
                 return color;
             }
             ENDCG
