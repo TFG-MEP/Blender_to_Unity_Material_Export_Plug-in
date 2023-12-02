@@ -56,14 +56,25 @@ class DfsBlender:
     - Valor que proporciona el nodo
     """
     def get_node_value(node) :
-
+ 
         # Evaluamos cada caso según el tipo de nodo
         if (node.type == 'RGB') :
             # Un nodo RGB devuelve una lista de valores con un nº para cada canal
+            print('Analizando RGB\n')
             def_rgb = node.outputs[0].default_value
             float_values = list(def_rgb)
             return float_values
-            
+        elif(node.type=='VALUE'):
+            print('Analizando nodo value\n')
+            single_value=node.outputs[0].default_value
+            print("valor value: "+str(single_value))
+            return single_value
+        elif(node.type=="BSDF_PRINCIPLED"):
+            print('Analizando principled\n')
+            baseColor= DfsBlender.get_node_value(node.inputs['Base Color'].links[0].from_node)
+            metallic=DfsBlender.get_node_value(node.inputs['Metallic'].links[0].from_node)
+            roughness=DfsBlender.get_node_value(node.inputs['Roughness'].links[0].from_node)
+            return
         elif (node.type == 'TEX_CHECKER') : 
 
             # TO_DO :
@@ -122,6 +133,7 @@ def generateShader(path):
         output_path = path
 
         # Cargar la plantilla .shader
+        
         template_shader_path = "templateJinja.shader"
 
         with open(template_shader_path, "r") as template_file:

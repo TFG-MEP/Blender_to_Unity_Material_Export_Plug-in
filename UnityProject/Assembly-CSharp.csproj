@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- Generated file, do not modify, your changes will be overwritten (use AssetPostprocessor.OnGeneratedCSProject) -->
   <PropertyGroup>
-    <LangVersion>9.0</LangVersion>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -55,7 +55,7 @@
     <UnityVersion>2022.3.13f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
+    <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.13f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.SourceGenerators.dll" />
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.13f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
@@ -66,11 +66,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\Oro_0.shader" />
+    <None Include="Assets\Shaders\color_checker_2.shader" />
     <None Include="Assets\Shaders\CelShading.shader" />
     <None Include="Assets\Shaders\checker_material_.shader" />
     <None Include="Assets\Shaders\TextureShader.shader" />
     <None Include="Assets\Shaders\VoronaiTexture.shader" />
     <None Include="Assets\Shaders\NormalMat.shader" />
+    <None Include="Assets\Shaders\PruebaOro.shader" />
     <None Include="Assets\Shaders\VoronaiTexture 1.shader" />
     <None Include="Assets\Free Stylized Skybox\ReadMe.txt" />
     <None Include="Assets\Shaders\Madera_0.shader" />
@@ -82,6 +84,7 @@
     <None Include="Assets\Shaders\aaa.shader" />
     <None Include="Assets\Shaders\chequerShader.shader" />
     <None Include="Assets\Shaders\wavetexture.shader" />
+    <None Include="Assets\Shaders\color_checker.shader" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
