@@ -70,10 +70,20 @@ class DfsBlender:
             print("valor value: "+str(single_value))
             return single_value
         elif(node.type=="BSDF_PRINCIPLED"):
+            
             print('Analizando principled\n')
             baseColor= DfsBlender.get_node_value(node.inputs['Base Color'].links[0].from_node)
             metallic=DfsBlender.get_node_value(node.inputs['Metallic'].links[0].from_node)
             roughness=DfsBlender.get_node_value(node.inputs['Roughness'].links[0].from_node)
+            
+            DfsBlender.properties+=[("_Color","Base Color" ,"Color", f"({baseColor[0]}, {baseColor[1]}, {baseColor[2]}, {baseColor[3]})"),
+                    ("_Metallic","Metallic", "Float", metallic),("_Smoothness","Roughness", "Float", roughness) ]
+
+
+            DfsBlender.variables+=[ ("fixed4", "_Color"),
+                                    ("float", "_Metallic"),
+                                    ("float", "_Smoothness")
+                                    ]
             return
         elif (node.type == 'TEX_CHECKER') : 
 

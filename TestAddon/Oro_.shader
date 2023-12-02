@@ -3,6 +3,12 @@ Shader "Custom/ShaderOro_"
     Properties
     {
         
+        _Color ("Base Color", Color) = (0.5, 0.30769938230514526, 0.01749415509402752, 1.0)
+        
+        _Metallic ("Metallic", Float) = 0.800000011920929
+        
+        _Smoothness ("Roughness", Float) = 0.19999998807907104
+        
     }
 
     SubShader
@@ -39,6 +45,12 @@ Shader "Custom/ShaderOro_"
                 float3 worldPos : TEXCOORD3;
             };
 
+            
+            fixed4 _Color;
+            
+            float _Metallic;
+            
+            float _Smoothness;
             
 
             v2f vert(appdata_t v)
