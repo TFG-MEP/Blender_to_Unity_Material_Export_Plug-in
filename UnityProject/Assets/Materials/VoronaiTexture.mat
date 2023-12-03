@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: VoronaiTexture
-  m_Shader: {fileID: 4800000, guid: 7885275b9190f3243b3d34139de179db, type: 3}
+  m_Shader: {fileID: 4800000, guid: 2971df2a650b87c4caa7acd0553572c4, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -99,7 +99,7 @@ Material:
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
-    - _CellSize: 0.03
+    - _CellSize: 47.9
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
@@ -117,6 +117,7 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueOffset: 0
+    - _Randomness: 1
     - _ReceiveShadows: 1
     - _Scale: 5
     - _Smoothness: 0.5
