@@ -3,7 +3,8 @@ Shader "Unlit/VoronaiTetxture"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _CellSize("Cell Size", float) = 2
+       _CellSize("Cell Size", float) = 2
+       _Randomness("Randomness", Range(0, 1)) = 1
     }
     SubShader
     {
@@ -38,6 +39,7 @@ Shader "Unlit/VoronaiTetxture"
             sampler2D _MainTex;
             float4 _MainTex_ST;
             float _CellSize;
+            float _Randomness;
             v2f vert (appdata v)
             {
                 v2f o;
@@ -90,7 +92,11 @@ Shader "Unlit/VoronaiTetxture"
             {
                 return float4(0.0f, 0.0f, 0.0f, coord);
             }
-            float2 voronoi_f1(float2 coord, VoronoiParams params) {
+            float hash_float_to_float(float k)
+            {
+                return frac(sin(k * 12.9898) * 43758.5453);
+            }
+            VoronoiOutput voronoi_f1(float2 coord, VoronoiParams params) {
                 float2 cellPosition = floor(coord);
                 float2 localPosition = coord - cellPosition;
 
@@ -103,6 +109,7 @@ Shader "Unlit/VoronaiTetxture"
                     [unroll]
                     for (int i = -1; i <= 1; i++) {
                         float cellOffset = i;
+                        float pointPosition = cellOffset + hash_float_to_float(cellPosition + cellOffset) * params.randomness;
                         float2 cell = cellPosition + float2(j, i);
                         float2 cellPosition1 = cell + rand2dTo2d(cell);
 
@@ -119,16 +126,19 @@ Shader "Unlit/VoronaiTetxture"
                 octave.distance = minDistance;
                 octave.position = voronoi_position(targetPosition + cellPosition);
                 float random = rand2dTo1d(closestCell);
-                return float2(minDistance, random);
+                octave.color = rand1dTo3d(random);
+               
+                return octave;
             }
             fixed4 frag (v2f i) : SV_Target
             {
                 float3 normal = normalize(i.normal);
-                float2 value = normal*_CellSize;
+                float2 value = i.uv*_CellSize;
                 VoronoiParams parameters;
-                float noise = voronoi_f1(value,parameters).y;
-                float3 color = rand1dTo3d(noise);
-                fixed4 result = fixed4(color, 1.0f);
+                parameters.randomness = _Randomness;
+                VoronoiOutput noise = voronoi_f1(value,parameters);
+                
+                fixed4 result = fixed4(noise.color, 1.0f);
 
                 return result;
             }
