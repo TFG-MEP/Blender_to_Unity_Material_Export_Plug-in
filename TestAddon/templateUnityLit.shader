@@ -1,21 +1,15 @@
-Shader "Custom/ShaderOro_"
+Shader "Custom/{{ shader_name }}"
 {
     Properties
     {
         // Specular vs Metallic workflow
-        
-        
-        [MainColor]_BaseColor ("Color", Color) = (0.5, 0.30769938230514526, 0.01749415509402752, 1.0)
-        
-        
-        
-        _Metallic ("Metallic", Range(0.0, 1.0)) = 0.800000011920929
-        
-        
-        
-        _Smoothness ("Smoothness", Range(0.0, 1.0)) = 0.800000011920929
-        
-        
+        {% for propertyname,display_name,variable,value in properties %}
+        {% if propertyname == "_BaseColor" %}
+        [MainColor]{{ propertyname }} ("{{ display_name }}", {{variable }}) = {{ value }}
+        {% else %}
+        {{ propertyname }} ("{{ display_name }}", {{variable }}) = {{ value }}
+        {% endif %}
+        {% endfor %}
 
         _WorkflowMode("WorkflowMode", Float) = 1.0
 
