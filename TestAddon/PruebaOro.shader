@@ -3,6 +3,8 @@ Shader "Custom/ShaderOro_"
     Properties
     {
         // Specular vs Metallic workflow
+        _WorkflowMode("WorkflowMode", Float) = 1.0
+        
         
         
         [MainColor]_BaseColor ("Color", Color) = (0.5, 0.30769938230514526, 0.01749415509402752, 1.0)
@@ -17,7 +19,6 @@ Shader "Custom/ShaderOro_"
         
         
 
-        _WorkflowMode("WorkflowMode", Float) = 1.0
 
         [MainTexture] _BaseMap("Albedo", 2D) = "white" {}
 

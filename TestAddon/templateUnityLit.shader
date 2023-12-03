@@ -3,6 +3,8 @@ Shader "Custom/{{ shader_name }}"
     Properties
     {
         // Specular vs Metallic workflow
+        _WorkflowMode("WorkflowMode", Float) = 1.0
+
         {% for propertyname,display_name,variable,value in properties %}
         {% if propertyname == "_BaseColor" %}
         [MainColor]{{ propertyname }} ("{{ display_name }}", {{variable }}) = {{ value }}
@@ -11,7 +13,6 @@ Shader "Custom/{{ shader_name }}"
         {% endif %}
         {% endfor %}
 
-        _WorkflowMode("WorkflowMode", Float) = 1.0
 
         [MainTexture] _BaseMap("Albedo", 2D) = "white" {}
 
