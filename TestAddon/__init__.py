@@ -6,7 +6,7 @@ bl_info = {
 
 import bpy
 from bpy.props import StringProperty
-from .PythonScripts.generate_shader_toposort import generateShader
+from .PythonScripts.pruebaShaderDirecto import generateShader
 
 class GeneraShader(bpy.types.Operator):
     bl_idname = "object.generar_unity_material"

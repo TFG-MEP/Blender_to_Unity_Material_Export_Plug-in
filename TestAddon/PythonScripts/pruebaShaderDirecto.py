@@ -76,10 +76,10 @@ class DfsBlender:
             
             baseColor= DfsBlender.get_node_value(node.inputs['Base Color'].links[0].from_node)
             metallic=DfsBlender.get_node_value(node.inputs['Metallic'].links[0].from_node)
-            roughness=1-(DfsBlender.get_node_value(node.inputs['Roughness'].links[0].from_node))
+            smoothness=1-(DfsBlender.get_node_value(node.inputs['Roughness'].links[0].from_node))
             
             DfsBlender.properties+=[("_BaseColor","Color" ,"Color", f"({baseColor[0]}, {baseColor[1]}, {baseColor[2]}, {baseColor[3]})"),
-                    ("_Metallic","Metallic", "Float", metallic),("_Smoothness","Smoothness", "Float", roughness) ]
+                    ("_Metallic","Metallic", "Range(0.0, 1.0)", metallic),("_Smoothness","Smoothness", "Range(0.0, 1.0)", smoothness) ]
 
 
             DfsBlender.variables+=[ ("fixed4", "_Color"),
@@ -146,7 +146,7 @@ def generateShader(path):
 
         # Cargar la plantilla .shader
         
-        template_shader_path = "templateJinja.shader"
+        template_shader_path = "templateUnityLit.shader"
 
         with open(template_shader_path, "r") as template_file:
             template_content = template_file.read()
