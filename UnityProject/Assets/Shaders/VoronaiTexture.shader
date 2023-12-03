@@ -199,7 +199,7 @@ Shader "Custom/VoronoiTexture"
                 params_.roughness= _roughness;
                 params_.lacunarity= _lacunarity;
                 params_.smoothness= _smoothness;
-                params_.exponent= _exponent;
+                params_.exponent= _exponent;                                                                                                                                                                                                                
                 params_.randomness= _randomness;
                 params_.max_distance= _max_distance;
                 params_.normalize=true;

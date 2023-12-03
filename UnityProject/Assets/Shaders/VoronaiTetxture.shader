@@ -3,7 +3,7 @@ Shader "Unlit/VoronaiTetxture"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _CellSize("Cell Size", Range(0, 2)) = 2
+        _CellSize("Cell Size", float) = 2
     }
     SubShader
     {
@@ -24,12 +24,14 @@ Shader "Unlit/VoronaiTetxture"
             {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
+                float3 normal : NORMAL; // Agrega la normal aquí
             };
 
             struct v2f
             {
                 float2 uv : TEXCOORD0;
                 UNITY_FOG_COORDS(1)
+                float3 normal : TEXCOORD1; // Pasa la normal desde el vértice hasta el fragmento
                 float4 vertex : SV_POSITION;
             };
 
@@ -41,6 +43,7 @@ Shader "Unlit/VoronaiTetxture"
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+                o.normal = UnityObjectToWorldNormal(v.normal);
                 UNITY_TRANSFER_FOG(o,o.vertex);
                 return o;
             }
@@ -67,32 +70,63 @@ Shader "Unlit/VoronaiTetxture"
                     rand1dTo1d(value, 5.7241)
                     );
             }
-            float2 voronoiNoise(float2 value) {
-                float2 baseCell = floor(value);
+            struct VoronoiOutput {
+                float distance;
+                float3 color;
+                float4 position;
+            };  
+            struct VoronoiParams {
+                float scale;
+                float detail;
+                float roughness;
+                float lacunarity;
+                float smoothness;
+                float exponent;
+                float randomness;
+                float max_distance;
+                bool normalize;
+            };
+            float4 voronoi_position(const float coord)
+            {
+                return float4(0.0f, 0.0f, 0.0f, coord);
+            }
+            float2 voronoi_f1(float2 coord, VoronoiParams params) {
+                float2 cellPosition = floor(coord);
+                float2 localPosition = coord - cellPosition;
 
-                float minDistToCell = 10;
+                float minDistance = 10;
                 float2 closestCell;
+                float targetOffset = 0.0f;
+                float targetPosition = 0.0f;
                 [unroll]
-                for (int x = -1; x <= 1; x++) {
+                for (int j = -1; j <= 1; j++) {
                     [unroll]
-                    for (int y = -1; y <= 1; y++) {
-                        float2 cell = baseCell + float2(x, y);
-                        float2 cellPosition = cell + rand2dTo2d(cell);
-                        float2 toCell = cellPosition - value;
-                        float distToCell = length(toCell);
-                        if (distToCell < minDistToCell) {
-                            minDistToCell = distToCell;
+                    for (int i = -1; i <= 1; i++) {
+                        float cellOffset = i;
+                        float2 cell = cellPosition + float2(j, i);
+                        float2 cellPosition1 = cell + rand2dTo2d(cell);
+
+                        float2 toCell = cellPosition1 - coord;
+                        float distanceToPoint = length(toCell);
+                        if (distanceToPoint < minDistance) {
+                            minDistance = distanceToPoint;
                             closestCell = cell;
+                            targetPosition = cellPosition1;
                         }
                     }
                 }
+                VoronoiOutput octave;
+                octave.distance = minDistance;
+                octave.position = voronoi_position(targetPosition + cellPosition);
                 float random = rand2dTo1d(closestCell);
-                return float2(minDistToCell, random);
+                return float2(minDistance, random);
             }
             fixed4 frag (v2f i) : SV_Target
             {
-                float2 value = i.uv / _CellSize;
-                float noise = voronoiNoise(value).y;
+                float3 normal = normalize(i.normal);
+                float2 value = normal*_CellSize;
+                VoronoiParams parameters;
+                float noise = voronoi_f1(value,parameters).y;
                 float3 color = rand1dTo3d(noise);
                 fixed4 result = fixed4(color, 1.0f);
 
