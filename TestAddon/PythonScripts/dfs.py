@@ -1,6 +1,6 @@
 import bpy
 
-def dfs(node, visited):
+def dfs(node, visited): 
     visited.add(node)
     print("Nombre del nodo:", node.name)
 

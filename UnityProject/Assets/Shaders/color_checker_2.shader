@@ -89,7 +89,6 @@ Shader "Custom/ColorChecker2"
             {
                 fixed4 color;
                 color = checker(i.worldPos, _Color1, _Color2, _Scale);
-                
                 return color;
             }
             ENDCG

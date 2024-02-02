@@ -139,7 +139,6 @@ Shader "Unlit/VoronaiTetxture"
                 VoronoiOutput noise = voronoi_f1(value,parameters);
                 
                 fixed4 result = fixed4(noise.color, 1.0f);
-
                 return result;
             }
             ENDCG

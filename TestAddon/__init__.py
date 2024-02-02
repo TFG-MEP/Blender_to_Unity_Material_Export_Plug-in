@@ -7,6 +7,7 @@ bl_info = {
 import bpy
 from bpy.props import StringProperty
 from .PythonScripts.pruebaShaderDirecto import generateShader
+from .PythonScripts.recorrer_nodos import start
 
 class GeneraShader(bpy.types.Operator):
     bl_idname = "object.generar_unity_material"
@@ -15,7 +16,8 @@ class GeneraShader(bpy.types.Operator):
     # Aqui se determina qué ocurre al seleccionar esta opción del panel
     def execute(self, context):
         print(context.scene.selected_directory)
-        generateShader("")
+        #generateShader("")
+        start()
         return {'FINISHED'}
 
 class SeleccionarDirectorio(bpy.types.Operator):
