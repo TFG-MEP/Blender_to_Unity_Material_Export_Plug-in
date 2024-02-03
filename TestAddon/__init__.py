@@ -4,6 +4,7 @@ bl_info = {
     "category": "Object",
 }
 
+import os
 import bpy
 from bpy.props import StringProperty
 from .PythonScripts.pruebaShaderDirecto import generateShader
@@ -14,8 +15,9 @@ class GeneraShader(bpy.types.Operator):
     filepath: StringProperty(subtype="FILE_PATH")
     # Aqui se determina qué ocurre al seleccionar esta opción del panel
     def execute(self, context):
-        print("Ruta seleccionada:", self.filepath)
-        generateShader(self.filepath)
+        directory = os.path.dirname(self.filepath)
+        print("Ruta seleccionada:", directory)
+        generateShader(directory)
         return {'FINISHED'}
     def invoke(self, context, event):
         context.window_manager.fileselect_add(self)
