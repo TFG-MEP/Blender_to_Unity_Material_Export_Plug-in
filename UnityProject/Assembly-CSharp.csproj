@@ -79,6 +79,7 @@
     <None Include="Assets\Shaders\VoronaiTetxture.shader" />
     <None Include="Assets\Shaders\ColorRamp.shader" />
     <None Include="Assets\Shaders\Celshade.shader" />
+    <None Include="Assets\Shaders\NuevosShaders\Oro_.shader" />
     <None Include="Assets\Shaders\NormalVectors.shader" />
     <None Include="Assets\ShaderGraph\ShaderCopia.shader" />
     <None Include="Assets\Shaders\MyFirstShader.shader" />

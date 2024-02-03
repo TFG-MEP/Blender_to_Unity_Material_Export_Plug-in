@@ -169,7 +169,7 @@ def generateShader(path):
             DfsBlender.dfs(root_node, visited)
 
         shader_filename = f"{material.name}_.shader"
-        shader_filepath = output_path + shader_filename
+        shader_filepath = f"{output_path}/{shader_filename}" 
 
         print(DfsBlender.properties)
         print(DfsBlender.methods)
