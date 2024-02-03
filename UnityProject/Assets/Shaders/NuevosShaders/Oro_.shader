@@ -18,6 +18,30 @@ Shader "Custom/ShaderOro_"
         _Smoothness ("Smoothness", Range(0.0, 1.0)) = 0.800000011920929
         
         
+        
+        [MainColor]_BaseColor ("Color", Color) = (0.5, 0.30769938230514526, 0.01749415509402752, 1.0)
+        
+        
+        
+        _Metallic ("Metallic", Range(0.0, 1.0)) = 0.800000011920929
+        
+        
+        
+        _Smoothness ("Smoothness", Range(0.0, 1.0)) = 0.800000011920929
+        
+        
+        
+        [MainColor]_BaseColor ("Color", Color) = (0.5, 0.30769938230514526, 0.01749415509402752, 1.0)
+        
+        
+        
+        _Metallic ("Metallic", Range(0.0, 1.0)) = 0.800000011920929
+        
+        
+        
+        _Smoothness ("Smoothness", Range(0.0, 1.0)) = 0.800000011920929
+        
+        
 
 
         [MainTexture] _BaseMap("Albedo", 2D) = "white" {}
