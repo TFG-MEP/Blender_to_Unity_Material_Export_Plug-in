@@ -32,7 +32,8 @@ Shader "Unlit/VoronaiTetxture"
             {
                 float2 uv : TEXCOORD0;
                 UNITY_FOG_COORDS(1)
-                float3 normal : TEXCOORD1; // Pasa la normal desde el vértice hasta el fragmento
+                float3 normal : TEXCOORD1;
+                float3 worldPos:TEXCOORD2;// Pasa la normal desde el vértice hasta el fragmento
                 float4 vertex : SV_POSITION;
             };
 
@@ -46,6 +47,7 @@ Shader "Unlit/VoronaiTetxture"
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 o.normal = UnityObjectToWorldNormal(v.normal);
+                o.worldPos = v.vertex.xyz;
                 UNITY_TRANSFER_FOG(o,o.vertex);
                 return o;
             }
@@ -97,13 +99,18 @@ Shader "Unlit/VoronaiTetxture"
                 return frac(sin(k * 12.9898) * 43758.5453);
             }
             VoronoiOutput voronoi_f1(float2 coord, VoronoiParams params) {
+                //floor toma la parte entera-> encontrar la posición de la celda más cercana a las coordenadas iniciales.
                 float2 cellPosition = floor(coord);
+                //almacena la posición local dentro de esta celda.
                 float2 localPosition = coord - cellPosition;
 
                 float minDistance = 10;
                 float2 closestCell;
                 float targetOffset = 0.0f;
                 float targetPosition = 0.0f;
+                //Se itera a través de un bucle anidado para explorar las celdas cercanas.
+                //Para cada celda vecina, se calcula una posición aleatoria y se compara su distancia con las coordenadas iniciales.
+                //Se actualiza minDistance y se almacena la posición de la celda más cercana(closestCell) y la posición objetivo(targetPosition).
                 [unroll]
                 for (int j = -1; j <= 1; j++) {
                     [unroll]
@@ -133,7 +140,7 @@ Shader "Unlit/VoronaiTetxture"
             fixed4 frag (v2f i) : SV_Target
             {
                 float3 normal = normalize(i.normal);
-                float2 value = i.uv*_CellSize;
+                float2 value = i.worldPos.xz*_CellSize;
                 VoronoiParams parameters;
                 parameters.randomness = _Randomness;
                 VoronoiOutput noise = voronoi_f1(value,parameters);
