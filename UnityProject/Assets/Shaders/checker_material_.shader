@@ -55,8 +55,8 @@ Shader "Custom/Shaderchecker_material_"
             };
             fixed4 _MyColor;
             float _Scale;
-fixed4 _Color2;
-fixed4 _Color1;
+            fixed4 _Color2;
+            fixed4 _Color1;
 // Add variables
             v2f vert (appdata_t v)
             {
@@ -69,26 +69,26 @@ fixed4 _Color1;
                 return o;
             }
              float4 checker(float3  ip, fixed4 color1, fixed4 color2,float Scale)
-{
-    ip *= Scale;
-    float3 p;
-    p[0] = (ip[0] + 0.000001) * 0.999999;
-    p[1] = (ip[1] + 0.000001) * 0.999999;
-    p[2] = (ip[2] + 0.000001) * 0.999999;
+            {
+                ip *= Scale/2;
+                float3 p;
+                p[0] = (ip[0] + 0.000001) * 0.999999;
+                p[1] = (ip[1] + 0.000001) * 0.999999;
+                p[2] = (ip[2] + 0.000001) * 0.999999;
 
-    int xi = (int)abs(floor(p[0]));
-    int yi = (int)abs(floor(p[1]));
-    int zi = (int)abs(floor(p[2]));
-    //SI SON PARES
-    if ((xi % 2 == yi % 2) == (zi % 2)) {
-        return color2;
-    }
-    else {
-        return color1;
-    }
+                int xi = (int)abs(floor(p[0]));
+                int yi = (int)abs(floor(p[1]));
+                int zi = (int)abs(floor(p[2]));
+                //SI SON PARES
+                if ((xi % 2 == yi % 2) == (zi % 2)) {
+                    return color1;
+                }
+                else {
+                    return color2;
+                }
 
     
-}
+            }
 // Add methods
             fixed4 frag (v2f i) : SV_Target
             {
