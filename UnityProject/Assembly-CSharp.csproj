@@ -73,6 +73,7 @@
     <None Include="Assets\Shaders\TextureShader.shader" />
     <None Include="Assets\Shaders\NormalMat.shader" />
     <None Include="Assets\Shaders\PruebaOro.shader" />
+    <None Include="Assets\Shaders\prueba.shader" />
     <None Include="Assets\Free Stylized Skybox\ReadMe.txt" />
     <None Include="Assets\Shaders\Madera_0.shader" />
     <None Include="Assets\Shaders\VoronaiTetxture.shader" />

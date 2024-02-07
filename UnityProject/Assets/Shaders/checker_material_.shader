@@ -3,6 +3,8 @@ Shader "Custom/Shaderchecker_material_"
      Properties
     {
         //_MyColor ("Color", Color) = {color_template}
+        _MainTex("Texture", 2D) = "white" {}
+        _MainTex2("Texture2", 2D) = "white" {}
         _Scale ("_Scale", Float) = 6.899999618530273
         _Color2 ("_Color2", Color) = (0.0, 0.0, 0.0, 1.0)
         _Color1 ("_Color1", Color) = (0.800000011920929, 0.800000011920929, 0.800000011920929, 1.0)
@@ -57,6 +59,8 @@ Shader "Custom/Shaderchecker_material_"
             float _Scale;
             fixed4 _Color2;
             fixed4 _Color1;
+            sampler2D _MainTex;
+            sampler2D _MainTex2;
 // Add variables
             v2f vert (appdata_t v)
             {
@@ -66,6 +70,7 @@ Shader "Custom/Shaderchecker_material_"
                 o.normal = v.normal;
                 o.worldPos = v.vertex.xyz;
                 o.lightDir = normalize(_WorldSpaceLightPos0.xyz - v.vertex.xyz);
+                o.uv = v.uv;
                 return o;
             }
              float4 checker(float3  ip, fixed4 color1, fixed4 color2,float Scale)
@@ -93,7 +98,9 @@ Shader "Custom/Shaderchecker_material_"
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 color;
-                color=checker(i.worldPos,_Color1,_Color2,_Scale);
+                fixed4 col1 = tex2D(_MainTex, i.uv);
+                fixed4 col2 = tex2D(_MainTex2, i.uv);
+                color=checker(i.worldPos, col1, col2,_Scale);
 // Call methods
                 return color;
             }
