@@ -39,7 +39,7 @@ Shader "Custom/EsferaLitPaula"
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
                 float4 normal : NORMAL;
-                float4 texcoord1 : TEXCOORD1;
+                float4 texcoord1 : TEXCOORD1; //Coordenadas para el baking de iluminación
             };
             //Datos que se calculan en el vertex shader y se usan en el fragment shader
             struct v2f
@@ -78,7 +78,7 @@ Shader "Custom/EsferaLitPaula"
                 half4 col = tex2D(_MainTex, i.uv);
                 InputData inputdata = (InputData)0;
                 inputdata.positionWS = i.positionWS;
-                inputdata.normalWS = normalize(i.normalWS);
+                inputdata.normalWS = normalize(i.normalWS); //Normalizarlo evita que la luz aparezca como "pixelada"
                 inputdata.viewDirectionWS = i.viewDir;
                 //bakedGI quiere decir baked global illumiation
                 inputdata.bakedGI = SAMPLE_GI(i.lightmapUV, i.vertexSH, inputdata.normalWS);
@@ -90,7 +90,7 @@ Shader "Custom/EsferaLitPaula"
                 surfacedata.smoothness = _Smoothness;
                 surfacedata.normalTS = 0;
                 surfacedata.emission = 0;
-                surfacedata.occlusion = 1;
+                surfacedata.occlusion = 1; //"Ambient occlusion"
                 surfacedata.alpha = 0;
                 surfacedata.clearCoatMask = 0;
                 surfacedata.clearCoatSmoothness = 0;
