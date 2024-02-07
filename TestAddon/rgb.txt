@@ -1,0 +1,4 @@
+fixed4 rgb(fixed4 input_color)
+            {
+                return input_color;
+            }

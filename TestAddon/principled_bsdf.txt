@@ -1,0 +1,4 @@
+fixed4 principled_bsdf(float metallic)
+            {
+                return metallic * 1.0;
+            }
