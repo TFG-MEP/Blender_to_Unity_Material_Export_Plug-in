@@ -8,6 +8,7 @@ import os
 import bpy
 from bpy.props import StringProperty
 from .PythonScripts.pruebaShaderDirecto import generateShader
+from .PythonScripts.recorrer_nodos import start
 
 class GeneraShader(bpy.types.Operator):
     bl_idname = "object.generar_unity_material"
@@ -17,7 +18,8 @@ class GeneraShader(bpy.types.Operator):
     def execute(self, context):
         directory = os.path.dirname(self.filepath)
         print("Ruta seleccionada:", directory)
-        generateShader(directory)
+        #generateShader(directory)
+        start(directory)
         return {'FINISHED'}
     def invoke(self, context, event):
         context.window_manager.fileselect_add(self)

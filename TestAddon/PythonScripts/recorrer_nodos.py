@@ -213,7 +213,7 @@ def escribir_nodo_rgb(node, node_properties, shader_content) :
     node_name = node.name.replace(" ", "")
     node_properties.append(node_name + "_Color")
 
-    node_color = procesar_propiedad(node.color, "Color")
+    node_color = convertir_valor(node.color, "Color")
 
     property_line = f'{node_name}_Color("Color", fixed4) = {node_color}\n\t\t'
     # ... y se añaden al shader
@@ -292,7 +292,7 @@ def recorrer_nodo(node, shader_content):
     return shader_content
 
 
-def start():
+def start(destination_directory):
     # Cargar la plantilla .shader
     template_shader_path = "template.shader"
 
@@ -313,7 +313,7 @@ def start():
     shader_content = shader_content.replace("Custom/ColorShader", f"Custom/Shader{material.name}_")
 
     shader_filename = f"{material.name}_.shader"
-    shader_filepath = "" + shader_filename
+    shader_filepath = f"{destination_directory}/{shader_filename}"
 
     shader_content = recorrer_nodo(root_node, shader_content)
 
