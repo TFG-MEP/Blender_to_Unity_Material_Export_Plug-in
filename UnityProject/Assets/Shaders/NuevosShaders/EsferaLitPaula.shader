@@ -2,13 +2,24 @@ Shader "Custom/EsferaLitPaula"
 { 
     Properties
     {
+        //Estas son las propiedades que podemos modificar en el inspector
+
+        //Textura principal blanca por defecto
         _MainTex("Texture", 2D) = "white" {}
+        //Color-Albedo
         _BaseColor("Base Color", color) = (1,1,1,1)
+        //Suavidad de la superficie
+
+        //----------------------------------------------IMPORTANTE----------------------------------------------------
+        //Hay que restar a uno el roughness de blender para calcularlo smooth(Unity)=1-rough (Blender)
         _Smoothness("Smoothness", Range(0,1)) = 0
+
+        //Metalicidad
         _Metallic("Metallic", Range(0,1)) = 0
     }
     SubShader
     {
+        //Aqui teniamos puesto "UniversalPipeline" en la plantilla------------------------------OJO
         Tags { "RenderType" = "Opaque" "RenderPipeline" = "UniversalRenderPipeline" }
         LOD 100
 
@@ -18,8 +29,11 @@ Shader "Custom/EsferaLitPaula"
             #pragma vertex vert
             #pragma fragment frag
 
+            //Aqui importamos el archivo donde tenemos las funciones que 
+            //queremos usar para evitar calcular nosotras la iluminacion
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"            
 
+            //Datos de entrada en el vertex shader
             struct appdata
             {
                 float4 vertex : POSITION;
@@ -27,7 +41,7 @@ Shader "Custom/EsferaLitPaula"
                 float4 normal : NORMAL;
                 float4 texcoord1 : TEXCOORD1;
             };
-
+            //Datos que se calculan en el vertex shader y se usan en el fragment shader
             struct v2f
             {
                 float4 vertex : SV_POSITION;
@@ -56,7 +70,7 @@ Shader "Custom/EsferaLitPaula"
                 OUTPUT_LIGHTMAP_UV(v.texcoord1, unity_LightmapST, o.lightmapUV);
                 OUTPUT_SH(o.normalWS.xyz, o.vertexSH);
 
-                    return o;
+                return o;
             }
 
             half4 frag(v2f i) : SV_Target
@@ -66,6 +80,7 @@ Shader "Custom/EsferaLitPaula"
                 inputdata.positionWS = i.positionWS;
                 inputdata.normalWS = normalize(i.normalWS);
                 inputdata.viewDirectionWS = i.viewDir;
+                //bakedGI quiere decir baked global illumiation
                 inputdata.bakedGI = SAMPLE_GI(i.lightmapUV, i.vertexSH, inputdata.normalWS);
 
                 SurfaceData surfacedata;
