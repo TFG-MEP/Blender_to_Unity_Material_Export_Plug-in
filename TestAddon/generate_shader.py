@@ -1,6 +1,7 @@
 import bpy
 
 added_functions = set()
+MaterialOutput_Surface_added = False
 
 class NodeInfo:
     def __init__(self, name="", nodeType=""):
@@ -75,6 +76,7 @@ def convertir_tipos_propiedad(blender_input):
 def escribir_nodo(function_file_path, function_parameters, destination_node, destination_property, shader_content) : 
 
     global added_functions
+    global MaterialOutput_Surface_added
 
     # Comprobar si la función HLSL ya se ha agregado al shader
     if function_file_path not in added_functions:
@@ -110,6 +112,9 @@ def escribir_nodo(function_file_path, function_parameters, destination_node, des
     func_line = f'{prop_type} {destination_name} = {function_name}({all_parameters});\n\t\t\t\t'
     #func_line = f'{destination_name} = {function_name}({all_parameters});\n\t\t\t\t'
     shader_content = shader_content[:fragment_index] + func_line + shader_content[fragment_index:]
+
+    if destination_name == 'MaterialOutput_Surface' :
+        MaterialOutput_Surface_added = True
 
     return shader_content
 
@@ -361,5 +366,8 @@ def generate(destination_directory):
 
     print(f"Archivo {shader_filename} generado con éxito.")
     print("Proceso completado.")
+
+    if (MaterialOutput_Surface_added == False) : 
+        print("ERROR: Hay que usar un nodo Material Output con algo conectado a la salida Surface")
 
     return material.name
