@@ -7,8 +7,7 @@ bl_info = {
 import os
 import bpy
 from bpy.props import StringProperty
-from .PythonScripts.pruebaShaderDirecto import generateShader
-from .PythonScripts.recorrer_nodos import start
+from .exporter import export
 
 class GeneraShader(bpy.types.Operator):
     bl_idname = "object.generar_unity_material"
@@ -18,15 +17,12 @@ class GeneraShader(bpy.types.Operator):
     def execute(self, context):
         directory = os.path.dirname(self.filepath)
         print("Ruta seleccionada:", directory)
-        #generateShader(directory)
-        start(directory)
+        export(directory)
         return {'FINISHED'}
     def invoke(self, context, event):
         context.window_manager.fileselect_add(self)
         return {'RUNNING_MODAL'}
     
-
-
 
 class PT_Panel(bpy.types.Panel):
     bl_label = "Generate Unity Material"

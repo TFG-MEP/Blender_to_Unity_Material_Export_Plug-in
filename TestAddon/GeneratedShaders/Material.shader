@@ -3,14 +3,14 @@ Shader "Custom/ShaderMaterial_"
      Properties
     {
         //_MyColor ("Color", Color) = {color_template}
-        RGB_Color("Color", fixed4) = <Color (r=0.6080, g=0.6080, b=0.6080)>
+        RGB_Color("Color", fixed4) = fixed4(0.6079999804496765,0.6079999804496765,0.6079999804496765, 1.0)
 		PrincipledBSDF_Subsurface("Subsurface", float) = 0.0
 		PrincipledBSDF_SubsurfaceRadius("SubsurfaceRadius", fixed3) = fixed3(1.0, 0.20000000298023224, 0.10000000149011612)
 		PrincipledBSDF_SubsurfaceColor("SubsurfaceColor", fixed4) = fixed4(0.800000011920929,0.800000011920929,0.800000011920929, 1.0)
 		PrincipledBSDF_SubsurfaceIOR("SubsurfaceIOR", float) = 1.399999976158142
 		PrincipledBSDF_SubsurfaceAnisotropy("SubsurfaceAnisotropy", float) = 0.0
 		PrincipledBSDF_Metallic("Metallic", float) = 0.0
-		PrincipledBSDF_Specular("Specular", float) = 1.0
+		PrincipledBSDF_Specular("Specular", float) = 0.5
 		PrincipledBSDF_SpecularTint("SpecularTint", float) = 0.0
 		PrincipledBSDF_Roughness("Roughness", float) = 0.5
 		PrincipledBSDF_Anisotropic("Anisotropic", float) = 0.0
@@ -96,8 +96,8 @@ Shader "Custom/ShaderMaterial_"
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 color;
-                PrincipledBSDF_BaseColor = rgb(RGB_Color);
-				MaterialOutput_Surface = principled_bsdf(PrincipledBSDF_BaseColor, PrincipledBSDF_Subsurface, PrincipledBSDF_SubsurfaceRadius, PrincipledBSDF_SubsurfaceColor, PrincipledBSDF_SubsurfaceIOR, PrincipledBSDF_SubsurfaceAnisotropy, PrincipledBSDF_Metallic, PrincipledBSDF_Specular, PrincipledBSDF_SpecularTint, PrincipledBSDF_Roughness, PrincipledBSDF_Anisotropic, PrincipledBSDF_AnisotropicRotation, PrincipledBSDF_Sheen, PrincipledBSDF_SheenTint, PrincipledBSDF_Clearcoat, PrincipledBSDF_ClearcoatRoughness, PrincipledBSDF_IOR, PrincipledBSDF_Transmission, PrincipledBSDF_TransmissionRoughness, PrincipledBSDF_Emission, PrincipledBSDF_EmissionStrength, PrincipledBSDF_Alpha, PrincipledBSDF_Normal, PrincipledBSDF_ClearcoatNormal, PrincipledBSDF_Tangent, PrincipledBSDF_Weight);
+                PrincipledBSDF_BaseColor = HLSLTemplates/rgb(RGB_Color);
+				MaterialOutput_Surface = HLSLTemplates/principled_bsdf(PrincipledBSDF_BaseColor, PrincipledBSDF_Subsurface, PrincipledBSDF_SubsurfaceRadius, PrincipledBSDF_SubsurfaceColor, PrincipledBSDF_SubsurfaceIOR, PrincipledBSDF_SubsurfaceAnisotropy, PrincipledBSDF_Metallic, PrincipledBSDF_Specular, PrincipledBSDF_SpecularTint, PrincipledBSDF_Roughness, PrincipledBSDF_Anisotropic, PrincipledBSDF_AnisotropicRotation, PrincipledBSDF_Sheen, PrincipledBSDF_SheenTint, PrincipledBSDF_Clearcoat, PrincipledBSDF_ClearcoatRoughness, PrincipledBSDF_IOR, PrincipledBSDF_Transmission, PrincipledBSDF_TransmissionRoughness, PrincipledBSDF_Emission, PrincipledBSDF_EmissionStrength, PrincipledBSDF_Alpha, PrincipledBSDF_Normal, PrincipledBSDF_ClearcoatNormal, PrincipledBSDF_Tangent, PrincipledBSDF_Weight);
 				// Call methods
                 return color;
             }

@@ -203,7 +203,7 @@ def escribir_nodo_value(node, node_properties, shader_content) :
     # y la propiedad específica de dicho nodo que lo recibe
     propiedad_entrada = conexion_salida.to_socket
     #print("Value conecta con " + nodo_entrada.name + " en su propiedad " + propiedad_entrada.name)
-    shader_content = escribir_nodo("value.txt", node_properties, nodo_entrada, propiedad_entrada, shader_content)
+    shader_content = escribir_nodo("HLSLTemplates/value.txt", node_properties, nodo_entrada, propiedad_entrada, shader_content)
 
     return shader_content
 
@@ -225,7 +225,7 @@ def escribir_nodo_rgb(node, node_properties, shader_content) :
     # y la propiedad específica de dicho nodo que lo recibe
     propiedad_entrada = conexion_salida.to_socket
     #print("RGB conecta con " + nodo_entrada.name + " en su propiedad " + propiedad_entrada.name)
-    shader_content = escribir_nodo("rgb.txt", node_properties, nodo_entrada, propiedad_entrada, shader_content)
+    shader_content = escribir_nodo("HLSLTemplates/rgb.txt", node_properties, nodo_entrada, propiedad_entrada, shader_content)
 
     return shader_content
 
@@ -235,7 +235,7 @@ def escribir_nodo_bsdf(node, node_properties, shader_content) :
     nodo_entrada = conexion_salida.to_node
     propiedad_entrada = conexion_salida.to_socket
 
-    shader_content = escribir_nodo("principled_bsdf.txt", node_properties, nodo_entrada, propiedad_entrada, shader_content)
+    shader_content = escribir_nodo("HLSLTemplates/principled_bsdf.txt", node_properties, nodo_entrada, propiedad_entrada, shader_content)
 
     return shader_content
 
@@ -292,9 +292,9 @@ def recorrer_nodo(node, shader_content):
     return shader_content
 
 
-def start(destination_directory):
+def generate(destination_directory):
     # Cargar la plantilla .shader
-    template_shader_path = "template.shader"
+    template_shader_path = "FileTemplates/template.shader"
 
     with open(template_shader_path, "r") as template_file:
         template_shader = template_file.read()
@@ -312,7 +312,7 @@ def start(destination_directory):
     # Cambiar el nombre del shader
     shader_content = shader_content.replace("Custom/ColorShader", f"Custom/Shader{material.name}_")
 
-    shader_filename = f"{material.name}_.shader"
+    shader_filename = f"{material.name}.shader"
     shader_filepath = f"{destination_directory}/{shader_filename}"
 
     shader_content = recorrer_nodo(root_node, shader_content)
@@ -322,3 +322,5 @@ def start(destination_directory):
 
     print(f"Archivo {shader_filename} generado con éxito.")
     print("Proceso completado.")
+
+    return material.name
