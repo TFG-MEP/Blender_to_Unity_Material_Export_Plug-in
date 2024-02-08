@@ -72,6 +72,7 @@
     <None Include="Assets\Shaders\checker_material_.shader" />
     <None Include="Assets\Shaders\TextureShader.shader" />
     <None Include="Assets\Shaders\NormalMat.shader" />
+    <None Include="Assets\Materials\Pruebas\Material.shader" />
     <None Include="Assets\Shaders\PruebaOro.shader" />
     <None Include="Assets\Shaders\prueba.shader" />
     <None Include="Assets\Free Stylized Skybox\ReadMe.txt" />

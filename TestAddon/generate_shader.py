@@ -13,21 +13,39 @@ def convertir_valor(blender_input, input_type) :
     if (input_type == 'Float') :
         return blender_input
     elif (input_type == 'Color') :
-        return f'fixed4({blender_input[0]},{blender_input[1]},{blender_input[2]}, 1.0)'
+        return f'({blender_input[0]},{blender_input[1]},{blender_input[2]}, 1.0)'
     elif(input_type == 'Vector') :
-        return f'fixed3({blender_input[0]}, {blender_input[1]}, {blender_input[2]})'
+        return f'({blender_input[0]}, {blender_input[1]}, {blender_input[2]})'
     else : 
         return blender_input
 
 # Convierte un string que determina un tipo de datos usado por blender,
 # en un string con el tipo de datos equivalente en HLSL
-def convertir_tipos(blender_input):
+def convertir_tipos_hlsl(blender_input):
     if blender_input == 'Float':
         output = 'float'
     elif blender_input == 'Color' :
         output = 'fixed4'
     elif blender_input == 'Vector' :
         output = 'fixed3'
+    elif blender_input == 'Shader' :
+        output = 'fixed4'
+    else : 
+        output = blender_input
+    # TO_DO : completar con todos los tipos de datos
+    return output
+
+# Convierte un string que determina un tipo de datos usado por blender,
+# en un string con el tipo de datos equivalente en las propiedades del shader
+def convertir_tipos_propiedad(blender_input):
+    if blender_input == 'Float':
+        output = 'float'
+    elif blender_input == 'Color' :
+        output = 'Color'
+    elif blender_input == 'Vector' :
+        output = 'Vector'
+    elif blender_input == 'Shader' :
+        output = 'Color'
     else : 
         output = blender_input
     # TO_DO : completar con todos los tipos de datos
@@ -72,12 +90,14 @@ def escribir_nodo(function_file_path, function_parameters, destination_node, des
         # Actualizar el conjunto de funciones HLSL escritas
         added_functions.add(function_file_path)
 
+    prop_type = convertir_tipos_hlsl(destination_property.bl_label)
     # Quitar espacios a los nombres
     destination_node = destination_node.name.replace(" ", "")
     destination_property = destination_property.name.replace(" ", "")
     # Obtenemos el nombre del archivo sin extensión (debe coincidir con el nombre de la función)
     dot_index = function_file_path.find('.')
-    function_name = function_file_path[:dot_index]
+    slash_index = function_file_path.find('/')
+    function_name = function_file_path[slash_index+1:dot_index]
 
     # Añadir la llamada a la función en el fragment shader
     fragment_index = shader_content.find("// Call methods")
@@ -87,7 +107,8 @@ def escribir_nodo(function_file_path, function_parameters, destination_node, des
 
     all_parameters = ', '.join(function_parameters)
 
-    func_line = f'{destination_name} = {function_name}({all_parameters});\n\t\t\t\t'
+    func_line = f'{prop_type} {destination_name} = {function_name}({all_parameters});\n\t\t\t\t'
+    #func_line = f'{destination_name} = {function_name}({all_parameters});\n\t\t\t\t'
     shader_content = shader_content[:fragment_index] + func_line + shader_content[fragment_index:]
 
     return shader_content
@@ -130,7 +151,7 @@ def procesar_propiedad(input_socket, nodeName, nodeType, shader_content):
         return shader_content
 
     # Convertir el tipo de blender a tipos de Unity/HLSL
-    propLabel = convertir_tipos(propLabel)
+    propLabel = convertir_tipos_hlsl(propLabel)
 
     # Sacamos el valor de la propiedad
     propValue = input_socket.default_value
@@ -147,6 +168,9 @@ def procesar_propiedad(input_socket, nodeName, nodeType, shader_content):
     # nombreDelNodo_nombreDeLaPropiedad("nombreDeLaPropiedad", TipoDeDatos) = ValorDeLaPropiedad
     property_line = f'{nodeName}_{propName}("{propName}", {propLabel}) = {propValue}\n\t\t'
     shader_content = escribir_propiedad(property_line, shader_content)
+
+    variable_line = f'{propLabel} {nodeName}_{propName};\n\t\t\t'
+    shader_content = escribir_variable(variable_line, shader_content)
 
     return shader_content
 
@@ -168,6 +192,14 @@ def procesar_propiedad(input_socket, nodeName, nodeType, shader_content):
 def escribir_propiedad(line, shader_content) : 
     properties_index = shader_content.find("// Add properties")
     shader_content = shader_content[:properties_index] + line + shader_content[properties_index:]
+
+    return shader_content
+
+def escribir_variable(line, shader_content) : 
+
+    variables_index = shader_content.find("// Add variables")
+    shader_content = shader_content[:variables_index] + line + shader_content[variables_index:]
+
     return shader_content
 
 
@@ -193,9 +225,12 @@ def escribir_nodo_value(node, node_properties, shader_content) :
     # Se buscan las propiedades específicas de este tipo de nodo...
     node_name = node.name.replace(" ", "")
     node_properties.append(node_name + "_Value")
-    property_line = f'{nodeInfo.name}_Value("Value", float) = {node.value}\n\t\t'
+    property_line = f'{nodeInfo.name}_Value("Value", float) = {node.outputs["Value"].default_value}\n\t\t'
     # ... y se añaden al shader
     shader_content = escribir_propiedad(property_line, shader_content)
+
+    variable_line = f'fixed3 {nodeInfo.name}_Value("Value", float);\n\t\t\t'
+    shader_content = escribir_variable(variable_line, shader_content)
 
     # Se identifica el nodo conectado a la salida Value
     conexion_salida = node.outputs["Value"].links[0]
@@ -213,11 +248,14 @@ def escribir_nodo_rgb(node, node_properties, shader_content) :
     node_name = node.name.replace(" ", "")
     node_properties.append(node_name + "_Color")
 
-    node_color = convertir_valor(node.color, "Color")
+    node_color = convertir_valor(node.outputs["Color"].default_value, "Color")
 
-    property_line = f'{node_name}_Color("Color", fixed4) = {node_color}\n\t\t'
+    property_line = f'{node_name}_Color("Color", Color) = {node_color}\n\t\t'
     # ... y se añaden al shader
     shader_content = escribir_propiedad(property_line, shader_content)
+
+    variable_line = f'fixed4 {node_name}_Color;\n\t\t\t'
+    shader_content = escribir_variable(variable_line, shader_content)
 
     # Se identifica el nodo conectado a la salida RGB
     conexion_salida = node.outputs["Color"].links[0]
@@ -273,6 +311,7 @@ def recorrer_nodo(node, shader_content):
             # blender no permite hacer eso para los nodos con los que estamos trabajando), 
             # solo trabajamos con la primera. Si más adelante utilizamos nodos con múltiples
             # conexiones, habría que revisitar este apartado (pero esto no es un uso común).
+
             connected_node = input_socket.links[0].from_node
             shader_content = recorrer_nodo(connected_node, shader_content)
         else :

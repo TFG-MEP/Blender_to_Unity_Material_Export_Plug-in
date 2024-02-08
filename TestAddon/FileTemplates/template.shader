@@ -2,7 +2,6 @@ Shader "Custom/ColorShader"
 {
      Properties
     {
-        //_MyColor ("Color", Color) = {color_template}
         // Add properties
         
     }
@@ -47,8 +46,9 @@ Shader "Custom/ColorShader"
                 float3 lightDir : TEXCOORD2;
                 float3 worldPos : TEXCOORD3;
             };
-            fixed4 _MyColor;
+
             // Add variables
+
             v2f vert (appdata_t v)
             {
                 v2f o;
@@ -62,9 +62,8 @@ Shader "Custom/ColorShader"
              // Add methods
             fixed4 frag (v2f i) : SV_Target
             {
-                fixed4 color;
                 // Call methods
-                return color;
+                return MaterialOutput_Surface;
             }
             ENDCG
         }
