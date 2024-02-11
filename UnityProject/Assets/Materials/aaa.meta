@@ -1,10 +1,8 @@
 fileFormatVersion: 2
-guid: ${guid}$
-TextureImporter:
+guid: 34fd5def08ad03b4dbeb8c2e6b9fa2f3
+folderAsset: yes
+DefaultImporter:
   externalObjects: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-
-
-

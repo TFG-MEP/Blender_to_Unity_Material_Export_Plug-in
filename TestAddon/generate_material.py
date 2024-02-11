@@ -26,8 +26,8 @@ def texturesInMaterial(imageVariables):
         entrada += 'm_Scale: {x: 1, y: 1},\n\t\t\t'
         entrada += 'm_Offset: {x: 0, y: 0}\n\t\t'
         textList.append(entrada)
-
-
+    if imageVariables.items()==0:
+        textList.append('[]')
     return textList 
 def generate_files(path, material_name,imagesMap):
 
