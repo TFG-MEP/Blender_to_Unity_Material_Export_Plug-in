@@ -18,7 +18,17 @@ def save_to_file(file_path, content):
 def load_template_from_file(file_path):
     with open(file_path, 'r') as file:
         return file.read()
-    
+def texturesInMaterial(imageVariables):
+    textList=[]
+    for nombre_variable, guid in imageVariables.items():
+        entrada = f'{nombre_variable}: \n\t\t\t'
+        entrada += 'm_Texture: {fileID: 2800000, guid: ' + guid + ', type: 3},\n\t\t\t'
+        entrada += 'm_Scale: {x: 1, y: 1},\n\t\t\t'
+        entrada += 'm_Offset: {x: 0, y: 0}\n\t\t'
+        textList.append(entrada)
+
+
+    return textList 
 def generate_files(path, material_name,imagesMap):
 
     material_guid = generate_unity_style_guid()
@@ -66,6 +76,8 @@ def generate_files(path, material_name,imagesMap):
     context_material = {
         "material_name": material_name, # El nombre del material debe depender del nombre en blender
         "shader_guid": context_shader_meta["guid"],
+        "tex_env_strings": texturesInMaterial(imageVariables)
+       
         # aquí deben ir el resto de propiedades que se deban asignar al shader (textura, color, otros valores...)
     }
     material_template_str = load_template_from_file('FileTemplates/template.mat')
