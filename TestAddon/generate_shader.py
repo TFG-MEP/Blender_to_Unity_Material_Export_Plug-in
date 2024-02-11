@@ -286,12 +286,13 @@ def escribir_nodo_imageTexture(node, node_properties, shader_content):
     global imagesMap
     node_name = node.name.replace(" ", "")
     node_properties.append(node_name + "_Image")
-    image_path = node.image.filepath
+
+    image_path = bpy.path.abspath(node.image.filepath)
     if image_path not in imagesMap:
         imagesMap[image_path] = []
     # Ahora agregamos el nombre del nodo de imagen al diccionario imagesMap
     imagesMap[image_path].append(f'{node_name}_Image')
-    
+
     property_line = f'{node_name}_Image("Texture", 2D) = "white" {{}}\n\t\t'
     # ... y se añaden al shader
     shader_content = escribir_propiedad(property_line, shader_content)
@@ -395,4 +396,4 @@ def generate(destination_directory):
     if (MaterialOutput_Surface_added == False) : 
         print("ERROR: Hay que usar un nodo Material Output con algo conectado a la salida Surface")
 
-    return material.name
+    return material.name,imagesMap

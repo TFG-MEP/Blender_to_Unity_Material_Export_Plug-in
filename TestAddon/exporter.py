@@ -4,8 +4,8 @@ from .generate_shader import generate
 def export(path) :
 
     # Generar el .shader
-    material_name = generate(path)
+    material_name ,imagesMap= generate(path)
 
     # Generar el .material y los .meta
-    generate_files(path, material_name)
+    generate_files(path, material_name,imagesMap)
 
