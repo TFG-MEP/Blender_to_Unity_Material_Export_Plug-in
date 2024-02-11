@@ -2,6 +2,7 @@ import bpy
 
 added_functions = set()
 MaterialOutput_Surface_added = False
+imagesMap={}
 
 class NodeInfo:
     def __init__(self, name="", nodeType=""):
@@ -281,7 +282,14 @@ def escribir_nodo_bsdf(node, node_properties, shader_content) :
     shader_content = escribir_nodo("HLSLTemplates/principled_bsdf.txt", node_properties, nodo_entrada, propiedad_entrada, shader_content)
 
     return shader_content
+def escribir_nodo_imageTexture(node, node_properties, shader_content):
+    conexion_salida = node.outputs["Color"].links[0]
+    nodo_entrada = conexion_salida.to_node
+    propiedad_entrada = conexion_salida.to_socket
 
+    shader_content = escribir_nodo("HLSLTemplates/image_texture.txt", node_properties, nodo_entrada, propiedad_entrada, shader_content)
+
+    return shader_content
 """
     Recorre los nodos del material y los agrega al shader.
 
@@ -332,6 +340,8 @@ def recorrer_nodo(node, shader_content):
         shader_content = escribir_nodo_rgb(node, node_properties, shader_content)
     elif node.type == 'BSDF_PRINCIPLED' :
         shader_content = escribir_nodo_bsdf(node, node_properties, shader_content)
+    elif node.type == 'IMAGE_TEXTURE' :
+        shader_content = escribir_nodo_imageTexture(node, node_properties, shader_content)
 
     return shader_content
 
