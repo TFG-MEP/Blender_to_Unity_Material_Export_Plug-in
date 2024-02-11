@@ -25,6 +25,8 @@ def generate_files(path, material_name,imagesMap):
     shader_guid = generate_unity_style_guid()
     
     #Al recorrer los nodos se guardara la ruta de las imagenes
+    #nos guardamos en un map el nombre de la variable con su guid para pasarselo al material
+    imageVariables={}
     for image_path, node_names in imagesMap.items():
         print("Ruta de la imagen:", image_path)
         print("Nombres de nodos de imagen asociados:")
@@ -33,8 +35,7 @@ def generate_files(path, material_name,imagesMap):
         # Generar y guardar archivo .META para la imagen
         context_image_meta = {
             "guid": image_guid,
-        }
-        
+        }    
         nombre_final = os.path.basename(image_path)
         nombre_final, extension = os.path.splitext(nombre_final)
         print(nombre_final)
@@ -42,11 +43,11 @@ def generate_files(path, material_name,imagesMap):
         image_meta_content = render_template(image_meta_template_str, context_image_meta)
         image_meta_file_path =f"{path}/{nombre_final}{extension}.meta"    
         save_to_file(image_meta_file_path, image_meta_content)
-        for node_name in node_names:
-            print(node_name)
+        for variable in node_names:
+            imageVariables[variable]=image_guid
+            print(variable)
         print()  # Espacio en blanco entre cada imagen
-    # for idx, image in enumerate(images):
-    #     # Generar metadatos para la imagen
+  
    
 
     ## .SHADER.META
