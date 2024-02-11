@@ -1,4 +1,5 @@
 import uuid
+import os
 from jinja2 import Template
 import shutil
 def generate_unity_style_guid():
@@ -22,27 +23,31 @@ def generate_files(path, material_name,imagesMap):
 
     material_guid = generate_unity_style_guid()
     shader_guid = generate_unity_style_guid()
-
+    
     #Al recorrer los nodos se guardara la ruta de las imagenes
     for image_path, node_names in imagesMap.items():
         print("Ruta de la imagen:", image_path)
         print("Nombres de nodos de imagen asociados:")
         shutil.copy(image_path, path)
+        image_guid = generate_unity_style_guid()
+        # Generar y guardar archivo .META para la imagen
+        context_image_meta = {
+            "guid": image_guid,
+        }
+        
+        nombre_final = os.path.basename(image_path)
+        nombre_final, extension = os.path.splitext(nombre_final)
+        print(nombre_final)
+        image_meta_template_str = load_template_from_file('FileTemplates/template.image.meta')
+        image_meta_content = render_template(image_meta_template_str, context_image_meta)
+        image_meta_file_path =f"{path}/{nombre_final}{extension}.meta"    
+        save_to_file(image_meta_file_path, image_meta_content)
         for node_name in node_names:
             print(node_name)
         print()  # Espacio en blanco entre cada imagen
     # for idx, image in enumerate(images):
     #     # Generar metadatos para la imagen
-    #     image_guid = generate_unity_style_guid()
-
-    #     # Generar y guardar archivo .META para la imagen
-    #     context_image_meta = {
-    #         "guid": image_guid,
-    #     }
-    #     image_meta_template_str = load_template_from_file('FileTemplates/template.image.meta')
-    #     image_meta_content = render_template(image_meta_template_str, context_image_meta)
-    #     image_meta_file_path =f"test_{idx}.meta"       
-    #     save_to_file(image_meta_file_path, image_meta_content)
+   
 
     ## .SHADER.META
     # Crear contexto para el .shader.meta
