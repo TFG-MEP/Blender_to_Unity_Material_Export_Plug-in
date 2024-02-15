@@ -22,15 +22,16 @@ def texturesInMaterial(imageVariables):
     textList = []
     total_elementos = len(imageVariables)
     for index, (nombre_variable, guid) in enumerate(imageVariables.items()):
-        entrada = f'\t{nombre_variable}: \n\t\t\t\t'
-        entrada += 'm_Texture: {fileID: 2800000, guid: ' + guid + ', type: 3},\n\t\t\t\t'
-        entrada += 'm_Scale: {x: 1, y: 1},\n\t\t\t\t'
+        entrada = f' {nombre_variable}:\n        '
+        entrada += 'm_Texture: {fileID: 2800000, guid: ' + guid + ', type: 3}\n        '
+        entrada += 'm_Scale: {x: 1, y: 1}\n        '
         entrada += 'm_Offset: {x: 0, y: 0}'
         # Si no es el último elemento, agrega una coma al final
         if index < total_elementos - 1:
-            entrada += '\n\t\t\t'
+            entrada += '\n        '
         else:
-            entrada+='\n\t\t'
+            entrada += '\n      '
+
         textList.append(entrada)
 
     

@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: ${material_name}$
-  m_Shader: {fileID: 4800000, guid: ${shader_guid}$ , type: 3}
+  m_Shader: {fileID: 4800000, guid: ${shader_guid}$, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -22,10 +22,10 @@ Material:
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: 
+    m_TexEnvs:
     {% for tex_env_string in tex_env_strings -%}
     -${tex_env_string}${% endfor -%}
-    m_Ints:[] 
-    m_Floats:[]
-    m_Colors:[]      
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
   m_BuildTextureStacks: []
