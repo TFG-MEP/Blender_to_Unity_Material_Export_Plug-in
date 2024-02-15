@@ -1,14 +1,14 @@
 Shader "Custom/ShaderMaterial_"
 {
-    Properties
+     Properties
     {
-        ImageTexture_Vector("Vector", Vector) = (0.0, 0.0, 0.0)
-        ImageTexture_Image("Texture", 2D) = "white" {}
-    // Add properties
-
+        ImageTexture_Vector("Vector", fixed3) = (0.0, 0.0, 0.0)
+		ImageTexture_Image("Texture", 2D) = "white" {}
+		// Add properties
+        
     }
 
-        SubShader
+    SubShader
     {
         Tags
         {
@@ -32,13 +32,13 @@ Shader "Custom/ShaderMaterial_"
 
             #include "UnityCG.cginc"
 
-
+            
             struct appdata_t
             {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
                 float3 normal : NORMAL;
-
+               
             };
             struct v2f
             {
@@ -50,10 +50,10 @@ Shader "Custom/ShaderMaterial_"
             };
 
             fixed3 ImageTexture_Vector;
-            sampler2D ImageTexture_Image;
-            // Add variables
+			fixed4 ImageTexture_Color;
+			// Add variables
 
-            v2f vert(appdata_t v)
+            v2f vert (appdata_t v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
@@ -63,19 +63,19 @@ Shader "Custom/ShaderMaterial_"
                 o.lightDir = normalize(_WorldSpaceLightPos0.xyz - v.vertex.xyz);
                 return o;
             }
-            // función que crea una textura a partir de un sampler2D
-           float4 image_texture(sampler2D textura, float2 texcoord) {
-               float4 colorImage = tex2D(textura, texcoord);
-               return colorImage;
-           }
-           // Add methods
-           fixed4 frag(v2f i) : SV_Target
-           {
-               fixed4 MaterialOutput_Surface = image_texture(ImageTexture_Image, i.uv);
-           // Call methods
-           return MaterialOutput_Surface;
-       }
-       ENDCG
-   }
+             // función que crea una textura a partir de un sampler2D
+float4 image_texture(sampler2D texture, float2 texcoord){
+	float4 colorImage=tex2D(texture, texcoord);
+	return colorImage;
+}
+			// Add methods
+            fixed4 frag (v2f i) : SV_Target
+            {
+                fixed4 MaterialOutput_Surface = image_texture(ImageTexture_Vector, ImageTexture_Image);
+				// Call methods
+                return MaterialOutput_Surface;
+            }
+            ENDCG
+        }
     }
 }
