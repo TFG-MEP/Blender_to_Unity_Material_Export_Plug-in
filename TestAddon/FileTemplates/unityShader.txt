@@ -1,13 +1,25 @@
-Shader "Custom/ColorShader"
-{
-     Properties
+Shader "Custom/EsferaLit"
+{ 
+    Properties
     {
-        // Add properties
-    }
+        //Estas son las propiedades que podemos modificar en el inspector
 
+        //Textura principal blanca por defecto
+        _MainTex("Texture", 2D) = "white" {}
+        //Color-Albedo
+        _BaseColor("Base Color", color) = (1,1,1,1)
+        //Suavidad de la superficie
+
+        //----------------------------------------------IMPORTANTE----------------------------------------------------
+        //Hay que restar a uno el roughness de blender para calcularlo smooth(Unity)=1-rough (Blender)
+        _Smoothness("Smoothness", Range(0,1)) = 0
+
+        //Metalicidad
+        _Metallic("Metallic", Range(0,1)) = 0
+    }
     SubShader
     {
-
+        //Aqui teniamos puesto "UniversalPipeline" en la plantilla------------------------------OJO
         Tags { "RenderType" = "Opaque" "RenderPipeline" = "UniversalRenderPipeline" }
         LOD 100
 
@@ -40,14 +52,11 @@ Shader "Custom/ColorShader"
                 DECLARE_LIGHTMAP_OR_SH(lightmapUV, vertexSH, 4);
             };
 
-            // Add variables
-
             sampler2D _MainTex;
             float4 _MainTex_ST;
 
-            fixed4 PrincipledBSDF_BaseColor;
-            float PrincipledBSDF_Metallic;
-            float PrincipledBSDF_Roughness;
+            float4 _BaseColor;
+            float _Smoothness, _Metallic;
 
             v2f vert(appdata v)
             {
@@ -63,12 +72,9 @@ Shader "Custom/ColorShader"
 
                 return o;
             }
-            
-            // Add methods
-            fixed4 frag (v2f i) : SV_Target
-            {
-                // Call methods
 
+            half4 frag(v2f i) : SV_Target
+            {
                 half4 col = tex2D(_MainTex, i.uv);
                 InputData inputdata = (InputData)0;
                 inputdata.positionWS = i.positionWS;
@@ -78,10 +84,10 @@ Shader "Custom/ColorShader"
                 inputdata.bakedGI = SAMPLE_GI(i.lightmapUV, i.vertexSH, inputdata.normalWS);
 
                 SurfaceData surfacedata;
-                surfacedata.albedo = PrincipledBSDF_BaseColor;
+                surfacedata.albedo = _BaseColor;
                 surfacedata.specular = 0;
-                surfacedata.metallic = PrincipledBSDF_Metallic;
-                surfacedata.smoothness = PrincipledBSDF_Roughness;
+                surfacedata.metallic = _Metallic;
+                surfacedata.smoothness = _Smoothness;
                 surfacedata.normalTS = 0;
                 surfacedata.emission = 0;
                 surfacedata.occlusion = 1; //"Ambient occlusion"
@@ -90,7 +96,6 @@ Shader "Custom/ColorShader"
                 surfacedata.clearCoatSmoothness = 0;
 
                 return UniversalFragmentPBR(inputdata, surfacedata);
-                
             }
             ENDHLSL
         }
