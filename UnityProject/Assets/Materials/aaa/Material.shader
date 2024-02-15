@@ -68,10 +68,27 @@ Shader "Custom/ShaderMaterial_"
                float4 colorImage = tex2D(textura, texcoord);
                return colorImage;
            }
+           float3 mapping(float3 location, float3 rotation, float3 scale, float3 vectore) {
+               // Añade la ubicación para la traslación
+               vectore += location;
+
+               // Aplica la rotación (en radianes)
+               float3 rotated_vector;
+               rotated_vector.x = vectore.x * cos(rotation.y) * cos(rotation.z) - vectore.y * (sin(rotation.x) * sin(rotation.z) - cos(rotation.x) * cos(rotation.z) * sin(rotation.y)) + vectore.z * (cos(rotation.x) * sin(rotation.z) + cos(rotation.z) * sin(rotation.x) * sin(rotation.y));
+               rotated_vector.y = vectore.x * sin(rotation.y) * cos(rotation.z) + vectore.y * (cos(rotation.x) * cos(rotation.z) + sin(rotation.x) * sin(rotation.y) * sin(rotation.z)) - vectore.z * (cos(rotation.y) * sin(rotation.x) - cos(rotation.x) * sin(rotation.y) * sin(rotation.z));
+               rotated_vector.z = -vectore.x * sin(rotation.z) + vectore.y * cos(rotation.z) * sin(rotation.x) + vectore.z * cos(rotation.x) * cos(rotation.y);
+
+               // Aplica la escala
+               rotated_vector *= scale;
+
+               return rotated_vector;
+           }
            // Add methods
            fixed4 frag(v2f i) : SV_Target
            {
-               fixed4 MaterialOutput_Surface = image_texture(ImageTexture_Image, i.uv);
+               float3 coordinates = mapping(float3(0,0, 0.0f), float3(0.0f, 0.0f, 0.0f), float3(4.0f, 4.0f, 1.0f), float3(i.uv,0));
+
+               fixed4 MaterialOutput_Surface = image_texture(ImageTexture_Image, coordinates);
            // Call methods
            return MaterialOutput_Surface;
        }
