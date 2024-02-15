@@ -19,15 +19,30 @@ def load_template_from_file(file_path):
     with open(file_path, 'r') as file:
         return file.read()
 def texturesInMaterial(imageVariables):
-    textList=[]
-    for nombre_variable, guid in imageVariables.items():
+    textList = []
+    total_elementos = len(imageVariables)
+    for index, (nombre_variable, guid) in enumerate(imageVariables.items()):
         entrada = f'\t{nombre_variable}: \n\t\t\t\t'
         entrada += 'm_Texture: {fileID: 2800000, guid: ' + guid + ', type: 3},\n\t\t\t\t'
         entrada += 'm_Scale: {x: 1, y: 1},\n\t\t\t\t'
-        entrada += 'm_Offset: {x: 0, y: 0}\n\t\t\t'
+        entrada += 'm_Offset: {x: 0, y: 0}'
+        # Si no es el último elemento, agrega una coma al final
+        if index < total_elementos - 1:
+            entrada += '\n\t\t\t'
+        else:
+            entrada+='\n\t\t'
         textList.append(entrada)
-    if imageVariables.items()==0:
-        textList.append('[]')
+
+    
+    # textList=[]
+    # for nombre_variable, guid in imageVariables.items():
+    #     entrada = f'\t{nombre_variable}: \n\t\t\t\t'
+    #     entrada += 'm_Texture: {fileID: 2800000, guid: ' + guid + ', type: 3},\n\t\t\t\t'
+    #     entrada += 'm_Scale: {x: 1, y: 1},\n\t\t\t\t'
+    #     entrada += 'm_Offset: {x: 0, y: 0}\n\t\t\t'
+    #     textList.append(entrada)
+    # if imageVariables.items()==0:
+    #     textList.append('[]')
     return textList 
 def generate_files(path, material_name,imagesMap):
 
