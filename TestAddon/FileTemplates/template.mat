@@ -23,9 +23,8 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs: 
-    {% for tex_env_string in tex_env_strings %}
-    -${tex_env_string}$
-    {% endfor %}
+    {% for tex_env_string in tex_env_strings -%}
+    -${tex_env_string}${% endfor -%}
     m_Ints:[] 
     m_Floats:[]
     m_Colors:[] 

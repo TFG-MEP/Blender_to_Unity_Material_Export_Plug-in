@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Material
-  m_Shader: {fileID: 4800000, guid: 9a90290d97554d5d967d3b3ebb1b9bd9 , type: 3}
+  m_Shader: {fileID: 4800000, guid: 20702921bd8b44789807431e6ab61f08 , type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -23,14 +23,11 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs: 
-    
-    -ImageTexture_Image: 
-			m_Texture: {fileID: 2800000, guid: 77beef4d16f54c32a374147ce859449f, type: 3},
-			m_Scale: {x: 1, y: 1},
-			m_Offset: {x: 0, y: 0}
-		
-    
-    m_Ints:[] 
+    -	ImageTexture_Image: 
+				m_Texture: {fileID: 2800000, guid: bbcc85496fa544abaf206bd6f694cdfe, type: 3},
+				m_Scale: {x: 1, y: 1},
+				m_Offset: {x: 0, y: 0}
+			m_Ints:[] 
     m_Floats:[]
     m_Colors:[] 
       
