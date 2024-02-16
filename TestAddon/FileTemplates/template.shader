@@ -62,6 +62,7 @@ Shader "Custom/ColorShader"
              // Add methods
             fixed4 frag (v2f i) : SV_Target
             {
+                //Equal Variables
                 // Call methods
                 return MaterialOutput_Surface;
             }

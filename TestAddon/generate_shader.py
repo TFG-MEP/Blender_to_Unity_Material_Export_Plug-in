@@ -118,6 +118,26 @@ def escribir_nodo(function_file_path, function_parameters, destination_node, des
         MaterialOutput_Surface_added = True
 
     return shader_content
+def escribir_raiz( parameter, destination_node, destination_property, shader_content) : 
+
+    global MaterialOutput_Surface_added
+    prop_type = convertir_tipos_hlsl(destination_property.bl_label)
+    # Quitar espacios a los nombres
+    destination_node = destination_node.name.replace(" ", "")
+    destination_property = destination_property.name.replace(" ", "")
+    # Obtenemos el nombre del archivo sin extensión (debe coincidir con el nombre de la función)
+    # Añadir la llamada a la función en el fragment shader
+    fragment_index = shader_content.find("// Call methods")
+    # El resultado de la llamada a esta función se asigna a lo que indique su conexión
+    destination_name = destination_node + "_" + destination_property
+    func_line = f'{prop_type} {destination_name} = {parameter};\n\t\t\t\t'
+    #func_line = f'{destination_name} = {function_name}({all_parameters});\n\t\t\t\t'
+    shader_content = shader_content[:fragment_index] + func_line + shader_content[fragment_index:]
+
+    if destination_name == 'MaterialOutput_Surface' :
+        MaterialOutput_Surface_added = True
+
+    return shader_content
 
 """
     Procesa una propiedad de un nodo de blender y las añade al shader
@@ -207,7 +227,12 @@ def escribir_variable(line, shader_content) :
     shader_content = shader_content[:variables_index] + line + shader_content[variables_index:]
 
     return shader_content
+def igualar_variable(line, shader_content) : 
 
+    variables_index = shader_content.find("//Equal Variables")
+    shader_content = shader_content[:variables_index] + line + shader_content[variables_index:]
+
+    return shader_content
 
 """
     Añade un nodo de tipo "Value" al shader.
@@ -315,8 +340,6 @@ def escribir_nodo_TexCoord(node, node_properties, shader_content) :
     if node.outputs.get('UV').is_linked:
         print("El nodo UV de Texture Coordinate está conectado a otro nodo.")
         conexion_salida = node.outputs["UV"].links[0]
-        variable_line = f'fixed2 {node_name}_UV;\n\t\t\t'
-        shader_content = escribir_variable(variable_line, shader_content)
     elif node.outputs.get('Object').is_linked:
         print("El nodo UV de Texture Coordinate no está conectado a otro nodo.")
         conexion_salida = node.outputs["Object"].links[0]
@@ -328,7 +351,7 @@ def escribir_nodo_TexCoord(node, node_properties, shader_content) :
     # y la propiedad específica de dicho nodo que lo recibe
     propiedad_entrada = conexion_salida.to_socket
     #print("RGB conecta con " + nodo_entrada.name + " en su propiedad " + propiedad_entrada.name)
-    shader_content = escribir_nodo("HLSLTemplates/rgb.txt", node_properties, nodo_entrada, propiedad_entrada, shader_content)
+    shader_content = escribir_raiz('float3(i.uv,0)', nodo_entrada, propiedad_entrada, shader_content)
 
     return shader_content
 def escribir_nodo_mapping(node, node_properties, shader_content) : 
@@ -338,12 +361,12 @@ def escribir_nodo_mapping(node, node_properties, shader_content) :
     node_properties.append(node_name + "_Vector")
 
     # Se identifica el nodo conectado a la salida RGB
-    conexion_salida = node.outputs["Color"].links[0]
+    conexion_salida = node.outputs["Vector"].links[0]
     nodo_entrada = conexion_salida.to_node
     # y la propiedad específica de dicho nodo que lo recibe
     propiedad_entrada = conexion_salida.to_socket
     #print("RGB conecta con " + nodo_entrada.name + " en su propiedad " + propiedad_entrada.name)
-    shader_content = escribir_nodo("HLSLTemplates/rgb.txt", node_properties, nodo_entrada, propiedad_entrada, shader_content)
+    shader_content = escribir_nodo("HLSLTemplates/mapping.txt", node_properties, nodo_entrada, propiedad_entrada, shader_content)
 
     return shader_content
 """
