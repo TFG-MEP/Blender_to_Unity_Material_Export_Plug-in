@@ -362,7 +362,7 @@ def escribir_nodo_mapping(node, node_properties, shader_content) :
 
     # Se buscan las propiedades específicas de este tipo de nodo...
     node_name = node.name.replace(" ", "")
-    node_properties.append(node_name + "_Vector")
+   
 
     # Se identifica el nodo conectado a la salida RGB
     conexion_salida = node.outputs["Vector"].links[0]

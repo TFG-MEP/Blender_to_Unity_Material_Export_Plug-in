@@ -1,4 +1,4 @@
-  float3 mapping(float3 location, float3 rotation, float3 scale, float3 vectore) {
+  float3 mapping( float3 vectore,float3 location, float3 rotation, float3 scale) {
     // Añade la ubicación para la traslación
     vectore += location;
 

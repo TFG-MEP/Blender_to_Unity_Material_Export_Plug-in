@@ -68,7 +68,7 @@ Shader "Custom/ShaderMaterial_"
                 return o;
             }
             
-              float3 mapping(float3 location, float3 rotation, float3 scale, float3 vectore) {
+              float3 mapping( float3 vectore,float3 location, float3 rotation, float3 scale) {
     // Añade la ubicación para la traslación
     vectore += location;
 
@@ -94,7 +94,7 @@ float4 image_texture( float2 texcoord,sampler2D textura){
             {
 
                 float3 Mapping_Vector = float3(i.uv,0);
-				float3 ImageTexture_Vector = mapping( Mapping_Location, Mapping_Rotation, Mapping_Scale, Mapping_Vector);
+				float3 ImageTexture_Vector = mapping(Mapping_Vector, Mapping_Location, Mapping_Rotation, Mapping_Scale);
 				float4 MaterialOutput_Surface = image_texture(ImageTexture_Vector, ImageTexture_Image);
 				// Call methods
                 //half4 col = tex2D(_MainTex, i.uv);
