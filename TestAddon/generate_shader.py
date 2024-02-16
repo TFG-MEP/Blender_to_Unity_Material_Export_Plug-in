@@ -326,7 +326,7 @@ def escribir_nodo_imageTexture(node, node_properties, shader_content):
     # ... y se añaden al shader
     shader_content = escribir_propiedad(property_line, shader_content)
 
-    variable_line = f'float4 {node_name}_Color;\n\t\t\t'
+    variable_line = f'sampler2D {node_name}_Image;\n\t\t\t'
     shader_content = escribir_variable(variable_line, shader_content)
     conexion_salida = node.outputs["Color"].links[0]
     nodo_entrada = conexion_salida.to_node

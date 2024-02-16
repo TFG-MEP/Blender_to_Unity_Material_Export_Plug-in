@@ -51,7 +51,7 @@ Shader "Custom/ColorShader"
                 o.positionWS = TransformObjectToWorld(v.vertex.xyz);
                 o.normalWS = TransformObjectToWorldNormal(v.normal.xyz);
                 o.viewDir = normalize(_WorldSpaceCameraPos - o.positionWS);
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+                o.uv = v.uv;
                 o.vertex = TransformWorldToHClip(o.positionWS);
 
                 OUTPUT_LIGHTMAP_UV(v.texcoord1, unity_LightmapST, o.lightmapUV);
