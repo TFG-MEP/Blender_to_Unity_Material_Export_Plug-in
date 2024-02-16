@@ -8,7 +8,7 @@ Shader "Custom/ShaderOro_"
 		PrincipledBSDF_SubsurfaceColor("SubsurfaceColor", Color) = (0.800000011920929,0.800000011920929,0.800000011920929, 1.0)
 		PrincipledBSDF_SubsurfaceIOR("SubsurfaceIOR", float) = 1.399999976158142
 		PrincipledBSDF_SubsurfaceAnisotropy("SubsurfaceAnisotropy", float) = 0.0
-		PrincipledBSDF_Metallic("Metallic", float) = 0.800000011920929
+		Valor ("Value", float) = 0.800000011920929
 		PrincipledBSDF_Specular("Specular", float) = 0.5
 		PrincipledBSDF_SpecularTint("SpecularTint", float) = 0.0
 		PrincipledBSDF_Roughness("Roughness", float) = 0.2454545497894287
@@ -72,7 +72,7 @@ Shader "Custom/ShaderOro_"
 			float4 PrincipledBSDF_SubsurfaceColor;
 			float PrincipledBSDF_SubsurfaceIOR;
 			float PrincipledBSDF_SubsurfaceAnisotropy;
-			float PrincipledBSDF_Metallic;
+			float3 Valor;
 			float PrincipledBSDF_Specular;
 			float PrincipledBSDF_SpecularTint;
 			float PrincipledBSDF_Roughness;
@@ -116,6 +116,10 @@ Shader "Custom/ShaderOro_"
             {
                 return input_color;
             }
+			float value(float input_value)
+            {
+                return input_value;
+            }
 			float4 principled_bsdf(v2f i, float4 PrincipledBSDF_BaseColor,float PrincipledBSDF_Subsurface, float3 PrincipledBSDF_SubsurfaceRadius, float4 PrincipledBSDF_SubsurfaceColor,float PrincipledBSDF_SubsurfaceIOR,float PrincipledBSDF_SubsurfaceAnisotropy,
 float PrincipledBSDF_Metallic, float PrincipledBSDF_Specular,float PrincipledBSDF_SpecularTint,float PrincipledBSDF_Roughness,float PrincipledBSDF_Anisotropic, float PrincipledBSDF_AnisotropicRotation,float PrincipledBSDF_Sheen, 
 float PrincipledBSDF_SheenTint,float PrincipledBSDF_Clearcoat,float PrincipledBSDF_ClearcoatRoughness,float PrincipledBSDF_IOR,float PrincipledBSDF_Transmission,float PrincipledBSDF_TransmissionRoughness,float4 PrincipledBSDF_Emission,
@@ -144,10 +148,11 @@ float PrincipledBSDF_EmissionStrength,float PrincipledBSDF_Alpha, float3 Princip
 
             }
 			// Add methods
-            float4 frag (v2f i) : SV_Target
+            float4 frag(v2f i) : SV_Target
             {
-
+               
                 float4 PrincipledBSDF_BaseColor = rgb(RGB_Color);
+				float PrincipledBSDF_Metallic = value(Valor);
 				float4 MaterialOutput_Surface = principled_bsdf(i, PrincipledBSDF_BaseColor, PrincipledBSDF_Subsurface, PrincipledBSDF_SubsurfaceRadius, PrincipledBSDF_SubsurfaceColor, PrincipledBSDF_SubsurfaceIOR, PrincipledBSDF_SubsurfaceAnisotropy, PrincipledBSDF_Metallic, PrincipledBSDF_Specular, PrincipledBSDF_SpecularTint, PrincipledBSDF_Roughness, PrincipledBSDF_Anisotropic, PrincipledBSDF_AnisotropicRotation, PrincipledBSDF_Sheen, PrincipledBSDF_SheenTint, PrincipledBSDF_Clearcoat, PrincipledBSDF_ClearcoatRoughness, PrincipledBSDF_IOR, PrincipledBSDF_Transmission, PrincipledBSDF_TransmissionRoughness, PrincipledBSDF_Emission, PrincipledBSDF_EmissionStrength, PrincipledBSDF_Alpha, PrincipledBSDF_Normal, PrincipledBSDF_ClearcoatNormal, PrincipledBSDF_Tangent, PrincipledBSDF_Weight);
 				// Call methods
                 //half4 col = tex2D(_MainTex, i.uv);

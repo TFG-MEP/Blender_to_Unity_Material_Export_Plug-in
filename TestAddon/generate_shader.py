@@ -262,7 +262,7 @@ def escribir_nodo_value(node, node_properties, shader_content) :
     # ... y se añaden al shader
     shader_content = escribir_propiedad(property_line, shader_content)
 
-    variable_line = f'float3 {node_name}_Value("Value", float);\n\t\t\t'
+    variable_line = f'float3 {node_name}_Value;\n\t\t\t'
     shader_content = escribir_variable(variable_line, shader_content)
 
     # Se identifica el nodo conectado a la salida Value
