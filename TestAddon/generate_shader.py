@@ -27,28 +27,16 @@ def convertir_tipos_hlsl(blender_input):
     if blender_input == 'Float':
         output = 'float'
     elif blender_input == 'Color' :
-        output = 'fixed4'
+        output = 'float4'
     elif blender_input == 'Vector' :
-        output = 'fixed3'
+        output = 'float3'
     elif blender_input == 'Shader' :
-        output = 'fixed4'
+        output = 'float4'
     else : 
         output = blender_input
     # TO_DO : completar con todos los tipos de datos
     return output
-def convertir_tipos_hlslProperties(blender_input):
-    if blender_input == 'Float':
-        output = 'float'
-    elif blender_input == 'Color' :
-        output = 'fixed4'
-    elif blender_input == 'Vector' :
-        output = 'Vector'
-    elif blender_input == 'Shader' :
-        output = 'Vector'
-    else : 
-        output = blender_input
-    # TO_DO : completar con todos los tipos de datos
-    return output
+
 # Convierte un string que determina un tipo de datos usado por blender,
 # en un string con el tipo de datos equivalente en las propiedades del shader
 def convertir_tipos_propiedad(blender_input):
@@ -182,15 +170,15 @@ def procesar_propiedad(input_socket, nodeName, nodeType, shader_content):
         return shader_content
 
     # Ignorar propiedades específicas de ciertos tipos de nodos
-    if nodeType == 'BSDF_PRINCIPLED' :
-        if propName == 'IOR' : # Por ejemplo, si el IOR no lo usamos, lo ignoramos aquí
-            return shader_content
-    elif nodeType == 'OUTPUT_MATERIAL' : 
+    #if nodeType == 'BSDF_PRINCIPLED' :
+        #if propName == 'IOR' : # Por ejemplo, si el IOR no lo usamos, lo ignoramos aquí
+            #return shader_content
+    if nodeType == 'OUTPUT_MATERIAL' : 
         # No escribimos ninguna propiedad de output, solo nos interesa lo que haya conectado a Surface
         return shader_content
 
     # Convertir el tipo de blender a tipos de Unity/HLSL
-    propLabel = convertir_tipos_hlslProperties(propLabel)
+    propLabel = convertir_tipos_hlsl(propLabel)
 
     # Sacamos el valor de la propiedad
     propValue = input_socket.default_value
@@ -268,12 +256,13 @@ def escribir_nodo_value(node, node_properties, shader_content) :
 
     # Se buscan las propiedades específicas de este tipo de nodo...
     node_name = node.name.replace(" ", "")
+    node_name=node_name.replace(".", "")
     node_properties.append(node_name + "_Value")
     property_line = f'{node_name}_Value("Value", float) = {node.outputs["Value"].default_value}\n\t\t'
     # ... y se añaden al shader
     shader_content = escribir_propiedad(property_line, shader_content)
 
-    variable_line = f'fixed3 {node_name}_Value("Value", float);\n\t\t\t'
+    variable_line = f'float3 {node_name}_Value("Value", float);\n\t\t\t'
     shader_content = escribir_variable(variable_line, shader_content)
 
     # Se identifica el nodo conectado a la salida Value
@@ -298,7 +287,7 @@ def escribir_nodo_rgb(node, node_properties, shader_content) :
     # ... y se añaden al shader
     shader_content = escribir_propiedad(property_line, shader_content)
 
-    variable_line = f'fixed4 {node_name}_Color;\n\t\t\t'
+    variable_line = f'float4 {node_name}_Color;\n\t\t\t'
     shader_content = escribir_variable(variable_line, shader_content)
 
     # Se identifica el nodo conectado a la salida RGB
@@ -316,7 +305,9 @@ def escribir_nodo_bsdf(node, node_properties, shader_content) :
     conexion_salida = node.outputs["BSDF"].links[0]
     nodo_entrada = conexion_salida.to_node
     propiedad_entrada = conexion_salida.to_socket
-
+    print("Nodo BSDF properties: ")
+    print(node_properties)
+    node_properties.insert(0, 'i')
     shader_content = escribir_nodo("HLSLTemplates/principled_bsdf.txt", node_properties, nodo_entrada, propiedad_entrada, shader_content)
 
     return shader_content
@@ -335,7 +326,7 @@ def escribir_nodo_imageTexture(node, node_properties, shader_content):
     # ... y se añaden al shader
     shader_content = escribir_propiedad(property_line, shader_content)
 
-    variable_line = f'fixed4 {node_name}_Color;\n\t\t\t'
+    variable_line = f'float4 {node_name}_Color;\n\t\t\t'
     shader_content = escribir_variable(variable_line, shader_content)
     conexion_salida = node.outputs["Color"].links[0]
     nodo_entrada = conexion_salida.to_node

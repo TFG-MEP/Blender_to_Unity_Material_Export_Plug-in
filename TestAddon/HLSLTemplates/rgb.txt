@@ -1,4 +1,4 @@
-fixed4 rgb(fixed4 input_color)
+float4 rgb(float4 input_color)
             {
                 return input_color;
             }

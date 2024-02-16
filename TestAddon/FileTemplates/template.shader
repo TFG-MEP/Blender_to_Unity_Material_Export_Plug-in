@@ -61,32 +61,13 @@ Shader "Custom/ColorShader"
             }
             
             // Add methods
-            fixed4 frag (v2f i) : SV_Target
+            float4 frag (v2f i) : SV_Target
             {
 
                 // Call methods
-
-                half4 col = tex2D(_MainTex, i.uv);
-                InputData inputdata = (InputData)0;
-                inputdata.positionWS = i.positionWS;
-                inputdata.normalWS = normalize(i.normalWS); //Normalizarlo evita que la luz aparezca como "pixelada"
-                inputdata.viewDirectionWS = i.viewDir;
-                //bakedGI quiere decir baked global illumiation
-                inputdata.bakedGI = SAMPLE_GI(i.lightmapUV, i.vertexSH, inputdata.normalWS);
-
-                SurfaceData surfacedata;
-                surfacedata.albedo = PrincipledBSDF_BaseColor;
-                surfacedata.specular = 0;
-                surfacedata.metallic = PrincipledBSDF_Metallic;
-                surfacedata.smoothness = PrincipledBSDF_Roughness;
-                surfacedata.normalTS = 0;
-                surfacedata.emission = 0;
-                surfacedata.occlusion = 1; //"Ambient occlusion"
-                surfacedata.alpha = 0;
-                surfacedata.clearCoatMask = 0;
-                surfacedata.clearCoatSmoothness = 0;
-
-                return UniversalFragmentPBR(inputdata, surfacedata);
+                //half4 col = tex2D(_MainTex, i.uv);
+                
+                return MaterialOutput_Surface;
                 
             }
             ENDHLSL
