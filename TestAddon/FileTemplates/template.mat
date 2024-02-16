@@ -22,14 +22,8 @@ Material:
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs:
-    {% if tex_env_strings %}
-    {% for tex_env_string in tex_env_strings -%}
-    -{{ tex_env_string }}
-    {%- endfor %}
-    {% else %}
-    []
-    {% endif %}
+    m_TexEnvs:{% if tex_env_strings %}[{% for tex_env_string in tex_env_strings -%}
+        - {{ tex_env_string }}{% endfor %}]{% else %}[]{% endif %}
     m_Ints: []
     m_Floats: []
     m_Colors: []
