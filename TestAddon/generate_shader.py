@@ -122,7 +122,10 @@ def escribir_nodo(function_file_path, function_parameters, destination_node, des
 
     all_parameters = ', '.join(function_parameters)
 
-    func_line = f'{prop_type} {destination_name} = {function_name}({all_parameters});\n\t\t\t\t'
+    if destination_name == 'MaterialOutput_Surface' :
+        func_line = f'{prop_type} {destination_name} = {function_name}({all_parameters});\n\t\t\t\t'
+    else :
+        func_line = f'{destination_name} = {function_name}({all_parameters});\n\t\t\t\t'
     #func_line = f'{destination_name} = {function_name}({all_parameters});\n\t\t\t\t'
     shader_content = shader_content[:fragment_index] + func_line + shader_content[fragment_index:]
 
@@ -268,11 +271,11 @@ def escribir_nodo_value(node, node_properties, shader_content) :
     # Se buscan las propiedades específicas de este tipo de nodo...
     node_name = node.name.replace(" ", "")
     node_properties.append(node_name + "_Value")
-    property_line = f'{nodeInfo.name}_Value("Value", float) = {node.outputs["Value"].default_value}\n\t\t'
+    property_line = f'{node_name}_Value("Value", float) = {node.outputs["Value"].default_value}\n\t\t'
     # ... y se añaden al shader
     shader_content = escribir_propiedad(property_line, shader_content)
 
-    variable_line = f'fixed3 {nodeInfo.name}_Value("Value", float);\n\t\t\t'
+    variable_line = f'fixed3 {node_name}_Value("Value", float);\n\t\t\t'
     shader_content = escribir_variable(variable_line, shader_content)
 
     # Se identifica el nodo conectado a la salida Value
