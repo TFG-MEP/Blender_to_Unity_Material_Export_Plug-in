@@ -305,8 +305,6 @@ def escribir_nodo_bsdf(node, node_properties, shader_content) :
     conexion_salida = node.outputs["BSDF"].links[0]
     nodo_entrada = conexion_salida.to_node
     propiedad_entrada = conexion_salida.to_socket
-    print("Nodo BSDF properties: ")
-    print(node_properties)
     node_properties.insert(0, 'i')
     shader_content = escribir_nodo("HLSLTemplates/principled_bsdf.txt", node_properties, nodo_entrada, propiedad_entrada, shader_content)
 
