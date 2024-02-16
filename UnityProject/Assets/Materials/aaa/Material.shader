@@ -82,7 +82,7 @@ Shader "Custom/ShaderMaterial_"
 
                 return rotated_vector;
             }
-            float4 image_texture(sampler2D textura, float2 texcoord) {
+            float4 image_texture( float2 texcoord, sampler2D textura) {
                 float4 colorImage = tex2D(textura, texcoord);
                 return colorImage;
 
@@ -92,9 +92,9 @@ Shader "Custom/ShaderMaterial_"
             fixed4 frag (v2f i) : SV_Target
             {
                 //Equal Variables
-                float3 Mapping_Vector = float3(i.uv,0);
-				float3 ImageTexture_Vector = mapping(Mapping_Location, Mapping_Rotation, Mapping_Scale, Mapping_Vector);
-				fixed4 MaterialOutput_Surface = image_texture( ImageTexture_Image, ImageTexture_Vector);
+                fixed3 Mapping_Vector = float3(i.uv,0);
+				fixed3 ImageTexture_Vector = mapping(Mapping_Location, Mapping_Rotation, Mapping_Scale, Mapping_Vector);
+				fixed4 MaterialOutput_Surface = image_texture( ImageTexture_Vector, ImageTexture_Image);
 				// Call methods
                 return MaterialOutput_Surface;
             }

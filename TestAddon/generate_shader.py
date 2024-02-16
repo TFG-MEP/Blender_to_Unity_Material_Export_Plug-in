@@ -36,7 +36,19 @@ def convertir_tipos_hlsl(blender_input):
         output = blender_input
     # TO_DO : completar con todos los tipos de datos
     return output
-
+def convertir_tipos_hlslProperties(blender_input):
+    if blender_input == 'Float':
+        output = 'float'
+    elif blender_input == 'Color' :
+        output = 'fixed4'
+    elif blender_input == 'Vector' :
+        output = 'Vector'
+    elif blender_input == 'Shader' :
+        output = 'Vector'
+    else : 
+        output = blender_input
+    # TO_DO : completar con todos los tipos de datos
+    return output
 # Convierte un string que determina un tipo de datos usado por blender,
 # en un string con el tipo de datos equivalente en las propiedades del shader
 def convertir_tipos_propiedad(blender_input):
@@ -177,7 +189,7 @@ def procesar_propiedad(input_socket, nodeName, nodeType, shader_content):
         return shader_content
 
     # Convertir el tipo de blender a tipos de Unity/HLSL
-    propLabel = convertir_tipos_hlsl(propLabel)
+    propLabel = convertir_tipos_hlslProperties(propLabel)
 
     # Sacamos el valor de la propiedad
     propValue = input_socket.default_value
