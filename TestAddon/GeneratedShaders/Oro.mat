@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Oro
-  m_Shader: {fileID: 4800000, guid: 9d8c813b6fdc4498a6e0b843b0eea73c, type: 3}
+  m_Shader: {fileID: 4800000, guid: 2d8a2fb15c9b41e1beea80968a0fbee7, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []

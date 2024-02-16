@@ -4,8 +4,8 @@ Shader "Custom/ShaderOro_"
     {
         RGB_Color("Color", Color) = (0.5,0.30769938230514526,0.01749415509402752, 1.0)
 		PrincipledBSDF_Subsurface("Subsurface", float) = 0.0
-		PrincipledBSDF_SubsurfaceRadius("SubsurfaceRadius", fixed3) = (1.0, 0.20000000298023224, 0.10000000149011612)
-		PrincipledBSDF_SubsurfaceColor("SubsurfaceColor", fixed4) = (0.800000011920929,0.800000011920929,0.800000011920929, 1.0)
+		PrincipledBSDF_SubsurfaceRadius("SubsurfaceRadius", Vector) = (1.0, 0.20000000298023224, 0.10000000149011612)
+		PrincipledBSDF_SubsurfaceColor("SubsurfaceColor", Vector) = (0.800000011920929,0.800000011920929,0.800000011920929, 1.0)
 		PrincipledBSDF_SubsurfaceIOR("SubsurfaceIOR", float) = 1.399999976158142
 		PrincipledBSDF_SubsurfaceAnisotropy("SubsurfaceAnisotropy", float) = 0.0
 		Value_Value("Value", float) = 0.800000011920929
@@ -20,12 +20,12 @@ Shader "Custom/ShaderOro_"
 		PrincipledBSDF_ClearcoatRoughness("ClearcoatRoughness", float) = 0.029999999329447746
 		PrincipledBSDF_Transmission("Transmission", float) = 0.0
 		PrincipledBSDF_TransmissionRoughness("TransmissionRoughness", float) = 0.0
-		PrincipledBSDF_Emission("Emission", fixed4) = (0.0,0.0,0.0, 1.0)
+		PrincipledBSDF_Emission("Emission", Vector) = (0.0,0.0,0.0, 1.0)
 		PrincipledBSDF_EmissionStrength("EmissionStrength", float) = 1.0
 		PrincipledBSDF_Alpha("Alpha", float) = 1.0
-		PrincipledBSDF_Normal("Normal", fixed3) = (0.0, 0.0, 0.0)
-		PrincipledBSDF_ClearcoatNormal("ClearcoatNormal", fixed3) = (0.0, 0.0, 0.0)
-		PrincipledBSDF_Tangent("Tangent", fixed3) = (0.0, 0.0, 0.0)
+		PrincipledBSDF_Normal("Normal", Vector) = (0.0, 0.0, 0.0)
+		PrincipledBSDF_ClearcoatNormal("ClearcoatNormal", Vector) = (0.0, 0.0, 0.0)
+		PrincipledBSDF_Tangent("Tangent", Vector) = (0.0, 0.0, 0.0)
 		PrincipledBSDF_Weight("Weight", float) = 0.0
 		// Add properties
     }
@@ -67,7 +67,7 @@ Shader "Custom/ShaderOro_"
 
             fixed4 RGB_Color;
 			float PrincipledBSDF_Subsurface;
-			fixed3 PrincipledBSDF_SubsurfaceRadius;
+			Vector PrincipledBSDF_SubsurfaceRadius;
 			fixed4 PrincipledBSDF_SubsurfaceColor;
 			float PrincipledBSDF_SubsurfaceIOR;
 			float PrincipledBSDF_SubsurfaceAnisotropy;
@@ -86,18 +86,14 @@ Shader "Custom/ShaderOro_"
 			fixed4 PrincipledBSDF_Emission;
 			float PrincipledBSDF_EmissionStrength;
 			float PrincipledBSDF_Alpha;
-			fixed3 PrincipledBSDF_Normal;
-			fixed3 PrincipledBSDF_ClearcoatNormal;
-			fixed3 PrincipledBSDF_Tangent;
+			Vector PrincipledBSDF_Normal;
+			Vector PrincipledBSDF_ClearcoatNormal;
+			Vector PrincipledBSDF_Tangent;
 			float PrincipledBSDF_Weight;
 			// Add variables
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
-
-            fixed4 PrincipledBSDF_BaseColor;
-            float PrincipledBSDF_Metallic;
-            float PrincipledBSDF_Roughness;
 
             v2f vert(appdata v)
             {
@@ -122,20 +118,8 @@ Shader "Custom/ShaderOro_"
             {
                 return input_value;
             }
-			fixed4 principled_bsdf(float metallic)
+			fixed4 principled_bsdf(v2f i, fixed4 PrincipledBSDF_BaseColor, float PrincipledBSDF_Metallic, float PrincipledBSDF_Roughness)
             {
-                return metallic * 1.0;
-            }
-			// Add methods
-            fixed4 frag (v2f i) : SV_Target
-            {
-                PrincipledBSDF_BaseColor = rgb(RGB_Color);
-				PrincipledBSDF_Metallic = value(Value_Value);
-				PrincipledBSDF_Roughness = value(Value.001_Value);
-				fixed4 MaterialOutput_Surface = principled_bsdf(PrincipledBSDF_BaseColor, PrincipledBSDF_Subsurface, PrincipledBSDF_SubsurfaceRadius, PrincipledBSDF_SubsurfaceColor, PrincipledBSDF_SubsurfaceIOR, PrincipledBSDF_SubsurfaceAnisotropy, PrincipledBSDF_Metallic, PrincipledBSDF_Specular, PrincipledBSDF_SpecularTint, PrincipledBSDF_Roughness, PrincipledBSDF_Anisotropic, PrincipledBSDF_AnisotropicRotation, PrincipledBSDF_Sheen, PrincipledBSDF_SheenTint, PrincipledBSDF_Clearcoat, PrincipledBSDF_ClearcoatRoughness, PrincipledBSDF_IOR, PrincipledBSDF_Transmission, PrincipledBSDF_TransmissionRoughness, PrincipledBSDF_Emission, PrincipledBSDF_EmissionStrength, PrincipledBSDF_Alpha, PrincipledBSDF_Normal, PrincipledBSDF_ClearcoatNormal, PrincipledBSDF_Tangent, PrincipledBSDF_Weight);
-				// Call methods
-
-                half4 col = tex2D(_MainTex, i.uv);
                 InputData inputdata = (InputData)0;
                 inputdata.positionWS = i.positionWS;
                 inputdata.normalWS = normalize(i.normalWS); //Normalizarlo evita que la luz aparezca como "pixelada"
@@ -156,7 +140,21 @@ Shader "Custom/ShaderOro_"
                 surfacedata.clearCoatSmoothness = 0;
 
                 return UniversalFragmentPBR(inputdata, surfacedata);
+
+            }
+			// Add methods
+            fixed4 frag (v2f i) : SV_Target
+            {
+
+                fixed4 PrincipledBSDF_BaseColor = rgb(RGB_Color);
+				float PrincipledBSDF_Metallic = value(Value_Value);
+				float PrincipledBSDF_Roughness = value(Value.001_Value);
+				fixed4 MaterialOutput_Surface = principled_bsdf(i,PrincipledBSDF_BaseColor, PrincipledBSDF_Metallic, PrincipledBSDF_Roughness);
+				// Call methods
+
+                //half4 col = tex2D(_MainTex, i.uv);
                 
+                return MaterialOutput_Surface;
             }
             ENDHLSL
         }

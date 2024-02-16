@@ -45,10 +45,6 @@ Shader "Custom/ColorShader"
             sampler2D _MainTex;
             float4 _MainTex_ST;
 
-            fixed4 PrincipledBSDF_BaseColor;
-            float PrincipledBSDF_Metallic;
-            float PrincipledBSDF_Roughness;
-
             v2f vert(appdata v)
             {
                 v2f o;
@@ -67,7 +63,7 @@ Shader "Custom/ColorShader"
             // Add methods
             fixed4 frag (v2f i) : SV_Target
             {
-                //Equal Variables
+
                 // Call methods
 
                 half4 col = tex2D(_MainTex, i.uv);

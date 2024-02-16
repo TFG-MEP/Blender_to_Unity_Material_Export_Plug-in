@@ -122,10 +122,8 @@ def escribir_nodo(function_file_path, function_parameters, destination_node, des
 
     all_parameters = ', '.join(function_parameters)
 
-    if destination_name == 'MaterialOutput_Surface' :
-        func_line = f'{prop_type} {destination_name} = {function_name}({all_parameters});\n\t\t\t\t'
-    else :
-        func_line = f'{destination_name} = {function_name}({all_parameters});\n\t\t\t\t'
+
+    func_line = f'{prop_type} {destination_name} = {function_name}({all_parameters});\n\t\t\t\t'
     #func_line = f'{destination_name} = {function_name}({all_parameters});\n\t\t\t\t'
     shader_content = shader_content[:fragment_index] + func_line + shader_content[fragment_index:]
 
