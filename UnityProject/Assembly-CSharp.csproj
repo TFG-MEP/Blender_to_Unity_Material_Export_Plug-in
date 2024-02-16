@@ -65,8 +65,8 @@
     <Compile Include="Assets\Scripts\SimpleCameraController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Shaders\Oro_0.shader" />
     <None Include="Assets\Shaders\NuevosShaders\Oro.shader" />
+    <None Include="Assets\Shaders\Oro_0.shader" />
     <None Include="Assets\Shaders\WaveTexture 1.shader" />
     <None Include="Assets\Shaders\NuevosShaders\EsferaLitPaula.shader" />
     <None Include="Assets\Shaders\CelShading.shader" />

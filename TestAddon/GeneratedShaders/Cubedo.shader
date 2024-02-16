@@ -1,17 +1,18 @@
-Shader "Custom/ShaderOro_"
+Shader "Custom/ShaderCubedo_"
 {
      Properties
     {
-        RGB_Color("Color", Color) = (0.5,0.30769938230514526,0.01749415509402752, 1.0)
+        ImageTexture_Vector("Vector", Vector) = (0.0, 0.0, 0.0)
+		ImageTexture_Image("Texture", 2D) = "white" {}
 		PrincipledBSDF_Subsurface("Subsurface", float) = 0.0
 		PrincipledBSDF_SubsurfaceRadius("SubsurfaceRadius", Vector) = (1.0, 0.20000000298023224, 0.10000000149011612)
 		PrincipledBSDF_SubsurfaceColor("SubsurfaceColor", Color) = (0.800000011920929,0.800000011920929,0.800000011920929, 1.0)
 		PrincipledBSDF_SubsurfaceIOR("SubsurfaceIOR", float) = 1.399999976158142
 		PrincipledBSDF_SubsurfaceAnisotropy("SubsurfaceAnisotropy", float) = 0.0
-		Value_Value("Value", float) = 0.800000011920929
+		PrincipledBSDF_Metallic("Metallic", float) = 0.0
 		PrincipledBSDF_Specular("Specular", float) = 0.5
 		PrincipledBSDF_SpecularTint("SpecularTint", float) = 0.0
-		PrincipledBSDF_Roughness("Roughness", float) = 0.2454545497894287
+		PrincipledBSDF_Roughness("Roughness", float) = 0.5
 		PrincipledBSDF_Anisotropic("Anisotropic", float) = 0.0
 		PrincipledBSDF_AnisotropicRotation("AnisotropicRotation", float) = 0.0
 		PrincipledBSDF_Sheen("Sheen", float) = 0.0
@@ -66,13 +67,14 @@ Shader "Custom/ShaderOro_"
                 DECLARE_LIGHTMAP_OR_SH(lightmapUV, vertexSH, 4);
             };
 
-            float4 RGB_Color;
+            float3 ImageTexture_Vector;
+			sampler2D ImageTexture_Image;
 			float PrincipledBSDF_Subsurface;
 			float3 PrincipledBSDF_SubsurfaceRadius;
 			float4 PrincipledBSDF_SubsurfaceColor;
 			float PrincipledBSDF_SubsurfaceIOR;
 			float PrincipledBSDF_SubsurfaceAnisotropy;
-			float3 Value_Value;
+			float PrincipledBSDF_Metallic;
 			float PrincipledBSDF_Specular;
 			float PrincipledBSDF_SpecularTint;
 			float PrincipledBSDF_Roughness;
@@ -112,14 +114,12 @@ Shader "Custom/ShaderOro_"
                 return o;
             }
             
-            float4 rgb(float4 input_color)
-            {
-                return input_color;
-            }
-			float value(float input_value)
-            {
-                return input_value;
-            }
+            // función que crea una textura a partir de un sampler2D
+float4 image_texture( float2 texcoord,sampler2D textura){
+	float4 colorImage=tex2D(textura, texcoord);
+	return colorImage;
+}
+
 			float4 principled_bsdf(v2f i, float4 PrincipledBSDF_BaseColor,float PrincipledBSDF_Subsurface, float3 PrincipledBSDF_SubsurfaceRadius, float4 PrincipledBSDF_SubsurfaceColor,float PrincipledBSDF_SubsurfaceIOR,float PrincipledBSDF_SubsurfaceAnisotropy,
 float PrincipledBSDF_Metallic, float PrincipledBSDF_Specular,float PrincipledBSDF_SpecularTint,float PrincipledBSDF_Roughness,float PrincipledBSDF_Anisotropic, float PrincipledBSDF_AnisotropicRotation,float PrincipledBSDF_Sheen, 
 float PrincipledBSDF_SheenTint,float PrincipledBSDF_Clearcoat,float PrincipledBSDF_ClearcoatRoughness,float PrincipledBSDF_IOR,float PrincipledBSDF_Transmission,float PrincipledBSDF_TransmissionRoughness,float4 PrincipledBSDF_Emission,
@@ -151,8 +151,7 @@ float PrincipledBSDF_EmissionStrength,float PrincipledBSDF_Alpha, float3 Princip
             float4 frag (v2f i) : SV_Target
             {
 
-                float4 PrincipledBSDF_BaseColor = rgb(RGB_Color);
-				float PrincipledBSDF_Metallic = value(Value_Value);
+                float4 PrincipledBSDF_BaseColor = image_texture(ImageTexture_Vector, ImageTexture_Image);
 				float4 MaterialOutput_Surface = principled_bsdf(i, PrincipledBSDF_BaseColor, PrincipledBSDF_Subsurface, PrincipledBSDF_SubsurfaceRadius, PrincipledBSDF_SubsurfaceColor, PrincipledBSDF_SubsurfaceIOR, PrincipledBSDF_SubsurfaceAnisotropy, PrincipledBSDF_Metallic, PrincipledBSDF_Specular, PrincipledBSDF_SpecularTint, PrincipledBSDF_Roughness, PrincipledBSDF_Anisotropic, PrincipledBSDF_AnisotropicRotation, PrincipledBSDF_Sheen, PrincipledBSDF_SheenTint, PrincipledBSDF_Clearcoat, PrincipledBSDF_ClearcoatRoughness, PrincipledBSDF_IOR, PrincipledBSDF_Transmission, PrincipledBSDF_TransmissionRoughness, PrincipledBSDF_Emission, PrincipledBSDF_EmissionStrength, PrincipledBSDF_Alpha, PrincipledBSDF_Normal, PrincipledBSDF_ClearcoatNormal, PrincipledBSDF_Tangent, PrincipledBSDF_Weight);
 				// Call methods
                 //half4 col = tex2D(_MainTex, i.uv);
