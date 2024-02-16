@@ -24,7 +24,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs: {% if not tex_env_strings %}[]{% else %}
     {% for tex_env_string in tex_env_strings -%}
-    -${tex_env_string}${% endfor -%}{% endif %}
+    -${tex_env_string}${% endfor -%}{% endif -%}
     m_Ints: []
     m_Floats: []
     m_Colors: []
