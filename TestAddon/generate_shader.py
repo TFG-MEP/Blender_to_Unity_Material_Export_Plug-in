@@ -178,8 +178,8 @@ def procesar_propiedad(input_socket, nodeName, nodeType, shader_content):
         return shader_content
 
     # Convertir el tipo de blender a tipos de Unity/HLSL
-    propLabel = convertir_tipos_hlsl(propLabel)
-
+    propLabel = convertir_tipos_propiedad(propLabel)
+    propLabelVariable=convertir_tipos_hlsl(propLabel)
     # Sacamos el valor de la propiedad
     propValue = input_socket.default_value
 
@@ -196,7 +196,7 @@ def procesar_propiedad(input_socket, nodeName, nodeType, shader_content):
     property_line = f'{nodeName}_{propName}("{propName}", {propLabel}) = {propValue}\n\t\t'
     shader_content = escribir_propiedad(property_line, shader_content)
 
-    variable_line = f'{propLabel} {nodeName}_{propName};\n\t\t\t'
+    variable_line = f'{propLabelVariable} {nodeName}_{propName};\n\t\t\t'
     shader_content = escribir_variable(variable_line, shader_content)
 
     return shader_content

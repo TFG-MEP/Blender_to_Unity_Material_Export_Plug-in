@@ -4,8 +4,8 @@ Shader "Custom/ShaderOro_"
     {
         RGB_Color("Color", Color) = (0.5,0.30769938230514526,0.01749415509402752, 1.0)
 		PrincipledBSDF_Subsurface("Subsurface", float) = 0.0
-		PrincipledBSDF_SubsurfaceRadius("SubsurfaceRadius", float3) = (1.0, 0.20000000298023224, 0.10000000149011612)
-		PrincipledBSDF_SubsurfaceColor("SubsurfaceColor", float4) = (0.800000011920929,0.800000011920929,0.800000011920929, 1.0)
+		PrincipledBSDF_SubsurfaceRadius("SubsurfaceRadius", Vector) = (1.0, 0.20000000298023224, 0.10000000149011612)
+		PrincipledBSDF_SubsurfaceColor("SubsurfaceColor", Color) = (0.800000011920929,0.800000011920929,0.800000011920929, 1.0)
 		PrincipledBSDF_SubsurfaceIOR("SubsurfaceIOR", float) = 1.399999976158142
 		PrincipledBSDF_SubsurfaceAnisotropy("SubsurfaceAnisotropy", float) = 0.0
 		PrincipledBSDF_Metallic("Metallic", float) = 0.800000011920929
@@ -21,12 +21,12 @@ Shader "Custom/ShaderOro_"
 		PrincipledBSDF_IOR("IOR", float) = 1.4500000476837158
 		PrincipledBSDF_Transmission("Transmission", float) = 0.0
 		PrincipledBSDF_TransmissionRoughness("TransmissionRoughness", float) = 0.0
-		PrincipledBSDF_Emission("Emission", float4) = (0.0,0.0,0.0, 1.0)
+		PrincipledBSDF_Emission("Emission", Color) = (0.0,0.0,0.0, 1.0)
 		PrincipledBSDF_EmissionStrength("EmissionStrength", float) = 1.0
 		PrincipledBSDF_Alpha("Alpha", float) = 1.0
-		PrincipledBSDF_Normal("Normal", float3) = (0.0, 0.0, 0.0)
-		PrincipledBSDF_ClearcoatNormal("ClearcoatNormal", float3) = (0.0, 0.0, 0.0)
-		PrincipledBSDF_Tangent("Tangent", float3) = (0.0, 0.0, 0.0)
+		PrincipledBSDF_Normal("Normal", Vector) = (0.0, 0.0, 0.0)
+		PrincipledBSDF_ClearcoatNormal("ClearcoatNormal", Vector) = (0.0, 0.0, 0.0)
+		PrincipledBSDF_Tangent("Tangent", Vector) = (0.0, 0.0, 0.0)
 		PrincipledBSDF_Weight("Weight", float) = 0.0
 		// Add properties
     }
