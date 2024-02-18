@@ -37,7 +37,8 @@ Shader "Custom/ColorShader"
                 float3 positionWS : TEXCOORD1;
                 float3 normalWS : TEXCOORD2;
                 float3 viewDir : TEXCOORD3;
-                DECLARE_LIGHTMAP_OR_SH(lightmapUV, vertexSH, 4);
+                float3 worldPos : TEXCOORD4;
+                DECLARE_LIGHTMAP_OR_SH(lightmapUV, vertexSH, 5);
             };
 
             // Add variables
@@ -48,6 +49,7 @@ Shader "Custom/ColorShader"
             v2f vert(appdata v)
             {
                 v2f o;
+                o.worldPos = v.vertex.xyz;
                 o.positionWS = TransformObjectToWorld(v.vertex.xyz);
                 o.normalWS = TransformObjectToWorldNormal(v.normal.xyz);
                 o.viewDir = normalize(_WorldSpaceCameraPos - o.positionWS);

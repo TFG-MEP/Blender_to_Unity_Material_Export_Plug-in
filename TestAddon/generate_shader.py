@@ -357,7 +357,7 @@ def escribir_nodo_TexCoord(node, node_properties, shader_content) :
     elif node.outputs.get('Generated').is_linked:
         print("El nodo UV de Texture Coordinate no está conectado a otro nodo.")
         conexion_salida = node.outputs["Generated"].links[0]
-        parameter='i.positionWS'
+        parameter='i.worldPos'
    
     # Se identifica el nodo conectado a la salida RGB
     
