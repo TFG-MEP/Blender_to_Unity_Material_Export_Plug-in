@@ -337,15 +337,19 @@ def escribir_nodo_TexCoord(node, node_properties, shader_content) :
 
     # Se buscan las propiedades específicas de este tipo de nodo...
     node_name = node.name.replace(" ", "")
-   
+    parameter=''
     # Verificar si el nodo UV está conectado
     if node.outputs.get('UV').is_linked:
         print("El nodo UV de Texture Coordinate está conectado a otro nodo.")
         conexion_salida = node.outputs["UV"].links[0]
+        parameter='float3(i.uv,0)'
     elif node.outputs.get('Object').is_linked:
         print("El nodo UV de Texture Coordinate no está conectado a otro nodo.")
         conexion_salida = node.outputs["Object"].links[0]
-
+    elif node.outputs.get('Generated').is_linked:
+        print("El nodo UV de Texture Coordinate no está conectado a otro nodo.")
+        conexion_salida = node.outputs["Generated"].links[0]
+        parameter='i.worldPos'
    
     # Se identifica el nodo conectado a la salida RGB
     
@@ -353,7 +357,7 @@ def escribir_nodo_TexCoord(node, node_properties, shader_content) :
     # y la propiedad específica de dicho nodo que lo recibe
     propiedad_entrada = conexion_salida.to_socket
     #print("RGB conecta con " + nodo_entrada.name + " en su propiedad " + propiedad_entrada.name)
-    shader_content = escribir_raiz('float3(i.uv,0)', nodo_entrada, propiedad_entrada, shader_content)
+    shader_content = escribir_raiz(parameter, nodo_entrada, propiedad_entrada, shader_content)
 
     return shader_content
 def escribir_nodo_mapping(node, node_properties, shader_content) : 
@@ -369,6 +373,18 @@ def escribir_nodo_mapping(node, node_properties, shader_content) :
     propiedad_entrada = conexion_salida.to_socket
     #print("RGB conecta con " + nodo_entrada.name + " en su propiedad " + propiedad_entrada.name)
     shader_content = escribir_nodo("HLSLTemplates/mapping.txt", node_properties, nodo_entrada, propiedad_entrada, shader_content)
+
+    return shader_content
+def escribir_nodo_cheqker(node, node_properties, shader_content):
+    # Se buscan las propiedades específicas de este tipo de nodo...
+    node_name = node.name.replace(" ", "")
+    # Se identifica el nodo conectado a la salida RGB
+    conexion_salida = node.outputs["Color"].links[0]
+    nodo_entrada = conexion_salida.to_node
+    # y la propiedad específica de dicho nodo que lo recibe
+    propiedad_entrada = conexion_salida.to_socket
+    #print("RGB conecta con " + nodo_entrada.name + " en su propiedad " + propiedad_entrada.name)
+    shader_content = escribir_nodo("HLSLTemplates/checker.txt", node_properties, nodo_entrada, propiedad_entrada, shader_content)
 
     return shader_content
 """
@@ -388,7 +404,7 @@ def escribir_nodo_mapping(node, node_properties, shader_content) :
 """
 def recorrer_nodo(node, shader_content):
     nodeInfo = NodeInfo(name=node.name.replace(" ", ""), nodeType=node.type.replace(" ", ""))
-    print ("Recorriendo nodo: " + node.name + "\n")
+    print ("Recorriendo nodo: " + node.type + "\n")
     
     node_properties = []
 
@@ -414,7 +430,7 @@ def recorrer_nodo(node, shader_content):
             shader_content = procesar_propiedad(input_socket, nodeInfo.name, nodeInfo.nodeType, shader_content)
 
     # TO_DO quizás es mejor recorrer las salidas aquí
-
+    
     if node.type == 'VALUE':
         shader_content = escribir_nodo_value(node, node_properties, shader_content)
     elif node.type == 'RGB' : 
@@ -427,6 +443,8 @@ def recorrer_nodo(node, shader_content):
         shader_content = escribir_nodo_TexCoord(node, node_properties, shader_content)
     elif node.type=='MAPPING' :
         shader_content=escribir_nodo_mapping(node, node_properties, shader_content)
+    elif  node.type=='TEX_CHECKER':
+        shader_content=escribir_nodo_cheqker(node, node_properties, shader_content)
     return shader_content
 
 
