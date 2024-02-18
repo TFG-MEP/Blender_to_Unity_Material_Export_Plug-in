@@ -1,4 +1,4 @@
-float4 checker(float3  ip, fixed4 color1, fixed4 color2,float Scale)
+float4 checker(float3  ip, float4 color1, float4 color2,float Scale)
 {
     ip *= Scale;
     float3 p;

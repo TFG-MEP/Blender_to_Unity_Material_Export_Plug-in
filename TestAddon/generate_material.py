@@ -26,12 +26,7 @@ def texturesInMaterial(imageVariables):
         entrada += 'm_Texture: {fileID: 2800000, guid: ' + guid + ', type: 3}\n        '
         entrada += 'm_Scale: {x: 1, y: 1}\n        '
         entrada += 'm_Offset: {x: 0, y: 0}'
-        # Si no es el último elemento, agrega una coma al final
-        if index < total_elementos - 1:
-            entrada += '\n        '
-        else:
-            entrada += '\n      '
-
+        entrada += '\n    '
         textList.append(entrada)
 
     

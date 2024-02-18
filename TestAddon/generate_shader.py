@@ -104,7 +104,7 @@ def escribir_nodo(function_file_path, function_parameters, destination_node, des
 
     # Añadir la llamada a la función en el fragment shader
     fragment_index = shader_content.find("// Call methods")
-
+    destination_node=destination_node.replace(" ", "").replace(".", "")
     # El resultado de la llamada a esta función se asigna a lo que indique su conexión
     destination_name = destination_node + "_" + destination_property
 
@@ -129,6 +129,7 @@ def escribir_raiz( parameter, destination_node, destination_property, shader_con
     # Obtenemos el nombre del archivo sin extensión (debe coincidir con el nombre de la función)
     # Añadir la llamada a la función en el fragment shader
     fragment_index = shader_content.find("// Call methods")
+    destination_node=destination_node.replace(" ", "").replace(".", "")
     # El resultado de la llamada a esta función se asigna a lo que indique su conexión
     destination_name = destination_node + "_" + destination_property
     func_line = f'{prop_type} {destination_name} = {parameter};\n\t\t\t\t'
@@ -188,7 +189,9 @@ def procesar_propiedad(input_socket, nodeName, nodeType, shader_content):
 
     # Quitar espacios a los nombres
     nodeName = nodeName.replace(" ", "")
+    nodeName = nodeName.replace(".", "")
     propName = propName.replace(" ", "")
+    propName = propName.replace(".", "")
 
     # Añadir la propiedad a la plantilla
     # Lo que se escribe es:
@@ -279,6 +282,8 @@ def escribir_nodo_rgb(node, node_properties, shader_content) :
 
     # Se buscan las propiedades específicas de este tipo de nodo...
     node_name = node.name.replace(" ", "")
+    node_name=node_name.replace(".", "")
+
     node_properties.append(node_name + "_Color")
 
     node_color = convertir_valor(node.outputs["Color"].default_value, "Color")
@@ -301,7 +306,7 @@ def escribir_nodo_rgb(node, node_properties, shader_content) :
     return shader_content
 
 def escribir_nodo_bsdf(node, node_properties, shader_content) :
-
+    node_name=node.name.replace(".", "")
     conexion_salida = node.outputs["BSDF"].links[0]
     nodo_entrada = conexion_salida.to_node
     propiedad_entrada = conexion_salida.to_socket
@@ -311,7 +316,9 @@ def escribir_nodo_bsdf(node, node_properties, shader_content) :
     return shader_content
 def escribir_nodo_imageTexture(node, node_properties, shader_content):
     global imagesMap
+
     node_name = node.name.replace(" ", "")
+    node_name=node_name.replace(".", "")
     node_properties.append(node_name + "_Image")
 
     image_path = bpy.path.abspath(node.image.filepath)
@@ -337,6 +344,7 @@ def escribir_nodo_TexCoord(node, node_properties, shader_content) :
 
     # Se buscan las propiedades específicas de este tipo de nodo...
     node_name = node.name.replace(" ", "")
+    node_name=node_name.replace(".", "")
     parameter=''
     # Verificar si el nodo UV está conectado
     if node.outputs.get('UV').is_linked:
@@ -349,7 +357,7 @@ def escribir_nodo_TexCoord(node, node_properties, shader_content) :
     elif node.outputs.get('Generated').is_linked:
         print("El nodo UV de Texture Coordinate no está conectado a otro nodo.")
         conexion_salida = node.outputs["Generated"].links[0]
-        parameter='i.worldPos'
+        parameter='i.positionWS'
    
     # Se identifica el nodo conectado a la salida RGB
     
@@ -364,7 +372,7 @@ def escribir_nodo_mapping(node, node_properties, shader_content) :
 
     # Se buscan las propiedades específicas de este tipo de nodo...
     node_name = node.name.replace(" ", "")
-   
+    node_name=node_name.replace(".", "")
 
     # Se identifica el nodo conectado a la salida RGB
     conexion_salida = node.outputs["Vector"].links[0]
@@ -378,6 +386,7 @@ def escribir_nodo_mapping(node, node_properties, shader_content) :
 def escribir_nodo_cheqker(node, node_properties, shader_content):
     # Se buscan las propiedades específicas de este tipo de nodo...
     node_name = node.name.replace(" ", "")
+    node_name=node_name.replace(".", "")
     # Se identifica el nodo conectado a la salida RGB
     conexion_salida = node.outputs["Color"].links[0]
     nodo_entrada = conexion_salida.to_node
@@ -403,7 +412,7 @@ def escribir_nodo_cheqker(node, node_properties, shader_content):
         Contenido del shader actualizado con los nodos procesados.
 """
 def recorrer_nodo(node, shader_content):
-    nodeInfo = NodeInfo(name=node.name.replace(" ", ""), nodeType=node.type.replace(" ", ""))
+    nodeInfo = NodeInfo(name=node.name.replace(" ", "").replace(".", ""), nodeType=node.type.replace(" ", "").replace(".", ""))
     print ("Recorriendo nodo: " + node.type + "\n")
     
     node_properties = []
@@ -413,6 +422,7 @@ def recorrer_nodo(node, shader_content):
 
         # Se guarda cada propiedad leída
         socket_name = input_socket.name.replace(" ", "")
+        socket_name = socket_name.replace(".", "")
         node_properties.append(nodeInfo.name + "_" + socket_name)
 
         if input_socket.is_linked : # Si están conectados a otro nodo, se recorre este
