@@ -63,7 +63,8 @@ Shader "Custom/ShaderOro_"
                 float3 positionWS : TEXCOORD1;
                 float3 normalWS : TEXCOORD2;
                 float3 viewDir : TEXCOORD3;
-                DECLARE_LIGHTMAP_OR_SH(lightmapUV, vertexSH, 4);
+                float3 worldPos : TEXCOORD4;
+                DECLARE_LIGHTMAP_OR_SH(lightmapUV, vertexSH, 5);
             };
 
             float4 RGB_Color;
@@ -72,7 +73,7 @@ Shader "Custom/ShaderOro_"
 			float4 PrincipledBSDF_SubsurfaceColor;
 			float PrincipledBSDF_SubsurfaceIOR;
 			float PrincipledBSDF_SubsurfaceAnisotropy;
-			float3 Value_Value;
+			float Value_Value;
 			float PrincipledBSDF_Specular;
 			float PrincipledBSDF_SpecularTint;
 			float PrincipledBSDF_Roughness;
@@ -100,6 +101,7 @@ Shader "Custom/ShaderOro_"
             v2f vert(appdata v)
             {
                 v2f o;
+                o.worldPos = v.vertex.xyz;
                 o.positionWS = TransformObjectToWorld(v.vertex.xyz);
                 o.normalWS = TransformObjectToWorldNormal(v.normal.xyz);
                 o.viewDir = normalize(_WorldSpaceCameraPos - o.positionWS);
