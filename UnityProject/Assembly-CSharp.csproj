@@ -66,13 +66,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\Oro_0.shader" />
-    <None Include="Assets\Shaders\NuevosShaders\Oro.shader" />
     <None Include="Assets\Shaders\WaveTexture 1.shader" />
     <None Include="Assets\Shaders\NuevosShaders\EsferaLitPaula.shader" />
     <None Include="Assets\Shaders\CelShading.shader" />
     <None Include="Assets\Shaders\checker_material_.shader" />
     <None Include="Assets\Shaders\TextureShader.shader" />
     <None Include="Assets\Shaders\NormalMat.shader" />
+    <None Include="Assets\Shaders\NuevosShaders\Oro.shader" />
     <None Include="Assets\Shaders\PruebaOro.shader" />
     <None Include="Assets\Shaders\prueba.shader" />
     <None Include="Assets\Free Stylized Skybox\ReadMe.txt" />

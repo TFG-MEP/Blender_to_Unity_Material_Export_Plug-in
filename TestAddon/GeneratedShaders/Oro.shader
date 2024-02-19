@@ -137,8 +137,8 @@ float PrincipledBSDF_EmissionStrength,float PrincipledBSDF_Alpha, float3 Princip
                 SurfaceData surfacedata;
                 surfacedata.albedo = PrincipledBSDF_BaseColor;
                 surfacedata.specular = 0;
-                surfacedata.metallic = PrincipledBSDF_Metallic;
-                surfacedata.smoothness = 1-PrincipledBSDF_Roughness;
+                surfacedata.metallic = clamp(PrincipledBSDF_Metallic,0,1);
+                surfacedata.smoothness = clamp(1-PrincipledBSDF_Roughness,0,1);
                 surfacedata.normalTS = 0;
                 surfacedata.emission = 0;
                 surfacedata.occlusion = 1; //"Ambient occlusion"
