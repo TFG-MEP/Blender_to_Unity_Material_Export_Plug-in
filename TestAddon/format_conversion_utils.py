@@ -1,26 +1,49 @@
 import bpy
 
 def gamma_correction(rgb) :
+    """Applies gamma correction of 2.2 to the given RGB color.
+
+    Args:
+        rgb (tuple): A tuple containing the red, green, and blue components of the color.
+
+    Returns:
+        tuple: A tuple containing the gamma corrected red, green, and blue components.
+    """
     return tuple(channel ** (1.0 / 2.2) for channel in rgb)
     
-# Dado un valor de propiedad de un tipo concreto en blender, devuelve un
-# string con el formato adecuado en HLSL
-def convertir_valor(blender_input, input_type) : 
+
+def blender_value_to_hlsl(blender_input, input_type) : 
+    """Converts a Blender value to HLSL-compatible format.
+
+    Args:
+        blender_input: The input value from Blender.
+        input_type (str): The type of the input value.
+
+    Returns:
+        str: The input value converted to HLSL-compatible format.
+    """
     if (input_type == 'Float') :
         return blender_input
     elif (input_type == 'Color') :
+        # Apply gamma correction to colors
         blender_color = (blender_input[0], blender_input[1], blender_input[2])
         unity_color = gamma_correction(blender_color)
-        #return f'({blender_input[0]},{blender_input[1]},{blender_input[2]}, 1.0)'
         return f'({unity_color[0]},{unity_color[1]},{unity_color[2]}, 1.0)'
+        #return f'({blender_input[0]},{blender_input[1]},{blender_input[2]}, 1.0)'
     elif(input_type == 'Vector') :
         return f'({blender_input[0]}, {blender_input[1]}, {blender_input[2]})'
     else : 
         return blender_input
 
-# Convierte un string que determina un tipo de datos usado por blender,
-# en un string con el tipo de datos equivalente en HLSL
-def convertir_tipos_hlsl(blender_input):
+def blender_type_to_hlsl(blender_input):
+    """Converts a Blender data type to HLSL-compatible data type.
+
+    Args:
+        blender_input (str): The Blender data type.
+
+    Returns:
+        str: The equivalent HLSL data type.
+    """
     if blender_input == 'Float':
         output = 'float'
     elif blender_input == 'Color' :
@@ -31,12 +54,18 @@ def convertir_tipos_hlsl(blender_input):
         output = 'float4'
     else : 
         output = blender_input
-    # TO_DO : completar con todos los tipos de datos
+    # TODO : completar con todos los tipos de datos posibles
     return output
 
-# Convierte un string que determina un tipo de datos usado por blender,
-# en un string con el tipo de datos equivalente en las propiedades del shader
-def convertir_tipos_propiedad(blender_input):
+def blender_type_to_properties(blender_input):
+    """Convert a Blender data type to a shader properties-compatible data type.
+
+    Args:
+        blender_input (str): The Blender data type.
+
+    Returns:
+        str: The equivalent data type in shader properties.
+    """
     if blender_input == 'Float':
         output = 'float'
     elif blender_input == 'Color' :
@@ -47,5 +76,5 @@ def convertir_tipos_propiedad(blender_input):
         output = 'Color'
     else : 
         output = blender_input
-    # TO_DO : completar con todos los tipos de datos
+    # TODO : completar con todos los tipos de datos
     return output

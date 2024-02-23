@@ -2,6 +2,7 @@ import uuid
 import os
 from jinja2 import Template
 import shutil
+
 def generate_unity_style_guid():
     generated_uuid = uuid.uuid4()
     # Obtiene la representación hexadecimal sin guiones

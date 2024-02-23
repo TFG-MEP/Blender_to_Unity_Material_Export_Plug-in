@@ -9,14 +9,14 @@ class RGBNode(Strategy):
 
         node_properties.append(node_name + "_Color")
 
-        node_color = convertir_valor(node.outputs["Color"].default_value, "Color")
+        node_color = blender_value_to_hlsl(node.outputs["Color"].default_value, "Color")
 
         property_line = f'{node_name}_Color("Color", Color) = {node_color}\n\t\t'
         # ... y se añaden al shader
-        shader_content = escribir_propiedad(property_line, shader_content)
+        shader_content = write_property(property_line, shader_content)
 
         variable_line = f'float4 {node_name}_Color;\n\t\t\t'
-        shader_content = escribir_variable(variable_line, shader_content)
+        shader_content = write_variable(variable_line, shader_content)
 
         # Se identifica el nodo conectado a la salida RGB
         conexion_salida = node.outputs["Color"].links[0]
@@ -24,6 +24,6 @@ class RGBNode(Strategy):
         # y la propiedad específica de dicho nodo que lo recibe
         propiedad_entrada = conexion_salida.to_socket
         #print("RGB conecta con " + nodo_entrada.name + " en su propiedad " + propiedad_entrada.name)
-        shader_content = escribir_nodo("HLSLTemplates/rgb.txt", node_properties, nodo_entrada, propiedad_entrada, shader_content)
+        shader_content = write_node("HLSLTemplates/rgb.txt", node_properties, nodo_entrada, propiedad_entrada, shader_content)
 
         return shader_content
