@@ -257,9 +257,9 @@ def iterate_node(node, shader_content):
     elif node.type == 'TEX_IMAGE' :
         context.strategy = ImageTextureNode()
     elif node.type == 'TEX_COORD' :
-        shader_content = escribir_nodo_TexCoord(node, node_properties, shader_content)
+        context.strategy= TextureCoordinateNode()
     elif node.type=='MAPPING' :
-        shader_content=escribir_nodo_mapping(node, node_properties, shader_content)
+        context.strategy = MappingNode()
     elif  node.type=='TEX_CHECKER':
         context.strategy =CheckerNode()
 
