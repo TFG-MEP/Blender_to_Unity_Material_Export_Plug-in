@@ -253,7 +253,7 @@ def iterate_node(node, shader_content):
     elif node.type == 'RGB' : 
         context.strategy = RGBNode()
     elif node.type == 'BSDF_PRINCIPLED' :
-        shader_content = escribir_nodo_bsdf(node, node_properties, shader_content)
+        context.strategy = PrincipledBSDFNode()
     elif node.type == 'TEX_IMAGE' :
         shader_content = escribir_nodo_imageTexture(node, node_properties, shader_content)
     elif node.type == 'TEX_COORD' :
