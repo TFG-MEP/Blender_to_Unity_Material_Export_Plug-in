@@ -5,6 +5,7 @@ from .Strategies.strategy import Strategy
 from .Strategies.RGB_strategy import RGBNode
 from .Strategies.Checker_strategy import CheckerNode
 from .Strategies.PrincipledBSDF_strategy import PrincipledBSDFNode
+from .Strategies.ImageTexture_strategy import ImageTextureNode
 from .Strategies.Value_strategy import ValueNode
 from .Strategies.Default_strategy import DefaultNode
 

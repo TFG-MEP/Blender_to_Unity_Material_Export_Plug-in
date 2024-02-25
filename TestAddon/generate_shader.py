@@ -255,7 +255,7 @@ def iterate_node(node, shader_content):
     elif node.type == 'BSDF_PRINCIPLED' :
         context.strategy = PrincipledBSDFNode()
     elif node.type == 'TEX_IMAGE' :
-        shader_content = escribir_nodo_imageTexture(node, node_properties, shader_content)
+        context.strategy = ImageTextureNode()
     elif node.type == 'TEX_COORD' :
         shader_content = escribir_nodo_TexCoord(node, node_properties, shader_content)
     elif node.type=='MAPPING' :
