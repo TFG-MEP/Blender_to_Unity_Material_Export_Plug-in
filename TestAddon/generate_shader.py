@@ -221,7 +221,8 @@ def iterate_node(node, shader_content):
         socket_name = input_socket.name.replace(" ", "")
         socket_name = socket_name.replace(".", "")
         node_properties.append(node_name + "_" + socket_name)
-
+       
+               
         if input_socket.is_linked : # If connected to another node, iterate through it
             # input_socket.links[0] indicates that we are only working with one connection 
             # per property/input. If there were more (Blender does not allow this for the 
@@ -231,6 +232,13 @@ def iterate_node(node, shader_content):
 
             connected_node = input_socket.links[0].from_node
             shader_content = iterate_node(connected_node, shader_content)
+        elif socket_name == 'Vector':
+            parameter='i.worldPos'
+            if node.type == 'TEX_IMAGE' :
+                parameter='float3(i.uv,0)'
+            fragment_index = shader_content.find("// Call methods")
+            func_line = f'float3 {node_name + "_" + socket_name} = {parameter};\n\t\t\t\t'
+            shader_content = shader_content[:fragment_index] + func_line + shader_content[fragment_index:]
         else :
             # Create an entry for this property in the shader properties
             print("Property of " + node_type + ": " + input_socket.name + " with type: " + input_socket.bl_label)

@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Material
-  m_Shader: {fileID: 4800000, guid: 9be8892673824be3bc930402005cd1e3, type: 3}
+  m_Name: chequ
+  m_Shader: {fileID: 4800000, guid: a4175ff96f4642bab3b0cce84865f09a, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -22,12 +22,12 @@ Material:
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs:
+    m_TexEnvs: 
     - ImageTexture_Image:
-        m_Texture: {fileID: 2800000, guid: 0bae0207a812462aa39da72b6adade54, type: 3}
+        m_Texture: {fileID: 2800000, guid: 47206067a57341259dbae4f818672562, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-      m_Ints: []
+    m_Ints: []
     m_Floats: []
     m_Colors: []
   m_BuildTextureStacks: []
