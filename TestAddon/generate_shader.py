@@ -253,7 +253,7 @@ def iterate_node(node, shader_content):
     elif node.type=='MAPPING' :
         shader_content=escribir_nodo_mapping(node, node_properties, shader_content)
     elif  node.type=='TEX_CHECKER':
-        shader_content=escribir_nodo_cheqker(node, node_properties, shader_content)
+        context.strategy =CheckerNode()
 
     shader_content = context.write_node(node=node, node_properties=node_properties, shader_content=shader_content)
 
