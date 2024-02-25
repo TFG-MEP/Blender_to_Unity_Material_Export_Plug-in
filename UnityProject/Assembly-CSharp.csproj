@@ -72,6 +72,7 @@
     <None Include="Assets\Shaders\checker_material_.shader" />
     <None Include="Assets\Shaders\TextureShader.shader" />
     <None Include="Assets\Shaders\NormalMat.shader" />
+    <None Include="Assets\ShaderlabVSCode\ScriptTemplates\HLSL Shader-New HLSL Shader.hlsl.txt" />
     <None Include="Assets\Materials\aaa\chequ.shader" />
     <None Include="Assets\Shaders\NuevosShaders\Oro.shader" />
     <None Include="Assets\Shaders\PruebaOro.shader" />
