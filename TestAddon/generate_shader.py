@@ -241,7 +241,7 @@ def iterate_node(node, shader_content):
     context = Context(strategy=DefaultNode())
 
     if node.type == 'VALUE':
-        shader_content = escribir_nodo_value(node, node_properties, shader_content)
+        context.strategy = ValueNode()
     elif node.type == 'RGB' : 
         context.strategy = RGBNode()
     elif node.type == 'BSDF_PRINCIPLED' :
