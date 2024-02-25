@@ -21,8 +21,8 @@ Shader "Custom/Shaderchequ_"
 		PrincipledBSDF_IOR("IOR", float) = 1.4500000476837158
 		PrincipledBSDF_Transmission("Transmission", float) = 0.0
 		PrincipledBSDF_TransmissionRoughness("TransmissionRoughness", float) = 0.0
-		 PrincipledBSDF_Emission("Emission", Color) = (0.0,0.0,0.0, 1.0)
-		PrincipledBSDF_EmissionStrength("EmissionStrength", float) = 1.0
+		PrincipledBSDF_Emission("Emission", Color) = (0.8480629440908062,0.0,1.0, 1.0)
+		PrincipledBSDF_EmissionStrength("EmissionStrength", float) = 19.299999237060547
 		PrincipledBSDF_Alpha("Alpha", float) = 1.0
 		PrincipledBSDF_Normal("Normal", Vector) = (0.0, 0.0, 0.0)
 		PrincipledBSDF_ClearcoatNormal("ClearcoatNormal", Vector) = (0.0, 0.0, 0.0)
@@ -132,9 +132,8 @@ float PrincipledBSDF_EmissionStrength,float PrincipledBSDF_Alpha, float3 Princip
                 surfacedata.metallic = clamp(PrincipledBSDF_Metallic,0,1);
                 surfacedata.smoothness = clamp(1-PrincipledBSDF_Roughness,0,1);
                 surfacedata.normalTS = 0;
-                PrincipledBSDF_Emission.rgb *= PrincipledBSDF_EmissionStrength/100;
+                PrincipledBSDF_Emission.rgb *= PrincipledBSDF_EmissionStrength;
                 surfacedata.emission = PrincipledBSDF_Emission;
-                
                 surfacedata.occlusion = 1; //"Ambient occlusion"
                 surfacedata.alpha = 0;
                 surfacedata.clearCoatMask = 0;
