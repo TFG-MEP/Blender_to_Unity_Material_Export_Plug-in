@@ -2,6 +2,7 @@ Shader "Custom/Shaderchequ_"
 {
      Properties
     {
+        [NoScaleOffset] _HeightMap ("Heights", 2D) = "gray" {}
         ImageTexture_Image("Texture", 2D) = "white" {}
 		CheckerTexture_Color2("Color2", Color) = (0.192538621205355,0.13382071079953312,0.4811564105413986, 1.0)
 		CheckerTexture_Scale("Scale", float) = 5.0
@@ -63,12 +64,12 @@ Shader "Custom/Shaderchequ_"
                 float4 vertex : SV_POSITION;
                 float2 uv : TEXCOORD0;
                 float3 positionWS : TEXCOORD1;
-                float3 normalWS : TEXCOORD2;
+                float3 normal : TEXCOORD2;
                 float3 viewDir : TEXCOORD3;
                 float3 worldPos : TEXCOORD4;
                 DECLARE_LIGHTMAP_OR_SH(lightmapUV, vertexSH, 5);
             };
-
+            sampler2D _HeightMap;
             sampler2D ImageTexture_Image;
 			float4 CheckerTexture_Color2;
 			float CheckerTexture_Scale;
@@ -107,16 +108,20 @@ Shader "Custom/Shaderchequ_"
                 v2f o;
                 o.worldPos = v.vertex.xyz;
                 o.positionWS = TransformObjectToWorld(v.vertex.xyz);
-                o.normalWS = TransformObjectToWorldNormal(v.normal.xyz);
+                o.normal = TransformObjectToWorldNormal(v.normal.xyz);
                 o.viewDir = normalize(_WorldSpaceCameraPos - o.positionWS);
                 o.uv = v.uv;
                 o.vertex = TransformWorldToHClip(o.positionWS);
 
                 OUTPUT_LIGHTMAP_UV(v.texcoord1, unity_LightmapST, o.lightmapUV);
-                OUTPUT_SH(o.normalWS.xyz, o.vertexSH);
+                OUTPUT_SH(o.normal.xyz, o.vertexSH);
 
                 return o;
             }
+            // float3 bump(v2f i,float invert,float strenght,float distance,float3 height,float3 normal){
+            //     normal= normalize(normal);
+            //     //distance *= FrontFacing ? invert : -invert;
+            // }
             
             // función que crea una textura a partir de un sampler2D
 float4 image_texture( float2 texcoord,sampler2D textura){
@@ -144,37 +149,41 @@ float4 image_texture( float2 texcoord,sampler2D textura){
     }
 }
 
-			float4 principled_bsdf(v2f i, float4 PrincipledBSDF_BaseColor,float PrincipledBSDF_Subsurface, float3 PrincipledBSDF_SubsurfaceRadius, float4 PrincipledBSDF_SubsurfaceColor,float PrincipledBSDF_SubsurfaceIOR,float PrincipledBSDF_SubsurfaceAnisotropy,
+float4 principled_bsdf(v2f i, float4 PrincipledBSDF_BaseColor,float PrincipledBSDF_Subsurface, float3 PrincipledBSDF_SubsurfaceRadius, float4 PrincipledBSDF_SubsurfaceColor,float PrincipledBSDF_SubsurfaceIOR,float PrincipledBSDF_SubsurfaceAnisotropy,
 float PrincipledBSDF_Metallic, float PrincipledBSDF_Specular,float PrincipledBSDF_SpecularTint,float PrincipledBSDF_Roughness,float PrincipledBSDF_Anisotropic, float PrincipledBSDF_AnisotropicRotation,float PrincipledBSDF_Sheen, 
 float PrincipledBSDF_SheenTint,float PrincipledBSDF_Clearcoat,float PrincipledBSDF_ClearcoatRoughness,float PrincipledBSDF_IOR,float PrincipledBSDF_Transmission,float PrincipledBSDF_TransmissionRoughness,float4 PrincipledBSDF_Emission,
 float PrincipledBSDF_EmissionStrength,float PrincipledBSDF_Alpha, float3 PrincipledBSDF_Normal,float3 PrincipledBSDF_ClearcoatNormal, float3 PrincipledBSDF_Tangent, float PrincipledBSDF_Weight)
-            { 
-                InputData inputdata = (InputData)0;
-                inputdata.positionWS = i.positionWS;
-                inputdata.normalWS = normalize(i.normalWS); //Normalizarlo evita que la luz aparezca como "pixelada"
-                inputdata.viewDirectionWS = i.viewDir;
-                //bakedGI quiere decir baked global illumiation
-                inputdata.bakedGI = SAMPLE_GI(i.lightmapUV, i.vertexSH, inputdata.normalWS);
+{ 
+    InputData inputdata = (InputData)0;
+    inputdata.positionWS = i.positionWS;
+    inputdata.normalWS = normalize(i.normal); //Normalizarlo evita que la luz aparezca como "pixelada"
+    inputdata.viewDirectionWS = i.viewDir;
+    //bakedGI quiere decir baked global illumiation
+    inputdata.bakedGI = SAMPLE_GI(i.lightmapUV, i.vertexSH, inputdata.normalWS);
 
-                SurfaceData surfacedata;
-                surfacedata.albedo = PrincipledBSDF_BaseColor;
-                surfacedata.specular = 0;
-                surfacedata.metallic = clamp(PrincipledBSDF_Metallic,0,1);
-                surfacedata.smoothness = clamp(1-PrincipledBSDF_Roughness,0,1);
-                surfacedata.normalTS = 0;
-                surfacedata.emission = 0;
-                surfacedata.occlusion = 1; //"Ambient occlusion"
-                surfacedata.alpha = 0;
-                surfacedata.clearCoatMask = 0;
-                surfacedata.clearCoatSmoothness = 0;
+    SurfaceData surfacedata;
+    surfacedata.albedo = PrincipledBSDF_BaseColor;
+    surfacedata.specular = 0;
+    surfacedata.metallic = clamp(PrincipledBSDF_Metallic,0,1);
+    surfacedata.smoothness = clamp(1-PrincipledBSDF_Roughness,0,1);
+    surfacedata.normalTS = 0;
+    surfacedata.emission = 0;
+    surfacedata.occlusion = 1; //"Ambient occlusion"
+    surfacedata.alpha = 0;
+    surfacedata.clearCoatMask = 0;
+    surfacedata.clearCoatSmoothness = 0;
 
-                return UniversalFragmentPBR(inputdata, surfacedata);
+    return UniversalFragmentPBR(inputdata, surfacedata);
 
+}
+            void InitializeFragmentNormal(v2f i) {
+                i.normal = float3(0, 1, 0);
+                i.normal = normalize(i.normal);
             }
 			// Add methods
             float4 frag (v2f i) : SV_Target
             {
-
+                InitializeFragmentNormal(i);
                 float3 CheckerTexture_Vector = i.worldPos;
 				float3 ImageTexture_Vector = float3(i.uv,0);
 				float4 CheckerTexture_Color1 = image_texture(ImageTexture_Vector, ImageTexture_Image);
@@ -182,11 +191,12 @@ float PrincipledBSDF_EmissionStrength,float PrincipledBSDF_Alpha, float3 Princip
 				float4 MaterialOutput_Surface = principled_bsdf(i, PrincipledBSDF_BaseColor, PrincipledBSDF_Subsurface, PrincipledBSDF_SubsurfaceRadius, PrincipledBSDF_SubsurfaceColor, PrincipledBSDF_SubsurfaceIOR, PrincipledBSDF_SubsurfaceAnisotropy, PrincipledBSDF_Metallic, PrincipledBSDF_Specular, PrincipledBSDF_SpecularTint, PrincipledBSDF_Roughness, PrincipledBSDF_Anisotropic, PrincipledBSDF_AnisotropicRotation, PrincipledBSDF_Sheen, PrincipledBSDF_SheenTint, PrincipledBSDF_Clearcoat, PrincipledBSDF_ClearcoatRoughness, PrincipledBSDF_IOR, PrincipledBSDF_Transmission, PrincipledBSDF_TransmissionRoughness, PrincipledBSDF_Emission, PrincipledBSDF_EmissionStrength, PrincipledBSDF_Alpha, PrincipledBSDF_Normal, PrincipledBSDF_ClearcoatNormal, PrincipledBSDF_Tangent, PrincipledBSDF_Weight);
 				// Call methods
                 //half4 col = tex2D(_MainTex, i.uv);
-                
+                //MaterialOutput_Surface*= tex2D(_HeightMap, i.uv);
                 return MaterialOutput_Surface;
                 
             }
             ENDHLSL
         }
+        UsePass "Legacy Shaders/VertexLit/SHADOWCASTER"
     }
 }

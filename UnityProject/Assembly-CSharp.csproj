@@ -75,6 +75,7 @@
     <None Include="Assets\ShaderlabVSCode\ScriptTemplates\HLSL Shader-New HLSL Shader.hlsl.txt" />
     <None Include="Assets\Materials\aaa\chequ.shader" />
     <None Include="Assets\Shaders\NuevosShaders\Oro.shader" />
+    <None Include="Assets\Shaders\NewUnlitShader.shader" />
     <None Include="Assets\Shaders\PruebaOro.shader" />
     <None Include="Assets\Shaders\prueba.shader" />
     <None Include="Assets\Free Stylized Skybox\ReadMe.txt" />
