@@ -42,7 +42,7 @@ Material:
     - PrincipledBSDF_EmissionStrength: 1
     - PrincipledBSDF_IOR: 1.45
     - PrincipledBSDF_Metallic: 0
-    - PrincipledBSDF_Roughness: 0.5
+    - PrincipledBSDF_Roughness: -0.67
     - PrincipledBSDF_Sheen: 0
     - PrincipledBSDF_SheenTint: 0.5
     - PrincipledBSDF_Specular: 0.5
@@ -54,7 +54,7 @@ Material:
     - PrincipledBSDF_TransmissionRoughness: 0
     - PrincipledBSDF_Weight: 0
     m_Colors:
-    - CheckerTexture_Color2: {r: 0.19253859, g: 0.13382068, b: 0.4811564, a: 1}
+    - CheckerTexture_Color2: {r: 0.19253856, g: 0.13382065, b: 0.72156864, a: 1}
     - PrincipledBSDF_ClearcoatNormal: {r: 0, g: 0, b: 0, a: 1}
     - PrincipledBSDF_Emission: {r: 0, g: 0, b: 0, a: 1}
     - PrincipledBSDF_Normal: {r: 0, g: 0, b: 0, a: 1}

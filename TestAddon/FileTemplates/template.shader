@@ -74,5 +74,6 @@ Shader "Custom/ColorShader"
             }
             ENDHLSL
         }
+        UsePass "Legacy Shaders/VertexLit/SHADOWCASTER"
     }
 }

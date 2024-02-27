@@ -2,9 +2,10 @@ Shader "Custom/Shaderchequ_"
 {
      Properties
     {
+        
         [NoScaleOffset] _HeightMap ("Heights", 2D) = "gray" {}
         ImageTexture_Image("Texture", 2D) = "white" {}
-		CheckerTexture_Color2("Color2", Color) = (0.192538621205355,0.13382071079953312,0.4811564105413986, 1.0)
+		[Gamma]CheckerTexture_Color2("Color2", Color) = (0.192538621205355,0.13382071079953312,0.4811564105413986, 1.0)
 		CheckerTexture_Scale("Scale", float) = 5.0
 		PrincipledBSDF_Subsurface("Subsurface", float) = 0.0
 		PrincipledBSDF_SubsurfaceRadius("SubsurfaceRadius", Vector) = (1.0, 0.20000000298023224, 0.10000000149011612)
