@@ -20,32 +20,14 @@ Shader "Custom/voro"
         Pass
         {
             HLSLPROGRAM
-            #define FLT_MAX 3.402823466e+38  
-            #define rot(x, k) (((x) << (k)) | ((x) >> (32 - (k))))
-            #define final(a, b, c) \
-            { \
-                c ^= b; \
-                c -= rot(b, 14); \
-                a ^= c; \
-                a -= rot(c, 11); \
-                b ^= a; \
-                b -= rot(a, 25); \
-                c ^= b; \
-                c -= rot(b, 16); \
-                a ^= c; \
-                a -= rot(c, 4); \
-                b ^= a; \
-                b -= rot(a, 14); \
-                c ^= b; \
-                c -= rot(b, 24); \
-            } 
             
             #pragma vertex vert
             #pragma fragment frag
 
             //Aqui importamos el archivo donde tenemos las funciones que 
             //queremos usar para evitar calcular nosotras la iluminacion
-            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"            
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+            #include "node_hash.hlsl"            
 
             //Datos de entrada en el vertex shader
             struct appdata
@@ -91,92 +73,114 @@ Shader "Custom/voro"
 
                 return o;
             }
-            uint hash_uint(uint kx)
+            float voronoi_distance(float3 a, float3 b)
             {
-                uint a, b, c;
-                a = b = c = 0xdeadbeef + (1 << 2) + 13;
+            // if (params.metric == "euclidean") {
+                return distance(a, b);
+            
+            }
+            float voronoi_distance(float4 a, float4 b)
+            { 
+                return distance(a, b);
+           
+            }
+            // // float4 voronoi_f1(float randomness ,float sclae, float coord)
+            // // {
+            // //     coord *= sclae;
+            // //     float2 cellPosition = floor(coord);
+            // //     float2 localPosition = coord - cellPosition;
+            
+            // //     float minDistance = FLT_MAX;
+            // //     float2 targetOffset = float2(0.0, 0.0);
+            // //     float2 targetPosition = float2(0.0, 0.0);
+                
+            // //     for (int j = -1; j <= 1; j++) {
+            // //         for (int i = -1; i <= 1; i++) {
+            // //             float2 cellOffset = float2(i, j);
+            // //             float2 pointPosition = cellOffset + hash_float_to_float(cellPosition + cellOffset) * randomness;
+            // //             float distanceToPoint = voronoi_distance(length(pointPosition), length(localPosition)); // Calcula la distancia en 2D
+            
+            // //             if (distanceToPoint < minDistance) {
+            // //                 targetOffset = cellOffset;
+            // //                 minDistance = distanceToPoint;
+            // //                 targetPosition = pointPosition;
+            // //             }
+            // //         }
+            // //     }
+                
+            // //     float distance = minDistance;
+            // // //   octave.Color = 
+            // // //   octave.Position = voronoi_position(targetPosition + cellPosition);
+            // //   return hash_float_to_color(cellPosition + targetOffset);
+            // // }
 
-                a += kx;
-                final(a, b, c);
-
-                return c;
-            }
-            uint hash_uint2(uint kx, uint ky)
-            {
-                uint a, b, c;
-                a = b = c = 0xdeadbeef + (2 << 2) + 13;
-
-                b += ky;
-                a += kx;
-                final(a, b, c);
-
-                return c;
-            }
-            float hashnoise(float p)
-            {
-                uint x = asuint(p);
-                return hash_uint(x) / 4294967295.0; // ~0u es igual a 4294967295
-            }
-            float hashnoise(float2 p)
-            {
-                const uint x =uint(p.x);
-                const uint y = uint(p.y);
-                return hash_uint2(x, y) / 4294967295.0;
-            }
-            float voronoi_distance(float a, float b)
-            {
-            return abs(a - b);
-            }
-            float hash_float_to_float(float k)
-            {
-                return hashnoise(k);
-
-            }
-          
-            float hash_vector2_to_float(float2 k)
-            {
-                return hashnoise(float2(k.x, k.y));
-            }
-            float4 hash_float_to_color(float k)
-            {
-                return float4(hash_float_to_float(k),
-                            hash_vector2_to_float(float2(k, 1.0)),
-                            hash_vector2_to_float(float2(k, 2.0)),1);
-            }
-            float4 voronoi_f1(float randomness ,float sclae, float coord)
+            float4 voronoi_f1(float randomness ,float sclae, float4 coord)
             {
                 coord *= sclae;
-                float2 cellPosition = floor(coord);
-                float2 localPosition = coord - cellPosition;
-            
+                float4 cellPosition = floor(coord);
+                float4 localPosition = coord - cellPosition;
+              
                 float minDistance = FLT_MAX;
-                float2 targetOffset = float2(0.0, 0.0);
-                float2 targetPosition = float2(0.0, 0.0);
-                
-                for (int j = -1; j <= 1; j++) {
-                    for (int i = -1; i <= 1; i++) {
-                        float2 cellOffset = float2(i, j);
-                        float2 pointPosition = cellOffset + hash_float_to_float(cellPosition + cellOffset) * randomness;
-                        float distanceToPoint = voronoi_distance(length(pointPosition), length(localPosition)); // Calcula la distancia en 2D
-            
+                float4 targetOffset = float4(0.0, 0.0, 0.0, 0.0);
+                float4 targetPosition = float4(0.0, 0.0, 0.0, 0.0);
+                for (int u = -1; u <= 1; u++) {
+                  for (int k = -1; k <= 1; k++) {
+                    for (int j = -1; j <= 1; j++) {
+                      for (int i = -1; i <= 1; i++) {
+                        float4 cellOffset = float4(i, j, k, u);
+                        float4 pointPosition = cellOffset + hash_vector4_to_vector4(cellPosition + cellOffset) *
+                                                                 randomness;
+                        float distanceToPoint = voronoi_distance(pointPosition, localPosition);
                         if (distanceToPoint < minDistance) {
-                            targetOffset = cellOffset;
-                            minDistance = distanceToPoint;
-                            targetPosition = pointPosition;
+                          targetOffset = cellOffset;
+                          minDistance = distanceToPoint;
+                          targetPosition = pointPosition;
+                        }
+                      }
+                    }
+                  }
+                }
+              
+                //VoronoiOutput octave;
+                // octave.Distance = minDistance;
+                // octave.Position = voronoi_position(targetPosition + cellPosition);
+               return hash_vector4_to_color(cellPosition + targetOffset);
+            }
+            float4 voronoi_f1(float randomness ,float sclae,float3 coord)
+            {
+                coord *= sclae;
+                float3 cellPosition = floor(coord);
+                float3 localPosition = coord - cellPosition;
+
+                float minDistance = FLT_MAX;
+                float3 targetOffset = float3(0.0, 0.0, 0.0);
+                float3 targetPosition = float3(0.0, 0.0, 0.0);
+                for (int k = -1; k <= 1; k++) {
+                    for (int j = -1; j <= 1; j++) {
+                    for (int i = -1; i <= 1; i++) {
+                        float3 cellOffset = float3(i, j, k);
+                        float3 pointPosition = cellOffset + hash_vector3_to_vector3(cellPosition + cellOffset) *
+                                                                randomness;
+                        float distanceToPoint = voronoi_distance(pointPosition, localPosition);
+                        if (distanceToPoint < minDistance) {
+                        targetOffset = cellOffset;
+                        minDistance = distanceToPoint;
+                        targetPosition = pointPosition;
                         }
                     }
+                    }
                 }
-                
-                float distance = minDistance;
-            //   octave.Color = 
-            //   octave.Position = voronoi_position(targetPosition + cellPosition);
-              return hash_float_to_color(cellPosition + targetOffset);
+
+            // VoronoiOutput octave;
+            // octave.Distance = minDistance;
+            // octave.Color = 
+            // octave.Position = voronoi_position(targetPosition + cellPosition);
+                return hash_vector3_to_color(cellPosition + targetOffset);;
             }
-           
 			// Add methods
             float4 frag (v2f i) : SV_Target
             {
-               
+                
                 return voronoi_f1(voro_rand,voro_Scale,i.worldPos);
                 
             }
