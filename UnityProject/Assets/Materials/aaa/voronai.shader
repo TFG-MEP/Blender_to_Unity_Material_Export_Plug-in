@@ -84,6 +84,11 @@ Shader "Custom/voro"
                 return distance(a, b);
            
             }
+            float voronoi_distance(float2 a, float2 b)
+            { 
+                return distance(a, b);
+           
+            }
             // // float4 voronoi_f1(float randomness ,float sclae, float coord)
             // // {
             // //     coord *= sclae;
@@ -177,11 +182,74 @@ Shader "Custom/voro"
             // octave.Position = voronoi_position(targetPosition + cellPosition);
                 return hash_vector3_to_color(cellPosition + targetOffset);;
             }
+            float4 voronoi_f1(float randomness ,float sclae, float2 coord)
+            {
+                coord *= sclae;
+                float2 cellPosition = floor(coord);
+                float2 localPosition = coord - cellPosition;
+
+                float minDistance = FLT_MAX;
+                float2 targetOffset = float2(0.0, 0.0);
+                float2 targetPosition = float2(0.0, 0.0);
+                for (int j = -1; j <= 1; j++) {
+                    for (int i = -1; i <= 1; i++) {
+                    float2 cellOffset = float2(i, j);
+                    float2 pointPosition = cellOffset + hash_vector2_to_vector2(cellPosition + cellOffset) *
+                                                        randomness;
+                    float distanceToPoint = voronoi_distance(pointPosition, localPosition);
+                    if (distanceToPoint < minDistance) {
+                        targetOffset = cellOffset;
+                        minDistance = distanceToPoint;
+                        targetPosition = pointPosition;
+                    }
+                    }
+                }
+
+            // VoronoiOutput octave;
+            // octave.Distance = minDistance;
+            // octave.Color = 
+            // octave.Position = voronoi_position(targetPosition + cellPosition);
+            return hash_vector2_to_color(cellPosition + targetOffset);;
+            }
+            // float4 voronoi_smooth_f1(float randomness ,float sclae,float3 coord)
+            // {
+            //     float2 cellPosition = floor(coord);
+            //     float2 localPosition = coord - cellPosition;
+
+            //     float smoothDistance = 0.0;
+            //     float3 smoothColor = float3(0.0, 0.0, 0.0);
+            //     float2 smoothPosition = float2(0.0, 0.0);
+            //     float h = -1.0;
+            //     for (int j = -2; j <= 2; j++) {
+            //         for (int i = -2; i <= 2; i++) {
+            //         float2 cellOffset = float2(i, j);
+            //         float2 pointPosition = cellOffset + hash_vector2_to_vector2(cellPosition + cellOffset) *
+            //                                             randomness;
+            //         float distanceToPoint = voronoi_distance(pointPosition, localPosition, params);
+            //         h = h == -1.0 ?
+            //                 1.0 :
+            //                 smoothstep(
+            //                     0.0, 1.0, 0.5 + 0.5 * (smoothDistance - distanceToPoint) / params.smoothness);
+            //         float correctionFactor = params.smoothness * h * (1.0 - h);
+            //         smoothDistance = mix(smoothDistance, distanceToPoint, h) - correctionFactor;
+            //         correctionFactor /= 1.0 + 3.0 * params.smoothness;
+            //         color cellColor = hash_vector2_to_color(cellPosition + cellOffset);
+            //         smoothColor = mix(smoothColor, cellColor, h) - correctionFactor;
+            //         smoothPosition = mix(smoothPosition, pointPosition, h) - correctionFactor;
+            //         }
+            // }
+
+            // VoronoiOutput octave;
+            // octave.Distance = smoothDistance;
+            // octave.Color = smoothColor;
+            // octave.Position = voronoi_position(cellPosition + smoothPosition);
+            // return octave;
+            // }
 			// Add methods
             float4 frag (v2f i) : SV_Target
             {
                 
-                return voronoi_f1(voro_rand,voro_Scale,i.worldPos);
+                return voronoi_f1(voro_rand,voro_Scale,i.uv);
                 
             }
             ENDHLSL

@@ -86,7 +86,7 @@ float hash_float_to_float(float k)
 
 float hash_vector2_to_float(float2 k)
 {
-    return hashnoise(float2(k.x, k.y));
+    return hashnoise(float2(k.x, k.y));//??
 }
 float4 hash_float_to_color(float k)
 {
@@ -140,9 +140,15 @@ float hash_vector4_to_float(float4 k)
 {
  return hashnoise(float4(k.x, k.y, k.z, k.w));
 }
+
 float hash_vector3_to_float(float3 k)
 {
   return hashnoise(k);
+}
+
+float2 hash_vector2_to_vector2(float2 k)
+{
+  return float2(hash_vector2_to_float(k), hash_vector3_to_float(float3(k.x, k.y, 1.0)));
 }
 float3 hash_vector3_to_vector3(float3 k)
 {
@@ -168,6 +174,12 @@ float4 hash_vector3_to_color(float3 k)
   return float4(hash_vector3_to_float(k),
                hash_vector4_to_float(float4(k[0], k[1], k[2], 1.0)),
                hash_vector4_to_float(float4(k[0], k[1], k[2], 2.0)),1);
+}
+float4 hash_vector2_to_color(float2 k)
+{
+  return float4(hash_vector2_to_float(k),
+               hash_vector3_to_float(float3(k.x, k.y, 1.0)),
+               hash_vector3_to_float(float3(k.x, k.y, 2.0)),1);
 }
 
 #endif // NODE_HASH_HLSL
