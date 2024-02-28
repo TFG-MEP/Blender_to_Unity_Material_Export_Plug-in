@@ -25,7 +25,7 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - voro_Scale: 6
-    - voro_rand: 0.5
+    - voro_Scale: 21.2
+    - voro_rand: 1.85
     m_Colors: []
   m_BuildTextureStacks: []
