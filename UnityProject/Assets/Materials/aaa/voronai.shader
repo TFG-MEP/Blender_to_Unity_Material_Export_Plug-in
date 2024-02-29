@@ -32,7 +32,8 @@ Shader "Custom/voro"
             //Datos de entrada en el vertex shader
             struct appdata
             {
-                float4 vertex : POSITION;
+                
+                float3 vertex : POSITION;
                 float2 uv : TEXCOORD0;
                 float4 normal : NORMAL;
                 float4 texcoord1 : TEXCOORD1; //Coordenadas para el baking de iluminación
@@ -45,23 +46,17 @@ Shader "Custom/voro"
                 float3 positionWS : TEXCOORD1;
                 float3 normal : TEXCOORD2;
                 float3 viewDir : TEXCOORD3;
-                float3 worldPos : TEXCOORD4;
+                float3 globalPos : TEXCOORD4;
                 DECLARE_LIGHTMAP_OR_SH(lightmapUV, vertexSH, 5);
             };
             float voro_Scale;
             float voro_rand;
-            // float WaveTexture_Scale;
-            // float WaveTexture_Distortion;
-            // float WaveTexture_Detail;
-            // float WaveTexture_DetailScale;
-            // float WaveTexture_DetailRoughness;
-            // float WaveTexture_PhaseOffset;
 
             v2f vert(appdata v)
             {
 
                 v2f o;
-                o.worldPos = v.vertex.xyz;
+                o.globalPos =   v.vertex;
                 o.positionWS = TransformObjectToWorld(v.vertex.xyz);
                 o.normal = TransformObjectToWorldNormal(v.normal.xyz);
                 o.viewDir = normalize(_WorldSpaceCameraPos - o.positionWS);
@@ -75,8 +70,8 @@ Shader "Custom/voro"
             }
             float voronoi_distance(float3 a, float3 b)
             {
-            // if (params.metric == "euclidean") {
-                return distance(a, b);
+       
+              return length(a - b);
             
             }
             float voronoi_distance(float4 a, float4 b)
@@ -153,7 +148,10 @@ Shader "Custom/voro"
             }
             float4 voronoi_f1(float randomness ,float sclae,float3 coord)
             {
-                coord *= sclae;
+               
+                
+                coord *= -sclae;
+                
                 float3 cellPosition = floor(coord);
                 float3 localPosition = coord - cellPosition;
 
@@ -162,17 +160,17 @@ Shader "Custom/voro"
                 float3 targetPosition = float3(0.0, 0.0, 0.0);
                 for (int k = -1; k <= 1; k++) {
                     for (int j = -1; j <= 1; j++) {
-                    for (int i = -1; i <= 1; i++) {
-                        float3 cellOffset = float3(i, j, k);
-                        float3 pointPosition = cellOffset + hash_vector3_to_vector3(cellPosition + cellOffset) *
-                                                                randomness;
-                        float distanceToPoint = voronoi_distance(pointPosition, localPosition);
-                        if (distanceToPoint < minDistance) {
-                        targetOffset = cellOffset;
-                        minDistance = distanceToPoint;
-                        targetPosition = pointPosition;
+                        for (int i = -1; i <= 1; i++) {
+                            float3 cellOffset = float3(i, j, k);
+                            float3 pointPosition = cellOffset + hash_vector3_to_vector3(cellPosition + cellOffset) *
+                                                                    randomness;
+                            float distanceToPoint = voronoi_distance(pointPosition, localPosition);
+                            if (distanceToPoint < minDistance) {
+                                targetOffset = cellOffset;
+                                minDistance = distanceToPoint;
+                                targetPosition = pointPosition;
+                            }
                         }
-                    }
                     }
                 }
 
@@ -180,7 +178,7 @@ Shader "Custom/voro"
             // octave.Distance = minDistance;
             // octave.Color = 
             // octave.Position = voronoi_position(targetPosition + cellPosition);
-                return hash_vector3_to_color(cellPosition + targetOffset);;
+                return hash_vector3_to_color(cellPosition + targetOffset);
             }
             float4 voronoi_f1(float randomness ,float sclae, float2 coord)
             {
@@ -209,47 +207,14 @@ Shader "Custom/voro"
             // octave.Distance = minDistance;
             // octave.Color = 
             // octave.Position = voronoi_position(targetPosition + cellPosition);
-            return hash_vector2_to_color(cellPosition + targetOffset);;
+            return hash_vector2_to_color(cellPosition + targetOffset);
             }
-            // float4 voronoi_smooth_f1(float randomness ,float sclae,float3 coord)
-            // {
-            //     float2 cellPosition = floor(coord);
-            //     float2 localPosition = coord - cellPosition;
-
-            //     float smoothDistance = 0.0;
-            //     float3 smoothColor = float3(0.0, 0.0, 0.0);
-            //     float2 smoothPosition = float2(0.0, 0.0);
-            //     float h = -1.0;
-            //     for (int j = -2; j <= 2; j++) {
-            //         for (int i = -2; i <= 2; i++) {
-            //         float2 cellOffset = float2(i, j);
-            //         float2 pointPosition = cellOffset + hash_vector2_to_vector2(cellPosition + cellOffset) *
-            //                                             randomness;
-            //         float distanceToPoint = voronoi_distance(pointPosition, localPosition, params);
-            //         h = h == -1.0 ?
-            //                 1.0 :
-            //                 smoothstep(
-            //                     0.0, 1.0, 0.5 + 0.5 * (smoothDistance - distanceToPoint) / params.smoothness);
-            //         float correctionFactor = params.smoothness * h * (1.0 - h);
-            //         smoothDistance = mix(smoothDistance, distanceToPoint, h) - correctionFactor;
-            //         correctionFactor /= 1.0 + 3.0 * params.smoothness;
-            //         color cellColor = hash_vector2_to_color(cellPosition + cellOffset);
-            //         smoothColor = mix(smoothColor, cellColor, h) - correctionFactor;
-            //         smoothPosition = mix(smoothPosition, pointPosition, h) - correctionFactor;
-            //         }
-            // }
-
-            // VoronoiOutput octave;
-            // octave.Distance = smoothDistance;
-            // octave.Color = smoothColor;
-            // octave.Position = voronoi_position(cellPosition + smoothPosition);
-            // return octave;
-            // }
+            
 			// Add methods
             float4 frag (v2f i) : SV_Target
             {
                 
-                return voronoi_f1(voro_rand,voro_Scale,i.uv);
+                return voronoi_f1(voro_rand,voro_Scale, i.globalPos );
                 
             }
             ENDHLSL

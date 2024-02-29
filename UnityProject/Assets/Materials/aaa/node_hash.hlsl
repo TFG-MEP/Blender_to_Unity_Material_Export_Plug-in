@@ -40,8 +40,7 @@
     b -= rot(a, 14); \
     c ^= b; \
     c -= rot(b, 24); \
-} 
-            
+}        
 uint hash_uint(uint kx)
 {
     uint a, b, c;
@@ -66,13 +65,13 @@ uint hash_uint2(uint kx, uint ky)
 float hashnoise(float p)
 {
     uint x = asuint(p);
-    return hash_uint(x) / 4294967295.0; // ~0u es igual a 4294967295
+    return hash_uint(x) / float(~0u);// ~0u es igual a 4294967295
 }
 float hashnoise(float2 p)
 {
     const uint x =uint(p.x);
     const uint y = uint(p.y);
-    return hash_uint2(x, y) / 4294967295.0;
+    return hash_uint2(x, y) /float(~0u);
 }
 // float voronoi_distance(float a, float b)
 // {
@@ -111,7 +110,7 @@ float hashnoise(float3 p)
     const uint x = uint(p.x);
     const uint y = uint(p.y);
     const uint z =uint(p.z);
-    return hash_uint3(x, y, z) /4294967295.0;
+    return hash_uint3(x, y, z) /float(~0u);
 }
 uint hash_uint4(uint kx, uint ky, uint kz, uint kw)
 {
@@ -134,11 +133,11 @@ float hashnoise(float4 p)
     const uint y =uint(p.y);
     const uint z = uint(p.z);
     const uint w = uint(p.w);
-    return hash_uint4(x, y, z, w) / 4294967295.0;
+    return hash_uint4(x, y, z, w) /float(~0u);
 }
 float hash_vector4_to_float(float4 k)
 {
- return hashnoise(float4(k.x, k.y, k.z, k.w));
+ return hashnoise(float4(k.x, k.y, k.z,k.w));
 }
 
 float hash_vector3_to_float(float3 k)

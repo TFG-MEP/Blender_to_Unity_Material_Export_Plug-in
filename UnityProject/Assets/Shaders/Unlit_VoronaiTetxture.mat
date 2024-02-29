@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Custom_voro
-  m_Shader: {fileID: 4800000, guid: 8842101381b53d54ba64e62b7fbeb23b, type: 3}
+  m_Name: Unlit_VoronaiTetxture
+  m_Shader: {fileID: 4800000, guid: 2971df2a650b87c4caa7acd0553572c4, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -22,10 +22,14 @@ Material:
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: []
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - voro_Scale: 6.74
-    - voro_rand: 0.8
+    - _CellSize: 16.88
+    - _Randomness: 0.761
     m_Colors: []
   m_BuildTextureStacks: []
