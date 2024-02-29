@@ -5,6 +5,8 @@ from .writing_utils import *
 
 imagesMap = {}
 
+visited_nodes = set()
+
 class Context():
 
     def __init__(self, strategy: Strategy) -> None:
@@ -96,24 +98,31 @@ def escribir_nodo_rgb(node, node_properties, shader_content) :
     shader_content = write_variable(variable_line, shader_content)
 
     # Se identifica el nodo conectado a la salida RGB
-    conexion_salida = node.outputs["Color"].links[0]
-    nodo_entrada = conexion_salida.to_node
-    # y la propiedad específica de dicho nodo que lo recibe
-    propiedad_entrada = conexion_salida.to_socket
-    #print("RGB conecta con " + nodo_entrada.name + " en su propiedad " + propiedad_entrada.name)
-    shader_content = write_node("HLSLTemplates/rgb.txt", node_properties, nodo_entrada, propiedad_entrada, shader_content)
+    #conexion_salida = node.outputs["Color"].links[0]
+
+    for link in node.outputs["Color"].links :
+        nodo_entrada = link.to_node
+        # y la propiedad específica de dicho nodo que lo recibe
+        propiedad_entrada = link.to_socket
+        #print("RGB conecta con " + nodo_entrada.name + " en su propiedad " + propiedad_entrada.name)
+        shader_content = write_node("HLSLTemplates/rgb.txt", node_properties, nodo_entrada, propiedad_entrada, shader_content)
 
     return shader_content
 
 def escribir_nodo_bsdf(node, node_properties, shader_content) :
     node_name=node.name.replace(".", "")
-    conexion_salida = node.outputs["BSDF"].links[0]
-    nodo_entrada = conexion_salida.to_node
-    propiedad_entrada = conexion_salida.to_socket
+    #conexion_salida = node.outputs["BSDF"].links[0]
+
     node_properties.insert(0, 'i')
-    shader_content = write_node("HLSLTemplates/principled_bsdf.txt", node_properties, nodo_entrada, propiedad_entrada, shader_content)
+
+    for link in node.outputs["BSDF"].links :
+    
+        nodo_entrada = link.to_node
+        propiedad_entrada = link.to_socket
+        shader_content = write_node("HLSLTemplates/principled_bsdf.txt", node_properties, nodo_entrada, propiedad_entrada, shader_content)
 
     return shader_content
+    
 def escribir_nodo_imageTexture(node, node_properties, shader_content):
     global imagesMap
 
@@ -187,16 +196,17 @@ def escribir_nodo_cheqker(node, node_properties, shader_content):
     # Se buscan las propiedades específicas de este tipo de nodo...
     node_name = node.name.replace(" ", "")
     node_name=node_name.replace(".", "")
-    # Se identifica el nodo conectado a la salida RGB
-    conexion_salida = node.outputs["Color"].links[0]
-    nodo_entrada = conexion_salida.to_node
-    # y la propiedad específica de dicho nodo que lo recibe
-    propiedad_entrada = conexion_salida.to_socket
-    #print("RGB conecta con " + nodo_entrada.name + " en su propiedad " + propiedad_entrada.name)
-    shader_content = write_node("HLSLTemplates/checker.txt", node_properties, nodo_entrada, propiedad_entrada, shader_content)
+    # Se identifica el nodo conectado a la salida Color
+    conexion_salida = node.outputs["Color"].links[0]  # TODO no puede ser 0, tiene que ser con todas sus conexiones
+
+    for link in node.outputs["Color"].links :
+        nodo_entrada = link.to_node
+        # y la propiedad específica de dicho nodo que lo recibe
+        propiedad_entrada = link.to_socket
+        #print("RGB conecta con " + nodo_entrada.name + " en su propiedad " + propiedad_entrada.name)
+        shader_content = write_node("HLSLTemplates/checker.txt", node_properties, nodo_entrada, propiedad_entrada, shader_content)
 
     return shader_content
-
 
 def iterate_node(node, shader_content):
     """ Iterates through a materials nodes and adds them to the shader template.
@@ -208,8 +218,16 @@ def iterate_node(node, shader_content):
     Returns:
         str : Updated shader template with the current processed nodes.
     """
+    
     node_name = node.name.replace(" ", "").replace(".", "")
     node_type = node.type.replace(" ", "").replace(".", "") 
+
+    # Avoid iterating through already visited nodes
+    global visited_nodes
+    if (node_name in visited_nodes) :
+        return shader_content
+    else :
+        visited_nodes.add(node_name)
 
     print ("Iterating through node: " + node.type + "\n")
     
@@ -241,7 +259,7 @@ def iterate_node(node, shader_content):
             shader_content = shader_content[:fragment_index] + func_line + shader_content[fragment_index:]
         else :
             # Create an entry for this property in the shader properties
-            print("Property of " + node_type + ": " + input_socket.name + " with type: " + input_socket.bl_label)
+            # print("Property of " + node_type + ": " + input_socket.name + " with type: " + input_socket.bl_label)
             shader_content = process_property(input_socket, node_name, node_type, shader_content)
 
     # TODO : quizás es mejor recorrer las salidas aquí
@@ -266,7 +284,6 @@ def iterate_node(node, shader_content):
     shader_content = context.write_node(node=node, node_properties=node_properties, shader_content=shader_content)
 
     return shader_content
-
 
 def generate(destination_directory):
 
@@ -303,6 +320,11 @@ def generate(destination_directory):
     if (get_MaterialOutput_Surface_added() == False) :
         print("ERROR: You must use a Material Output node with something connected to Surface.")
 
+
+    # Reset global variables for future uses
     clear_global_variables()
+    
+    global visited_nodes
+    visited_nodes = set()
 
     return material.name, imagesMap

@@ -19,11 +19,13 @@ class RGBNode(Strategy):
         shader_content = write_variable(variable_line, shader_content)
 
         # Se identifica el nodo conectado a la salida RGB
-        exit_connection = node.outputs["Color"].links[0]
-        input_node = exit_connection.to_node
-        # y la propiedad específica de dicho nodo que lo recibe
-        input_property = exit_connection.to_socket
-        #print("RGB conecta con " + nodo_entrada.name + " en su propiedad " + propiedad_entrada.name)
-        shader_content = write_node("HLSLTemplates/rgb.txt", node_properties, input_node, input_property, shader_content)
+        #conexion_salida = node.outputs["Color"].links[0]
+
+        for link in node.outputs["Color"].links :
+            nodo_entrada = link.to_node
+            # y la propiedad específica de dicho nodo que lo recibe
+            propiedad_entrada = link.to_socket
+            #print("RGB conecta con " + nodo_entrada.name + " en su propiedad " + propiedad_entrada.name)
+            shader_content = write_node("HLSLTemplates/rgb.txt", node_properties, nodo_entrada, propiedad_entrada, shader_content)
 
         return shader_content
