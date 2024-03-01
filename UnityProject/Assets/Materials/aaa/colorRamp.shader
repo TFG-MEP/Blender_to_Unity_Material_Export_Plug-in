@@ -67,59 +67,51 @@ Shader "Custom/waveTexturre_"
 
                 return o;
             }
-            // float safe_noise(float3 p)
-            // {
-            //     float f = noise("noise", p);
-            //     if (isinf(f))
-            //         return 0.5;
-            //     return f;
-            // }
-            // float fractal_noise(float3 p, float details, float roughness)
-            // {
-            //     float fscale = 1.0;
-            //     float amp = 1.0;
-            //     float maxamp = 0.0;
-            //     float sum = 0.0;
-            //     float octaves = clamp(details, 0.0, 15.0);
-            //     int n = (int)octaves;
-            //     for (int i = 0; i <= n; i++) {
-            //         float t = safe_noise(fscale * p);
-            //         sum += t * amp;
-            //         maxamp += amp;
-            //         amp *= clamp(roughness, 0.0, 1.0);
-            //         fscale *= 2.0;
-            //     }
-            //     float rmd = octaves - floor(octaves);
-            //     if (rmd != 0.0) {
-            //         float t = safe_noise(fscale * p);
-            //         float sum2 = sum + t * amp;
-            //         sum /= maxamp;
-            //         sum2 /= maxamp + amp;
-            //         return (1.0 - rmd) * sum + rmd * sum2;
-            //     }
-            //     else {
-            //         return sum / maxamp;
-            //     }
-            // }
-           
-            float4 waveTexture(float3 p_input,float scale,float distortion,float detail,float dscale,float droughness,float phase){
-                p_input*=scale;
-                float3 p = (p_input + 0.000001) * 0.999999;
-                float n = 0.0;
-                n = p[0] * 20.0;
-                n += phase;
-                // if (distortion != 0.0) {
-                //     n = n + (distortion * (fractal_noise(p * dscale, detail, droughness) * 2.0 - 1.0));
-                // }
-                
-                return 0.5 + 0.5 * sin(n - 3.14);
+            float4 rgb_ramp_lookup(float4 ramp[30],int numcolors, float at, int interpolate, int extrapolate)
+            {
+              float f = at;
+              int table_size = numcolors;
+            
+              if ((f < 0.0 || f > 1.0) && extrapolate) {
+                float4 t0, dy;
+                if (f < 0.0) {
+                  t0 = ramp[0];
+                  dy = t0 - ramp[1];
+                  f = -f;
+                }
+                else {
+                  t0 = ramp[table_size - 1];
+                  dy = t0 - ramp[table_size - 2];
+                  f = f - 1.0;
+                }
+                return t0 + dy * f * (table_size - 1);
+              }
+            
+              f = clamp(at, 0.0, 1.0) * (table_size - 1);
+            
+              /* clamp int as well in case of NaN */
+              int i = (int)f;
+              if (i < 0)
+                i = 0;
+              if (i >= table_size)
+                i = table_size - 1;
+              float t = f - (float)i;
+            
+              float4 result = ramp[i];
+            
+              if (interpolate && t > 0.0)
+                result = (1.0 - t) * result + t * ramp[i + 1];
+            
+              return (result);
             }
-           
 			// Add methods
             float4 frag (v2f i) : SV_Target
             {
-               
-                return waveTexture(i.worldPos, WaveTexture_Scale, WaveTexture_Distortion, WaveTexture_Detail, WaveTexture_DetailScale, WaveTexture_DetailRoughness, WaveTexture_PhaseOffset);
+                float4 ramp[30];
+                ramp[0]=float4(0,1,0,1);
+                ramp[1]=float4(0,0.0,1,1);
+                ramp[2]=float4(1,0.0,0,1);
+                return rgb_ramp_lookup( ramp,3, 0.75, 1, 0);
                 
             }
             ENDHLSL

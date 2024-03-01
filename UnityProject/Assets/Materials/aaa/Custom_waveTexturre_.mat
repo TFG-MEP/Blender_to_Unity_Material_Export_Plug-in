@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Custom_Shaderchequ_
-  m_Shader: {fileID: 4800000, guid: 30c52aa0fd56c134898062326bc79785, type: 3}
+  m_Name: Custom_waveTexturre_
+  m_Shader: {fileID: 4800000, guid: 3ec4391f5f4f5cf498ea25dd4b28aae8, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -30,6 +30,6 @@ Material:
     - WaveTexture_DetailScale: 5
     - WaveTexture_Distortion: 5
     - WaveTexture_PhaseOffset: 5
-    - WaveTexture_Scale: 2
+    - WaveTexture_Scale: 5
     m_Colors: []
   m_BuildTextureStacks: []

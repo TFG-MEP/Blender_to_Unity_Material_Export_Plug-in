@@ -93,6 +93,7 @@
     <None Include="Assets\Shaders\MyFirstShader.shader" />
     <None Include="Assets\Shaders\aaa.shader" />
     <None Include="Assets\Shaders\wavetexture.shader" />
+    <None Include="Assets\Materials\aaa\colorRamp.shader" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
