@@ -3,9 +3,7 @@ from .strategies_importer import *
 from .format_conversion_utils import *
 from .writing_utils import *
 
-imagesMap = {}
-
-visited_nodes = set()
+from .common_utils import *
 
 class Context():
 
@@ -54,11 +52,10 @@ def iterate_node(node, shader_content):
     node_type = node.type.replace(" ", "").replace(".", "") 
 
     # Avoid iterating through already visited nodes
-    global visited_nodes
-    if (node_name in visited_nodes) :
+    if (node_name in get_common_values().visited_nodes) :
         return shader_content
     else :
-        visited_nodes.add(node_name)
+        get_common_values().visited_nodes.add(node_name)
 
     print ("Iterating through node: " + node.type + "\n")
     
@@ -71,7 +68,6 @@ def iterate_node(node, shader_content):
         socket_name = socket_name.replace(".", "")
         node_properties.append(node_name + "_" + socket_name)
        
-               
         if input_socket.is_linked : # If connected to another node, iterate through it
             # input_socket.links[0] indicates that we are only working with one connection 
             # per property/input. If there were more (Blender does not allow this for the 
@@ -93,30 +89,33 @@ def iterate_node(node, shader_content):
             # print("Property of " + node_type + ": " + input_socket.name + " with type: " + input_socket.bl_label)
             shader_content = process_property(input_socket, node_name, node_type, shader_content)
 
-    # TODO : quizás es mejor recorrer las salidas aquí
 
-    context = Context(strategy=DefaultNode())
+    strategy = node_type_strategy_map.get(node.type)
+    context = Context(strategy=strategy)
 
-    if node.type == 'VALUE':
-        context.strategy = ValueNode()
-    elif node.type == 'RGB' : 
-        context.strategy = RGBNode()
-    elif node.type == 'BSDF_PRINCIPLED' :
-        context.strategy = PrincipledBSDFNode()
-    elif node.type == 'TEX_IMAGE' :
-        context.strategy = ImageTextureNode()
-    elif node.type == 'TEX_COORD' :
-        context.strategy= TextureCoordinateNode()
-    elif node.type=='MAPPING' :
-        context.strategy = MappingNode()
-    elif  node.type=='TEX_CHECKER':
-        context.strategy = CheckerNode()
+    # if node.type == 'VALUE':
+    #     context.strategy = ValueNode()
+    # elif node.type == 'RGB' : 
+    #     context.strategy = RGBNode()
+    # elif node.type == 'BSDF_PRINCIPLED' :
+    #     context.strategy = PrincipledBSDFNode()
+    # elif node.type == 'TEX_IMAGE' :
+    #     context.strategy = ImageTextureNode()
+    # elif node.type == 'TEX_COORD' :
+    #     context.strategy= TextureCoordinateNode()
+    # elif node.type=='MAPPING' :
+    #     context.strategy = MappingNode()
+    # elif  node.type=='TEX_CHECKER':
+    #     context.strategy = CheckerNode()
 
     shader_content = context.write_node(node=node, node_properties=node_properties, shader_content=shader_content)
 
     return shader_content
 
 def generate(destination_directory):
+
+    # Reset global variables
+    get_common_values().clear_common_variables()
 
     # Load the .shader template
     template_shader_path = "FileTemplates/template.shader"
@@ -129,15 +128,20 @@ def generate(destination_directory):
             
     selected_object = bpy.context.active_object
     material = selected_object.active_material
-    material.use_nodes = True
+    material.use_nodes = True # ¿?
     node_tree = material.node_tree
     nodes = node_tree.nodes
+    # TODO : Qué pasa si hay más de un Material Output?
     root_node = nodes.get("Material Output")
 
-    # Rename the shader
-    shader_content = shader_content.replace("Custom/ColorShader", f"Custom/Shader{material.name}_")
+    # TODO : eliminar cualquier posible caracter en el nombre del material
+    # que no pueda ir en el nombre del shader o como nombre de archivo
 
-    shader_filename = f"{material.name}.shader"
+    # Rename the shader
+    material_name = material.name.replace(" ", "").replace(".", "")
+    shader_content = shader_content.replace("Custom/ColorShader", f"Custom/Shader{material_name}_")
+
+    shader_filename = f"{material_name}.shader"
     shader_filepath = f"{destination_directory}/{shader_filename}"
 
     shader_content = iterate_node(root_node, shader_content)
@@ -148,14 +152,7 @@ def generate(destination_directory):
     print(f"{shader_filename} file successfully generated.")
     print("Process finished.")
 
-    if (get_MaterialOutput_Surface_added() == False) :
+    if (get_common_values().MaterialOutput_Surface_added == False) :
         print("ERROR: You must use a Material Output node with something connected to Surface.")
-
-
-    # Reset global variables for future uses
-    clear_global_variables()
     
-    global visited_nodes
-    visited_nodes = set()
-
-    return material.name, imagesMap
+    return material.name, get_common_values().imagesMap

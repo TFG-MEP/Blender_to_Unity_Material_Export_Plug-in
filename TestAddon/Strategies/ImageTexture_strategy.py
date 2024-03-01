@@ -1,14 +1,15 @@
 from .strategy import Strategy
 from ..writing_utils import *
-imagesMap = {}
+from ..common_utils import *
 
 class ImageTextureNode(Strategy):
     def write_node(self, node, node_properties, shader_content):
         
-        global imagesMap
         node_name = node.name.replace(" ", "")
         node_name=node_name.replace(".", "")
         node_properties.append(node_name + "_Image")
+
+        imagesMap = get_common_values().imagesMap
 
         image_path = bpy.path.abspath(node.image.filepath)
         print(f'Image Path: {image_path}')
@@ -29,4 +30,6 @@ class ImageTextureNode(Strategy):
         #write_node(function_file_path, function_parameters, destination_node, destination_property, shader_content) 
         shader_content = write_node("HLSLTemplates/image_texture.txt", node_properties, input_node, input_property, shader_content)
 
+        get_common_values().imagesMap = imagesMap
+        
         return shader_content

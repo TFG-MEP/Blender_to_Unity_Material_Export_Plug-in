@@ -42,7 +42,6 @@ Shader "Custom/ColorShader"
             };
 
             // Add variables
-
             sampler2D _MainTex;
             float4 _MainTex_ST;
 

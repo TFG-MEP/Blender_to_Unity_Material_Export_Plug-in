@@ -1,19 +1,6 @@
 import bpy
 from .format_conversion_utils import *
-
-added_functions = set()
-MaterialOutput_Surface_added = False
-
-def clear_global_variables() : 
-
-    global added_functions
-    global MaterialOutput_Surface_added
-
-    added_functions = set()
-    MaterialOutput_Surface_added = False
-
-def get_MaterialOutput_Surface_added() : 
-    return MaterialOutput_Surface_added
+from .common_utils import *
 
 def write_node(function_file_path, function_parameters, destination_node, destination_property, shader_content) : 
 
@@ -29,11 +16,9 @@ def write_node(function_file_path, function_parameters, destination_node, destin
     Returns:
         str: Updated shader template with the HLSL method and its call.
     """
-    global added_functions
-    global MaterialOutput_Surface_added
 
     # Check if the HLSL function has already been added to the shader
-    if function_file_path not in added_functions:
+    if function_file_path not in get_common_values().added_functions:
 
         # Read the file that contains the required HLSL function
         with open(function_file_path, "r") as node_func_file:
@@ -44,7 +29,7 @@ def write_node(function_file_path, function_parameters, destination_node, destin
         shader_content = shader_content[:methods_index] + node_function + "\n\t\t\t" + shader_content[methods_index:]
 
         # Add the function to the written functions group
-        added_functions.add(function_file_path)
+        get_common_values().added_functions.add(function_file_path)
 
     prop_type = blender_type_to_hlsl(destination_property.bl_label)
     # Remove any possible blanks from the name
@@ -73,8 +58,6 @@ def write_node(function_file_path, function_parameters, destination_node, destin
     return shader_content
 
 def write_root( parameter, destination_node, destination_property, shader_content) : 
-
-    global MaterialOutput_Surface_added
 
     prop_type = blender_type_to_hlsl(destination_property.bl_label)
     
@@ -109,12 +92,21 @@ def process_property(input_socket, node_name, node_type, shader_content):
     prop_name = input_socket.name
     prop_label = input_socket.bl_label
 
-    # Ignore "Shader" properties
-    if prop_label == 'Shader' : # These properties will be determined by another node
-        return shader_content
-
     # Ignore specific properties or specific node types
     if node_type == 'OUTPUT_MATERIAL' : 
+        return shader_content
+
+    node_name = node_name.replace(" ", "")
+    node_name = node_name.replace(".", "")
+    prop_name = prop_name.replace(" ", "")
+    prop_name = prop_name.replace(".", "")
+
+    # Manage "Shader" properties
+    if prop_label == 'Shader' : # These properties will be determined by another node
+        name = f'float4 {node_name}_{prop_name}'
+        value = " = float4(0.0, 0.0, 0.0, 1.0)"
+        line = name + value
+        shader_content = write_variable(line, shader_content)
         return shader_content
 
     # Convert from Blender types to Unity/HLSL
@@ -122,14 +114,9 @@ def process_property(input_socket, node_name, node_type, shader_content):
     prop_label = blender_type_to_properties(prop_label)
     # Get the properties value
     prop_value = input_socket.default_value
-
+    
     # TODO : operaciones con el valor si es necesario: normalizar, convertir a valores que entienda el shader, etc.
     prop_value = blender_value_to_hlsl(prop_value, input_socket.bl_label)
-
-    node_name = node_name.replace(" ", "")
-    node_name = node_name.replace(".", "")
-    prop_name = prop_name.replace(" ", "")
-    prop_name = prop_name.replace(".", "")
 
     # Add property to template
     property_line = f'{node_name}_{prop_name}("{prop_name}", {prop_label}) = {prop_value}\n\t\t'

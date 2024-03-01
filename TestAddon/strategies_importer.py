@@ -12,3 +12,16 @@ from .Strategies.TextureCoordinate_strategy import TextureCoordinateNode
 from .Strategies.Default_strategy import DefaultNode
 
 # Import all new strategies implemented in the Strategies Directory
+
+from .Strategies import *
+
+# Node type to strategy map
+node_type_strategy_map = {
+    'VALUE': ValueNode(),
+    'RGB': RGBNode(),
+    'BSDF_PRINCIPLED': PrincipledBSDFNode(),
+    'TEX_IMAGE': ImageTextureNode(),
+    'TEX_COORD': TextureCoordinateNode(),
+    'MAPPING': MappingNode(),
+    'TEX_CHECKER': CheckerNode()
+}
