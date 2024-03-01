@@ -5,8 +5,8 @@ Shader "Custom/ShaderMaterial_"
         Mapping_Location("Location", Vector) = (0.0, 0.0, 0.0)
 		Mapping_Rotation("Rotation", Vector) = (0.0, 0.0, 0.0)
 		Mapping_Scale("Scale", Vector) = (1.0, 1.0, 1.0)
-		CheckerTexture_Color1("Color1", Color) = (0.9035454676387557,0.5506321187498721,0.8871608884949487, 1.0)
 		ImageTexture002_Image("Texture", 2D) = "white" {}
+		CheckerTexture_Color2("Color2", Color) = (0.4811495991808301,0.23837449397189037,0.43422165841364824, 1.0)
 		CheckerTexture_Scale("Scale", float) = 5.0
 		PrincipledBSDF_Subsurface("Subsurface", float) = 0.0
 		PrincipledBSDF_SubsurfaceRadius("SubsurfaceRadius", Vector) = (1.0, 0.20000000298023224, 0.10000000149011612)
@@ -29,10 +29,10 @@ Shader "Custom/ShaderMaterial_"
 		Mapping001_Location("Location", Vector) = (0.0, 0.0, 0.0)
 		Mapping001_Rotation("Rotation", Vector) = (0.0, 0.0, 0.0)
 		Mapping001_Scale("Scale", Vector) = (1.0, 1.0, 1.0)
-		CheckerTexture001_Color1("Color1", Color) = (0.7775062568522946,0.3248177592891075,1.0, 1.0)
+		CheckerTexture001_Color1("Color1", Color) = (0.2565811691622261,0.198264568842475,0.5321867523164572, 1.0)
 		CheckerTexture001_Color2("Color2", Color) = (0.0,0.0,0.0, 1.0)
 		CheckerTexture001_Scale("Scale", float) = 5.0
-		PrincipledBSDF_EmissionStrength("EmissionStrength", float) = 32.499996185302734
+		PrincipledBSDF_EmissionStrength("EmissionStrength", float) = 0.5999984741210938
 		PrincipledBSDF_Alpha("Alpha", float) = 1.0
 		PrincipledBSDF_Normal("Normal", Vector) = (0.0, 0.0, 0.0)
 		PrincipledBSDF_ClearcoatNormal("ClearcoatNormal", Vector) = (0.0, 0.0, 0.0)
@@ -80,8 +80,8 @@ Shader "Custom/ShaderMaterial_"
             float3 Mapping_Location;
 			float3 Mapping_Rotation;
 			float3 Mapping_Scale;
-			float4 CheckerTexture_Color1;
 			sampler2D ImageTexture002_Image;
+			float4 CheckerTexture_Color2;
 			float CheckerTexture_Scale;
 			float PrincipledBSDF_Subsurface;
 			float3 PrincipledBSDF_SubsurfaceRadius;
@@ -209,7 +209,7 @@ float PrincipledBSDF_EmissionStrength,float PrincipledBSDF_Alpha, float3 Princip
                 float3 Mapping_Vector = i.worldPos;
 				float3 CheckerTexture_Vector = mapping(Mapping_Vector, Mapping_Location, Mapping_Rotation, Mapping_Scale);
 				float3 ImageTexture002_Vector = float3(i.uv,0);
-				float4 CheckerTexture_Color2 = image_texture(ImageTexture002_Vector, ImageTexture002_Image);
+				float4 CheckerTexture_Color1 = image_texture(ImageTexture002_Vector, ImageTexture002_Image);
 				float4 PrincipledBSDF_BaseColor = checker(CheckerTexture_Vector, CheckerTexture_Color1, CheckerTexture_Color2, CheckerTexture_Scale);
 				float3 Mapping001_Vector = i.worldPos;
 				float3 CheckerTexture001_Vector = mapping(Mapping001_Vector, Mapping001_Location, Mapping001_Rotation, Mapping001_Scale);
