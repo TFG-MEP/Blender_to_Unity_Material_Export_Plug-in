@@ -1,8 +1,11 @@
-Shader "Custom/ColorShader"
+Shader "Custom/Shaderchequ_"
 {
      Properties
     {
-        // Add properties
+        CheckerTexture_Color1("Color1", Color) = (0.903545437039038,0.903545437039038,0.903545437039038, 1.0)
+		CheckerTexture_Color2("Color2", Color) = (0.48115650831128215,0.48115650831128215,0.48115650831128215, 1.0)
+		CheckerTexture_Scale("Scale", float) = 5.0
+		// Add properties
     }
 
     SubShader
@@ -17,7 +20,10 @@ Shader "Custom/ColorShader"
             #pragma vertex vert
             #pragma fragment frag
 
-            //Add includes 
+            //Aqui importamos el archivo donde tenemos las funciones que 
+            //queremos usar para evitar calcular nosotras la iluminacion
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"            
+
             //Datos de entrada en el vertex shader
             struct appdata
             {
@@ -38,7 +44,11 @@ Shader "Custom/ColorShader"
                 DECLARE_LIGHTMAP_OR_SH(lightmapUV, vertexSH, 5);
             };
 
-            // Add variables
+            float4 CheckerTexture_Color1;
+			float4 CheckerTexture_Color2;
+			float CheckerTexture_Scale;
+			// Add variables
+
             sampler2D _MainTex;
             float4 _MainTex_ST;
 
@@ -58,11 +68,33 @@ Shader "Custom/ColorShader"
                 return o;
             }
             
-            // Add methods
+            float4 checker(float3  ip, float4 color1, float4 color2,float Scale)
+{
+    ip *= Scale/2;
+    float3 p;
+    p[0] = (ip[0] + 0.000001) * 0.999999;
+    p[1] = (ip[1] + 0.000001) * 0.999999;
+    p[2] = (ip[2] + 0.000001) * 0.999999;
+
+    int xi = (int)abs(floor(p[0]));
+    int yi = (int)abs(floor(p[1]));
+    int zi = (int)abs(floor(p[2]));
+    //SI SON PARES
+    if ((xi % 2 == yi % 2) == (zi % 2)) {
+        return color2;
+    }
+    else {
+        return color1;
+    }
+}
+
+			// Add methods
             float4 frag (v2f i) : SV_Target
             {
 
-                // Call methods
+                float3 CheckerTexture_Vector = i.worldPos;
+				float4 MaterialOutput_Surface = checker(CheckerTexture_Vector, CheckerTexture_Color1, CheckerTexture_Color2, CheckerTexture_Scale);
+				// Call methods
                 //half4 col = tex2D(_MainTex, i.uv);
                 
                 return MaterialOutput_Surface;

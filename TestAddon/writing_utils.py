@@ -1,7 +1,31 @@
 import bpy
 from .format_conversion_utils import *
 from .common_utils import *
+import re
+def write_include(include_file_path, shader_content):
+    """ Add an HLSL include 
 
+    Args:
+        include_file_path (str) :  Path where it contains the includes needed for the shader 
+        shader_content (str) : Current template content
+    Returns:
+        str: Updated shader template with the HLSL method and its call.
+    """
+    with open(include_file_path, "r") as include_file:
+      # Dividir el texto utilizando expresiones regulares para capturar los #include
+        includes = re.findall(r'#include\s*"[^"]+"', include_file.read())
+
+        # Limpiar cada include para quitar espacios adicionales y caracteres de nueva línea
+        includes = [re.sub(r'\s+', ' ', include.strip().replace('\n', '')) for include in includes]
+        includes = [include.replace(' ', '') for include in includes]
+        for include in includes:
+            if include not in get_common_values().added_includes:
+                get_common_values().added_includes.add(include)
+                include_index = shader_content.find("//Add includes ")
+                shader_content = shader_content[:include_index] + include + "\n\t\t\t" + shader_content[include_index:]
+    return shader_content
+
+          
 def write_node(function_file_path, function_parameters, destination_node, destination_property, shader_content) : 
 
     """ Add an HLSL function and its respective call to the shader template
@@ -36,10 +60,10 @@ def write_node(function_file_path, function_parameters, destination_node, destin
     destination_node = destination_node.name.replace(" ", "")
     destination_property = destination_property.name.replace(" ", "")
     # Name of the file minus extension (must be the same as the name of the hlsl function)
-    dot_index = function_file_path.find('.')
-    slash_index = function_file_path.find('/')
-    function_name = function_file_path[slash_index+1:dot_index]
-
+    function_name = function_file_path.rsplit('/', 1)[-1]
+    dot_index = function_name.find('.')
+    if dot_index != -1:
+        function_name = function_name[:dot_index]
     # Add the function call to the shader template
     fragment_index = shader_content.find("// Call methods")
     destination_node = destination_node.replace(" ", "").replace(".", "")

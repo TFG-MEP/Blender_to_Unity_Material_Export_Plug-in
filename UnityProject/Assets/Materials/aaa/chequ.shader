@@ -185,7 +185,7 @@ float PrincipledBSDF_EmissionStrength,float PrincipledBSDF_Alpha, float3 Princip
             float4 frag (v2f i) : SV_Target
             {
                 InitializeFragmentNormal(i);
-                float3 CheckerTexture_Vector = i.worldPos;
+                float3 CheckerTexture_Vector =  float3(i.uv,0);
 				float3 ImageTexture_Vector = float3(i.uv,0);
 				float4 CheckerTexture_Color1 = image_texture(ImageTexture_Vector, ImageTexture_Image);
 				float4 PrincipledBSDF_BaseColor = checker(CheckerTexture_Vector, CheckerTexture_Color1, CheckerTexture_Color2, CheckerTexture_Scale);

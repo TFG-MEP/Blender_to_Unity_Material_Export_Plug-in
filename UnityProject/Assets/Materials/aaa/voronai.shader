@@ -68,7 +68,40 @@ Shader "Custom/voro"
             float voronoi_distance(float3 a, float3 b)
             {
               return length(a - b);           
-            }         
+            } 
+            float voronoi_distance(float2 a, float2 b)
+            {
+              return length(a - b);           
+            } 
+            float4 voronoi_f1(float randomness ,float sclae, float2 coord)
+            {
+                coord *= sclae;
+                float2 cellPosition = floor(coord);
+                float2 localPosition = coord - cellPosition;
+
+                float minDistance = FLT_MAX;
+                float2 targetOffset = float2(0.0, 0.0);
+                float2 targetPosition = float2(0.0, 0.0);
+                for (int j = -1; j <= 1; j++) {
+                    for (int i = -1; i <= 1; i++) {
+                    float2 cellOffset = float2(i, j);
+                    float2 pointPosition = cellOffset + hash_vector2_to_vector2(cellPosition + cellOffset) *
+                                                        randomness;
+                    float distanceToPoint = voronoi_distance(pointPosition, localPosition);
+                    if (distanceToPoint < minDistance) {
+                        targetOffset = cellOffset;
+                        minDistance = distanceToPoint;
+                        targetPosition = pointPosition;
+                    }
+                    }
+                }
+
+            // VoronoiOutput octave;
+            // octave.Distance = minDistance;
+            // octave.Color = 
+            // octave.Position = voronoi_position(targetPosition + cellPosition);
+            return hash_vector2_to_color(cellPosition + targetOffset);;
+            }        
             float4 voronoi_f1(float randomness ,float sclae,float3 coord)
             {                               
                 coord *= sclae;
@@ -101,7 +134,7 @@ Shader "Custom/voro"
             float4 frag (v2f i) : SV_Target
             {
                 
-                return voronoi_f1(voro_rand,voro_Scale, i.globalPos );
+                return voronoi_f1(voro_rand,voro_Scale, (i.uv) );
                 
             }
             ENDHLSL

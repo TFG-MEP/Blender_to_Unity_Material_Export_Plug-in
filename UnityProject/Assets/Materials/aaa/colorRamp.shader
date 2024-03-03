@@ -111,6 +111,7 @@ Shader "Custom/waveTexturre_"
                 ramp[0]=float4(0,1,0,1);
                 ramp[1]=float4(0,0.0,1,1);
                 ramp[2]=float4(1,0.0,0,1);
+                
                 return rgb_ramp_lookup( ramp,3, 0.75, 1, 0);
                 
             }

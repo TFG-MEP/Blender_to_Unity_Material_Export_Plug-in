@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Custom_voro
-  m_Shader: {fileID: 4800000, guid: 8842101381b53d54ba64e62b7fbeb23b, type: 3}
+  m_Name: chequ
+  m_Shader: {fileID: 4800000, guid: e6d1a62380254c919ec2aa84cb6893c8, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -25,7 +25,8 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - voro_Scale: 19.34
-    - voro_rand: 0.8
-    m_Colors: []
+    - CheckerTexture_Scale: 5.64
+    m_Colors:
+    - CheckerTexture_Color1: {r: 0.90354544, g: 0.90354544, b: 0.90354544, a: 1}
+    - CheckerTexture_Color2: {r: 0.4811564, g: 0.4811564, b: 0.4811564, a: 1}
   m_BuildTextureStacks: []

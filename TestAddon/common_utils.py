@@ -5,6 +5,7 @@ class CommonValues() :
         self.visited_nodes = set()
         self.imagesMap = {}
         self.added_functions = set()
+        self.added_includes = set()
         self.MaterialOutput_Surface_added = False
 
     def clear_common_variables(self) : 
@@ -12,6 +13,7 @@ class CommonValues() :
         self.visited_nodes = set()
         self.imagesMap = {}
         self.added_functions = set()
+        self.added_includes = set()
         self.MaterialOutput_Surface_added = False
 
 

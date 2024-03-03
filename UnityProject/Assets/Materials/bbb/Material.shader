@@ -1,4 +1,4 @@
-Shader "Custom/Shaderchequ_"
+Shader "Custom/ShaderMaterial_"
 {
      Properties
     {
@@ -11,7 +11,7 @@ Shader "Custom/Shaderchequ_"
 		PrincipledBSDF_Metallic("Metallic", float) = 0.0
 		PrincipledBSDF_Specular("Specular", float) = 0.5
 		PrincipledBSDF_SpecularTint("SpecularTint", float) = 0.0
-		PrincipledBSDF_Roughness("Roughness", float) = 0.0
+		PrincipledBSDF_Roughness("Roughness", float) = 0.5
 		PrincipledBSDF_Anisotropic("Anisotropic", float) = 0.0
 		PrincipledBSDF_AnisotropicRotation("AnisotropicRotation", float) = 0.0
 		PrincipledBSDF_Sheen("Sheen", float) = 0.0
@@ -21,8 +21,8 @@ Shader "Custom/Shaderchequ_"
 		PrincipledBSDF_IOR("IOR", float) = 1.4500000476837158
 		PrincipledBSDF_Transmission("Transmission", float) = 0.0
 		PrincipledBSDF_TransmissionRoughness("TransmissionRoughness", float) = 0.0
-		PrincipledBSDF_Emission("Emission", Color) = (0.8480629440908062,0.0,1.0, 1.0)
-		PrincipledBSDF_EmissionStrength("EmissionStrength", float) = 19.299999237060547
+		PrincipledBSDF_Emission("Emission", Color) = (0.0,0.0,0.0, 1.0)
+		PrincipledBSDF_EmissionStrength("EmissionStrength", float) = 1.0
 		PrincipledBSDF_Alpha("Alpha", float) = 1.0
 		PrincipledBSDF_Normal("Normal", Vector) = (0.0, 0.0, 0.0)
 		PrincipledBSDF_ClearcoatNormal("ClearcoatNormal", Vector) = (0.0, 0.0, 0.0)
@@ -43,10 +43,8 @@ Shader "Custom/Shaderchequ_"
             #pragma vertex vert
             #pragma fragment frag
 
-            //Aqui importamos el archivo donde tenemos las funciones que 
-            //queremos usar para evitar calcular nosotras la iluminacion
-            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"            
-
+            #include"Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+			//Add includes 
             //Datos de entrada en el vertex shader
             struct appdata
             {
@@ -94,9 +92,8 @@ Shader "Custom/Shaderchequ_"
 			float3 PrincipledBSDF_Tangent;
 			float PrincipledBSDF_Weight;
 			// Add variables
-
             sampler2D _MainTex;
-            float4 _MainTex_ST=float4(0,0,0,0);
+            float4 _MainTex_ST;
 
             v2f vert(appdata v)
             {
@@ -155,5 +152,6 @@ float PrincipledBSDF_EmissionStrength,float PrincipledBSDF_Alpha, float3 Princip
             }
             ENDHLSL
         }
+        UsePass "Legacy Shaders/VertexLit/SHADOWCASTER"
     }
 }
