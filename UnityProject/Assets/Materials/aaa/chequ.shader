@@ -40,10 +40,11 @@ Shader "Custom/Shaderchequ_"
 
         Tags { "RenderType" = "Opaque" "RenderPipeline" = "UniversalRenderPipeline" }
         LOD 100
-
         Pass
         {
             HLSLPROGRAM
+            Blend SrcAlpha OneMinusSrcAlpha
+
             #pragma vertex vert
             #pragma fragment frag
 

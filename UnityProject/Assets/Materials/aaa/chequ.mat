@@ -25,10 +25,10 @@ Material:
     m_TexEnvs:
     - ImageTexture_Image:
         m_Texture: {fileID: 2800000, guid: 47206067a57341259dbae4f818672562, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 2.3, y: 0.91}
         m_Offset: {x: 0, y: 0}
     - _HeightMap:
-        m_Texture: {fileID: 2800000, guid: 5925012351a0d3e49aa7ef14b0dcc55e, type: 3}
+        m_Texture: {fileID: 2800000, guid: 3b8b0debd08311e42bb461864f45e32e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
