@@ -55,7 +55,7 @@ Shader "Custom/voro"
             v2f vert(appdata v)
             {
                 v2f o;
-                o.globalPos =   v.vertex.xyz;
+                o.globalPos =  TransformObjectToHClip(v.vertex.xyz);
                 o.positionWS = TransformObjectToWorld(v.vertex.xyz);
                 o.normal = TransformObjectToWorldNormal(v.normal.xyz);
                 o.viewDir = normalize(_WorldSpaceCameraPos - o.positionWS);
@@ -134,7 +134,7 @@ Shader "Custom/voro"
             float4 frag (v2f i) : SV_Target
             {
                 
-                return voronoi_f1(voro_rand,voro_Scale, (i.uv) );
+                return voronoi_f1(voro_rand,voro_Scale, i.positionWS );
                 
             }
             ENDHLSL

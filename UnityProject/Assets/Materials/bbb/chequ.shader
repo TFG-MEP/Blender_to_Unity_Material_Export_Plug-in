@@ -1,34 +1,18 @@
 Shader "Custom/Shaderchequ_"
 {
-     Properties
+    Properties
     {
-        PrincipledBSDF_BaseColor("BaseColor", Color) = (0.903545437039038,0.903545437039038,0.903545437039038, 1.0)
-		PrincipledBSDF_Subsurface("Subsurface", float) = 0.0
-		PrincipledBSDF_SubsurfaceRadius("SubsurfaceRadius", Vector) = (1.0, 0.20000000298023224, 0.10000000149011612)
-		PrincipledBSDF_SubsurfaceColor("SubsurfaceColor", Color) = (0.903545437039038,0.903545437039038,0.903545437039038, 1.0)
-		PrincipledBSDF_SubsurfaceIOR("SubsurfaceIOR", float) = 1.399999976158142
-		PrincipledBSDF_SubsurfaceAnisotropy("SubsurfaceAnisotropy", float) = 0.0
-		PrincipledBSDF_Metallic("Metallic", float) = 0.0
-		PrincipledBSDF_Specular("Specular", float) = 0.5
-		PrincipledBSDF_SpecularTint("SpecularTint", float) = 0.0
-		PrincipledBSDF_Roughness("Roughness", float) = 0.0
-		PrincipledBSDF_Anisotropic("Anisotropic", float) = 0.0
-		PrincipledBSDF_AnisotropicRotation("AnisotropicRotation", float) = 0.0
-		PrincipledBSDF_Sheen("Sheen", float) = 0.0
-		PrincipledBSDF_SheenTint("SheenTint", float) = 0.5
-		PrincipledBSDF_Clearcoat("Clearcoat", float) = 0.0
-		PrincipledBSDF_ClearcoatRoughness("ClearcoatRoughness", float) = 0.029999999329447746
-		PrincipledBSDF_IOR("IOR", float) = 1.4500000476837158
-		PrincipledBSDF_Transmission("Transmission", float) = 0.0
-		PrincipledBSDF_TransmissionRoughness("TransmissionRoughness", float) = 0.0
-		PrincipledBSDF_Emission("Emission", Color) = (0.8480629440908062,0.0,1.0, 1.0)
-		PrincipledBSDF_EmissionStrength("EmissionStrength", float) = 19.299999237060547
-		PrincipledBSDF_Alpha("Alpha", float) = 1.0
-		PrincipledBSDF_Normal("Normal", Vector) = (0.0, 0.0, 0.0)
-		PrincipledBSDF_ClearcoatNormal("ClearcoatNormal", Vector) = (0.0, 0.0, 0.0)
-		PrincipledBSDF_Tangent("Tangent", Vector) = (0.0, 0.0, 0.0)
-		PrincipledBSDF_Weight("Weight", float) = 0.0
-		// Add properties
+        _BaseColor("Base Color", Color) = (1,1,1,1)
+        _BaseTex("Base Texture", 2D) = "white" {}
+        _MetallicTex("Metallic Map", 2D) = "white" {}
+        _MetallicStrength("Metallic Strength", Range(0, 1)) = 0
+        _Smoothness("Smoothness", Range(0, 1)) = 0.5
+        _NormalTex("Normal Map", 2D) = "bump" {}
+        _NormalStrength("Normal Strength", Float) = 1
+        [Toggle(USE_EMISSION_ON)] _EmissionOn("Use Emission?", Float) = 0
+        _EmissionTex("Emission Map", 2D) = "white" {}
+        [HDR] _EmissionColor("Emission Color", Color) = (0, 0, 0, 0)
+        _AOTex("Ambient Occlusion Map", 2D) = "white" {}
     }
 
     SubShader
@@ -45,112 +29,156 @@ Shader "Custom/Shaderchequ_"
 
             //Aqui importamos el archivo donde tenemos las funciones que 
             //queremos usar para evitar calcular nosotras la iluminacion
-            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"            
-
+              
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma multi_compile_local USE_EMISSION_ON __
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE_MAIN_LIGHT_SHADOWS_SCREEN
+            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
+            #pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
+            #pragma multi_compile_fragment _ _REFLECTION_PROBE_BLENDING
+        
+            #pragma multi_compile_fragment _ _REFLECTION_PROBE_BOX_PROJECTION
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT
+            #pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
+            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
+            #pragma multi_compile _ SHADOWS_SHADOWMASK
+            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
+            #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile _ DYNAMICLIGHTMAP_ON
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"    
             //Datos de entrada en el vertex shader
             struct appdata
             {
-                float4 vertex : POSITION;
+                float4 positionOS : POSITION;
                 float2 uv : TEXCOORD0;
-                float4 normal : NORMAL;
-                float4 texcoord1 : TEXCOORD1; //Coordenadas para el baking de iluminación
+                float3 normalOS : NORMAL;
+                float4 tangentOS : TANGENT;
+                float2 staticLightmapUV : TEXCOORD1;
+                float2 dynamicLightmapUV : TEXCOORD2;
             };
             //Datos que se calculan en el vertex shader y se usan en el fragment shader
             struct v2f
             {
-                float4 vertex : SV_POSITION;
-                float2 uv : TEXCOORD0;
-                float3 positionWS : TEXCOORD1;
-                float3 normalWS : TEXCOORD2;
-                float3 viewDir : TEXCOORD3;
-                float3 worldPos : TEXCOORD4;
-                DECLARE_LIGHTMAP_OR_SH(lightmapUV, vertexSH, 5);
+            float4 positionCS : SV_POSITION;
+            float2 uv : TEXCOORD0;
+            float3 positionWS : TEXCOORD1;
+            float3 normalWS : TEXCOORD2;
+            float4 tangentWS : TEXCOORD3;
+            float3 viewDirWS : TEXCOORD4;
+            float4 shadowCoord : TEXCOORD5;
+            DECLARE_LIGHTMAP_OR_SH(staticLightmapUV, vertexSH, 6);
+            #ifdef DYNAMICLIGHTMAP_ON
+            float2  dynamicLightmapUV : TEXCOORD7;
+            #endif
             };
-
-            float4 PrincipledBSDF_BaseColor;
-			float PrincipledBSDF_Subsurface;
-			float3 PrincipledBSDF_SubsurfaceRadius;
-			float4 PrincipledBSDF_SubsurfaceColor;
-			float PrincipledBSDF_SubsurfaceIOR;
-			float PrincipledBSDF_SubsurfaceAnisotropy;
-			float PrincipledBSDF_Metallic;
-			float PrincipledBSDF_Specular;
-			float PrincipledBSDF_SpecularTint;
-			float PrincipledBSDF_Roughness;
-			float PrincipledBSDF_Anisotropic;
-			float PrincipledBSDF_AnisotropicRotation;
-			float PrincipledBSDF_Sheen;
-			float PrincipledBSDF_SheenTint;
-			float PrincipledBSDF_Clearcoat;
-			float PrincipledBSDF_ClearcoatRoughness;
-			float PrincipledBSDF_IOR;
-			float PrincipledBSDF_Transmission;
-			float PrincipledBSDF_TransmissionRoughness;
-			float4 PrincipledBSDF_Emission;
-			float PrincipledBSDF_EmissionStrength;
-			float PrincipledBSDF_Alpha;
-			float3 PrincipledBSDF_Normal;
-			float3 PrincipledBSDF_ClearcoatNormal;
-			float3 PrincipledBSDF_Tangent;
-			float PrincipledBSDF_Weight;
-			// Add variables
-
-            sampler2D _MainTex;
-            float4 _MainTex_ST=float4(0,0,0,0);
-
-            v2f vert(appdata v)
+         
+          
+        sampler2D _MetallicTex;
+        sampler2D _NormalTex;
+        sampler2D _EmissionTex;
+        sampler2D _AOTex;
+        sampler2D _BaseTex;
+        CBUFFER_START(UnityPerMaterial)
+        float4 _BaseColor;
+        float4 _BaseTex_ST;
+        float _MetallicStrength;
+        float _Smoothness;
+        float _NormalStrength;
+        float4 _EmissionColor;
+        CBUFFER_END
+            v2f vert (appdata v)
             {
                 v2f o;
-                o.worldPos = v.vertex.xyz;
-                o.positionWS = TransformObjectToWorld(v.vertex.xyz);
-                o.normalWS = TransformObjectToWorldNormal(v.normal.xyz);
-                o.viewDir = normalize(_WorldSpaceCameraPos - o.positionWS);
-                o.uv = v.uv;
-                o.vertex = TransformWorldToHClip(o.positionWS);
+                VertexPositionInputs vertexInput = GetVertexPositionInputs(v.
+                positionOS.xyz);
+                VertexNormalInputs normalInput = GetVertexNormalInputs(v.normalOS, 
+                v.tangentOS);
+                o.positionWS = vertexInput.positionWS;
+                o.positionCS = vertexInput.positionCS;
+                o.uv = TRANSFORM_TEX(v.uv, _BaseTex);
+                o.normalWS = normalInput.normalWS;
+                float sign = v.tangentOS.w;
+                o.tangentWS = float4(normalInput.tangentWS.xyz, sign);
+                o.viewDirWS = GetWorldSpaceNormalizeViewDir(vertexInput.positionWS);
+                o.shadowCoord = GetShadowCoord(vertexInput);
+                OUTPUT_LIGHTMAP_UV(v.staticLightmapUV, unity_LightmapST, 
+                o.staticLightmapUV);
 
-                OUTPUT_LIGHTMAP_UV(v.texcoord1, unity_LightmapST, o.lightmapUV);
+                #ifdef DYNAMICLIGHTMAP_ON
+                v.dynamicLightmapUV = v.dynamicLightmapUV.xy * unity_
+                DynamicLightmapST.xy + unity_DynamicLightmapST.zw;
+                #endif
                 OUTPUT_SH(o.normalWS.xyz, o.vertexSH);
-
                 return o;
             }
-            
-            float4 principled_bsdf(v2f i, float4 PrincipledBSDF_BaseColor,float PrincipledBSDF_Subsurface, float3 PrincipledBSDF_SubsurfaceRadius, float4 PrincipledBSDF_SubsurfaceColor,float PrincipledBSDF_SubsurfaceIOR,float PrincipledBSDF_SubsurfaceAnisotropy,
-float PrincipledBSDF_Metallic, float PrincipledBSDF_Specular,float PrincipledBSDF_SpecularTint,float PrincipledBSDF_Roughness,float PrincipledBSDF_Anisotropic, float PrincipledBSDF_AnisotropicRotation,float PrincipledBSDF_Sheen, 
-float PrincipledBSDF_SheenTint,float PrincipledBSDF_Clearcoat,float PrincipledBSDF_ClearcoatRoughness,float PrincipledBSDF_IOR,float PrincipledBSDF_Transmission,float PrincipledBSDF_TransmissionRoughness,float4 PrincipledBSDF_Emission,
-float PrincipledBSDF_EmissionStrength,float PrincipledBSDF_Alpha, float3 PrincipledBSDF_Normal,float3 PrincipledBSDF_ClearcoatNormal, float3 PrincipledBSDF_Tangent, float PrincipledBSDF_Weight)
-            { 
-                InputData inputdata = (InputData)0;
-                inputdata.positionWS = i.positionWS;
-                inputdata.normalWS = normalize(i.normalWS); //Normalizarlo evita que la luz aparezca como "pixelada"
-                inputdata.viewDirectionWS = i.viewDir;
-                //bakedGI quiere decir baked global illumiation
-                inputdata.bakedGI = SAMPLE_GI(i.lightmapUV, i.vertexSH, inputdata.normalWS);
-
-                SurfaceData surfacedata;
-                surfacedata.albedo = PrincipledBSDF_BaseColor;
-                surfacedata.specular = 0;
-                surfacedata.metallic = clamp(PrincipledBSDF_Metallic,0,1);
-                surfacedata.smoothness = clamp(1-PrincipledBSDF_Roughness,0,1);
-                surfacedata.normalTS = 0;
-                PrincipledBSDF_Emission.rgb *= PrincipledBSDF_EmissionStrength;
-                surfacedata.emission = PrincipledBSDF_Emission;
-                surfacedata.occlusion = 1; //"Ambient occlusion"
-                surfacedata.alpha = 0;
-                surfacedata.clearCoatMask = 0;
-                surfacedata.clearCoatSmoothness = 0;
-
-                return UniversalFragmentPBR(inputdata, surfacedata);
-
+            SurfaceData createSurfaceData(v2f i)
+            {
+                SurfaceData surfaceData = (SurfaceData)0;
+                // Albedo output.
+                float4 albedoSample = tex2D(_BaseTex, i.uv);
+                surfaceData.albedo = albedoSample.rgb * _BaseColor.rgb;
+                // Metallic output.
+                float4 metallicSample = tex2D(_MetallicTex, i.uv);
+                surfaceData.metallic = metallicSample * _MetallicStrength;
+                // Smoothness output.
+                surfaceData.smoothness = _Smoothness;
+                // Normal output.
+                float3 normalSample = UnpackNormal(tex2D(_NormalTex, i.uv));
+                normalSample.rg *= _NormalStrength;
+                surfaceData.normalTS = normalSample;
+                // Emission output.
+                #if USE_EMISSION_ON
+                surfaceData.emission = tex2D(_EmissionTex, i.uv) * _EmissionColor;
+                #endif
+               
+                // Ambient Occlusion output.
+                float4 aoSample = tex2D(_AOTex, i.uv);
+                surfaceData.occlusion = aoSample.r;
+                // Alpha output.
+                surfaceData.alpha = albedoSample.a * _BaseColor.a;
+                return surfaceData;
             }
-			// Add methods
+            InputData createInputData(v2f i, float3 normalTS)
+            {
+                InputData inputData = (InputData)0;
+                // Position input.
+                inputData.positionWS = i.positionWS;
+                // Normal input.
+                float3 bitangent = i.tangentWS.w * cross(i.normalWS, 
+                i.tangentWS.xyz);
+                inputData.tangentToWorld = float3x3(i.tangentWS.xyz, bitangent, 
+                i.normalWS);
+                inputData.normalWS = TransformTangentToWorld(normalTS, inputData.
+                tangentToWorld);
+                inputData.normalWS = NormalizeNormalPerPixel(inputData.normalWS);
+                // View direction input.
+                inputData.viewDirectionWS = SafeNormalize(i.viewDirWS);
+                // Shadow coords.
+                inputData.shadowCoord = TransformWorldToShadowCoord 
+                (inputData .positionWS);
+                // Baked lightmaps.
+                #if defined(DYNAMICLIGHTMAP_ON)
+                inputData.bakedGI = SAMPLE_GI(i.staticLightmapUV, 
+                i.dynamicLightmapUV, i.vertexSH, inputData.normalWS);
+             
+                #else
+                inputData.bakedGI = SAMPLE_GI(i.staticLightmapUV, i.vertexSH, 
+                inputData.normalWS);
+                #endif
+                inputData.normalizedScreenSpaceUV = GetNormalizedScreenSpaceUV(i.
+                positionCS);
+                inputData.shadowMask = SAMPLE_SHADOWMASK(i.staticLightmapUV);
+                return inputData;
+            }
             float4 frag (v2f i) : SV_Target
             {
 
-                float4 MaterialOutput_Surface = principled_bsdf(i, PrincipledBSDF_BaseColor, PrincipledBSDF_Subsurface, PrincipledBSDF_SubsurfaceRadius, PrincipledBSDF_SubsurfaceColor, PrincipledBSDF_SubsurfaceIOR, PrincipledBSDF_SubsurfaceAnisotropy, PrincipledBSDF_Metallic, PrincipledBSDF_Specular, PrincipledBSDF_SpecularTint, PrincipledBSDF_Roughness, PrincipledBSDF_Anisotropic, PrincipledBSDF_AnisotropicRotation, PrincipledBSDF_Sheen, PrincipledBSDF_SheenTint, PrincipledBSDF_Clearcoat, PrincipledBSDF_ClearcoatRoughness, PrincipledBSDF_IOR, PrincipledBSDF_Transmission, PrincipledBSDF_TransmissionRoughness, PrincipledBSDF_Emission, PrincipledBSDF_EmissionStrength, PrincipledBSDF_Alpha, PrincipledBSDF_Normal, PrincipledBSDF_ClearcoatNormal, PrincipledBSDF_Tangent, PrincipledBSDF_Weight);
-				// Call methods
-                //half4 col = tex2D(_MainTex, i.uv);
+              
                 
-                return MaterialOutput_Surface;
+                SurfaceData surfaceData = createSurfaceData(i);
+                InputData inputData = createInputData(i, surfaceData.normalTS);
+                return UniversalFragmentPBR(inputData, surfaceData);
                 
             }
             ENDHLSL
