@@ -2,6 +2,7 @@ Shader "Custom/ColorShader"
 {
      Properties
     {
+        _NormalTex("Normal Map", 2D) = "bump" {}
         // Add properties
         _SrcFactor("SrcFactor", Float) = 5
         _DstFactor("DstFactor", Float) = 10
@@ -22,45 +23,60 @@ Shader "Custom/ColorShader"
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-
+          
             //Add includes 
             //Datos de entrada en el vertex shader
             struct appdata
             {
-                float4 vertex : POSITION;
+                float4 positionOS : POSITION;
                 float2 uv : TEXCOORD0;
-                float4 normal : NORMAL;
-                float4 texcoord1 : TEXCOORD1; //Coordenadas para el baking de iluminación
+                float3 normalOS : NORMAL;
+                float4 tangentOS : TANGENT;
+                float2 staticLightmapUV : TEXCOORD1;
+                float2 dynamicLightmapUV : TEXCOORD2;
             };
             //Datos que se calculan en el vertex shader y se usan en el fragment shader
             struct v2f
             {
-                float4 vertex : SV_POSITION;
+                float4 positionCS : SV_POSITION;
                 float2 uv : TEXCOORD0;
                 float3 positionWS : TEXCOORD1;
                 float3 normalWS : TEXCOORD2;
-                float3 viewDir : TEXCOORD3;
-                float3 worldPos : TEXCOORD4;
-                DECLARE_LIGHTMAP_OR_SH(lightmapUV, vertexSH, 5);
+                float4 tangentWS : TEXCOORD3;
+                float3 viewDirWS : TEXCOORD4;
+                float4 shadowCoord : TEXCOORD5;
+                DECLARE_LIGHTMAP_OR_SH(staticLightmapUV, vertexSH, 6);
+                #ifdef DYNAMICLIGHTMAP_ON
+                float2  dynamicLightmapUV : TEXCOORD7;
+                #endif
             };
 
             // Add variables
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
-
+    
+            sampler2D _NormalTex;
             v2f vert(appdata v)
             {
                 v2f o;
-                o.worldPos = v.vertex.xyz;
-                o.positionWS = TransformObjectToWorld(v.vertex.xyz);
-                o.normalWS = TransformObjectToWorldNormal(v.normal.xyz);
-                o.viewDir = normalize(_WorldSpaceCameraPos - o.positionWS);
+                VertexPositionInputs vertexInput = GetVertexPositionInputs(v.
+                positionOS.xyz);
+                VertexNormalInputs normalInput = GetVertexNormalInputs(v.normalOS, 
+                v.tangentOS);
+                o.positionWS = vertexInput.positionWS;
+                o.positionCS = vertexInput.positionCS;
                 o.uv = v.uv;
-                o.vertex = TransformWorldToHClip(o.positionWS);
+                o.normalWS = normalInput.normalWS;
+                float sign = v.tangentOS.w;
+                o.tangentWS = float4(normalInput.tangentWS.xyz, sign);
+                o.viewDirWS = GetWorldSpaceNormalizeViewDir(vertexInput.positionWS);
+                o.shadowCoord = GetShadowCoord(vertexInput);
+                OUTPUT_LIGHTMAP_UV(v.staticLightmapUV, unity_LightmapST, 
+                o.staticLightmapUV);
 
-                OUTPUT_LIGHTMAP_UV(v.texcoord1, unity_LightmapST, o.lightmapUV);
+                #ifdef DYNAMICLIGHTMAP_ON
+                v.dynamicLightmapUV = v.dynamicLightmapUV.xy * unity_
+                DynamicLightmapST.xy + unity_DynamicLightmapST.zw;
+                #endif
                 OUTPUT_SH(o.normalWS.xyz, o.vertexSH);
-
                 return o;
             }
             
@@ -69,7 +85,7 @@ Shader "Custom/ColorShader"
             {
 
                 // Call methods
-                //half4 col = tex2D(_MainTex, i.uv);
+              
                 
                 return MaterialOutput_Surface;
                 

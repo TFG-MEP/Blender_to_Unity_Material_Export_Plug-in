@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: chequ
-  m_Shader: {fileID: 4800000, guid: ca2e13f074d540e8a32d87f17b8ad2b3, type: 3}
+  m_Name: Material
+  m_Shader: {fileID: 4800000, guid: e86ca85fbd4140eebb0db9d0d13f5ff5, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -23,29 +23,9 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - ImageTexture_Image:
-        m_Texture: {fileID: 2800000, guid: b7db16a1c1709f744a39053376505a4f, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _AOTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _BaseTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 2, y: 2}
-        m_Offset: {x: 0, y: 0}
-    - _EmissionTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 2}
-        m_Offset: {x: 0, y: 0}
-    - _MetallicTex:
-        m_Texture: {fileID: 2800000, guid: f0e57b091159335439f48a958e284d95, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _NormalTex:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 2, y: 2}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
@@ -54,10 +34,10 @@ Material:
     - PrincipledBSDF_AnisotropicRotation: 0
     - PrincipledBSDF_Clearcoat: 0
     - PrincipledBSDF_ClearcoatRoughness: 0.03
-    - PrincipledBSDF_EmissionStrength: 0
+    - PrincipledBSDF_EmissionStrength: 1
     - PrincipledBSDF_IOR: 1.45
     - PrincipledBSDF_Metallic: 0
-    - PrincipledBSDF_Roughness: 1
+    - PrincipledBSDF_Roughness: -0.73
     - PrincipledBSDF_Sheen: 0
     - PrincipledBSDF_SheenTint: 0.5
     - PrincipledBSDF_Specular: 0.5
@@ -68,18 +48,12 @@ Material:
     - PrincipledBSDF_Transmission: 0
     - PrincipledBSDF_TransmissionRoughness: 0
     - PrincipledBSDF_Weight: 0
-    - _EmissionOn: 0
-    - _MetallicStrength: 0
-    - _NormalStrength: 1.06
-    - _Smoothness: 0.627
     m_Colors:
     - PrincipledBSDF_BaseColor: {r: 0.90354544, g: 0.90354544, b: 0.90354544, a: 1}
     - PrincipledBSDF_ClearcoatNormal: {r: 0, g: 0, b: 0, a: 1}
-    - PrincipledBSDF_Emission: {r: 0.84806293, g: 0, b: 1, a: 1}
+    - PrincipledBSDF_Emission: {r: 0, g: 0, b: 0, a: 1}
     - PrincipledBSDF_Normal: {r: 0, g: 0, b: 0, a: 1}
     - PrincipledBSDF_SubsurfaceColor: {r: 0.90354544, g: 0.90354544, b: 0.90354544, a: 1}
     - PrincipledBSDF_SubsurfaceRadius: {r: 1, g: 0.2, b: 0.1, a: 1}
     - PrincipledBSDF_Tangent: {r: 0, g: 0, b: 0, a: 1}
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 0.56765074, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

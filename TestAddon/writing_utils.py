@@ -12,10 +12,10 @@ def write_include(include_file_path, shader_content):
         str: Updated shader template with the HLSL method and its call.
     """
     with open(include_file_path, "r") as include_file:
-      # Dividir el texto utilizando expresiones regulares para capturar los #include
+     
         includes = re.findall(r'#include\s*"[^"]+"', include_file.read())
 
-        # Limpiar cada include para quitar espacios adicionales y caracteres de nueva línea
+        #Clean every include and assure that ther are not two equal
         includes = [re.sub(r'\s+', ' ', include.strip().replace('\n', '')) for include in includes]
         includes = [include.replace(' ', '') for include in includes]
         for include in includes:
@@ -23,6 +23,16 @@ def write_include(include_file_path, shader_content):
                 get_common_values().added_includes.add(include)
                 include_index = shader_content.find("//Add includes ")
                 shader_content = shader_content[:include_index] + include + "\n\t\t\t" + shader_content[include_index:]
+        pragmas = re.findall(r'#pragma\s*"[^"]+"', include_file.read())
+
+       #Clean every pragma and assure that ther are not two equal
+        pragmas = [re.sub(r'\s+', ' ', define.strip().replace('\n', '')) for define in pragmas]
+        pragmas = [pragma.replace(' ', '') for pragma in pragmas]
+        for define in pragmas:
+            if define not in get_common_values().added_includes:
+                get_common_values().added_includes.add(define)
+                pragma_index = shader_content.find("//Add includes ")
+                shader_content = shader_content[:pragma_index] + define + "\n\t\t\t" + shader_content[pragma_index:]
     return shader_content
           
 def write_node(function_file_path, function_parameters, destination_node, destination_property, shader_content) : 
