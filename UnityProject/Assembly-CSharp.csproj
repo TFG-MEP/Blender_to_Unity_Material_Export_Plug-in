@@ -67,6 +67,7 @@
   <ItemGroup>
     <None Include="Assets\Materials\aaa\waveTexture.shader" />
     <None Include="Assets\Shaders\Oro_0.shader" />
+    <None Include="Assets\Shaders\NuevosShaders\CristalAlfa.shader" />
     <None Include="Assets\Shaders\WaveTexture 1.shader" />
     <None Include="Assets\Shaders\NuevosShaders\EsferaLitPaula.shader" />
     <None Include="Assets\Shaders\CelShading.shader" />
@@ -88,7 +89,6 @@
     <None Include="Assets\Shaders\VoronaiTetxture.shader" />
     <None Include="Assets\Shaders\ColorRamp.shader" />
     <None Include="Assets\Shaders\Celshade.shader" />
-    <None Include="Assets\Shaders\NuevosShaders\CristalAlfa.shader" />
     <None Include="Assets\Materials\bbb\chequ.shader" />
     <None Include="Assets\Shaders\NormalVectors.shader" />
     <None Include="Assets\Materials\qqqq\Material.shader" />

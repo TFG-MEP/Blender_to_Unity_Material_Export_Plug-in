@@ -24,7 +24,7 @@ Shader "Custom/ShaderCristalAlfa_"
 		PrincipledBSDF001_TransmissionRoughness("TransmissionRoughness", float) = 0.0
 		PrincipledBSDF001_Emission("Emission", Color) = (0.0,0.0,0.0, 1.0)
 		PrincipledBSDF001_EmissionStrength("EmissionStrength", float) = 1.0
-		PrincipledBSDF001_Alpha("Alpha", float) = 1.0
+		PrincipledBSDF001_Alpha("Alpha", float) = 0.5127273201942444
 		PrincipledBSDF001_Normal("Normal", Vector) = (0.0, 0.0, 0.0)
 		PrincipledBSDF001_ClearcoatNormal("ClearcoatNormal", Vector) = (0.0, 0.0, 0.0)
 		PrincipledBSDF001_Tangent("Tangent", Vector) = (0.0, 0.0, 0.0)
@@ -39,7 +39,8 @@ Shader "Custom/ShaderCristalAlfa_"
     {
 
         Tags { "RenderType" = "Opaque" "RenderPipeline" = "UniversalRenderPipeline"}
-        // Add tags
+        Tags{ "Queue" = "Transparent" }
+		// Add tags
 
         LOD 100
         Blend [_SrcFactor] [_DstFactor]
