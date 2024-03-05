@@ -6,6 +6,7 @@ class CommonValues() :
         self.imagesMap = {}
         self.added_functions = set()
         self.added_includes = set()
+        self.added_tags= set()
         self.MaterialOutput_Surface_added = False
 
     def clear_common_variables(self) : 
@@ -14,6 +15,7 @@ class CommonValues() :
         self.imagesMap = {}
         self.added_functions = set()
         self.added_includes = set()
+        self.added_tags= set()
         self.MaterialOutput_Surface_added = False
 
 

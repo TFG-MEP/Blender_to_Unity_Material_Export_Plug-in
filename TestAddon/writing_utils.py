@@ -177,19 +177,20 @@ def write_property(line, shader_content) :
 
     return shader_content
 
-def write_tags(line, shader_content) : 
+def write_tags(tag_file_path, shader_content) : 
     """
     Adds a line to the shader templates tags section
-
-    Args:
-        line (str) : line that contains the tag that must be written
-        shader_content (str) : current shader template content
-
-    Returns:
-        str: Updated shader template with the written tag
     """
-    shader_content = shader_content.replace("// Add tags", line)
-
+ 
+    with open(tag_file_path, "r") as tag_file:
+        tags = re.findall(r'Tags\{\s*"[^"]*"\s*=\s*"[^"]*"\s*\}', tag_file.read())
+        
+        for tag in tags:
+            if tag not in get_common_values().added_tags:
+                get_common_values().added_tags.add(tag)
+                tags_index = shader_content.find("// Add tags")
+                shader_content = shader_content[:tags_index] + tag + "\n\t\t" + shader_content[tags_index:]
+        
     return shader_content
 
 def write_variable(line, shader_content) : 

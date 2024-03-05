@@ -19,6 +19,6 @@ class PrincipledBSDFNode(Strategy):
         print(f'node.inputs["Alpha"].default_value: {node.inputs["Alpha"].default_value}')
         
         if node.inputs['Alpha'].default_value < 1:
-            shader_content=write_tags(f'Tags{{ "Queue" = "Transparent" }}\n\t\t', shader_content)
+            shader_content=write_tags("HLSLTemplates/BSDF/principled_bsdf_tags.txt", shader_content)
         
         return shader_content
