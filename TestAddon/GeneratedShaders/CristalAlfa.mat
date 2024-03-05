@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: CristalAlfa
-  m_Shader: {fileID: 4800000, guid: 01f263809fe24dac83802c9e8565d633, type: 3}
+  m_Shader: {fileID: 4800000, guid: 5a418a6d4f234999ba78d004f2104a13, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []

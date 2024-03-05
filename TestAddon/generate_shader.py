@@ -136,6 +136,9 @@ def generate(destination_directory):
     selected_object = bpy.context.active_object
     material = selected_object.active_material
     material.use_nodes = True # ¿?
+    #------------------------------------------------------BLENDING MODE?
+    get_common_values().blending_mode = material.blend_method
+    print(f'Blending mode: {get_common_values().blending_mode}')
     node_tree = material.node_tree
     nodes = node_tree.nodes
     # TODO : Qué pasa si hay más de un Material Output?

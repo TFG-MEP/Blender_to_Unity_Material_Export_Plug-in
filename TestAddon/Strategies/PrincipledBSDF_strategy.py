@@ -18,7 +18,10 @@ class PrincipledBSDFNode(Strategy):
         
         print(f'node.inputs["Alpha"].default_value: {node.inputs["Alpha"].default_value}')
         
-        if node.inputs['Alpha'].default_value < 1:
-            shader_content=write_tags("HLSLTemplates/BSDF/principled_bsdf_tags.txt", shader_content)
+        if get_common_values().blending_mode == 'BLEND':
+                if node.inputs['Alpha'].default_value < 1:
+                    shader_content=write_tags("HLSLTemplates/BSDF/principled_bsdf_tags.txt", shader_content)
+        else:
+            shader_content=shader_content.replace("clamp(PrincipledBSDF_Alpha,0,1)", "1")
         
         return shader_content
