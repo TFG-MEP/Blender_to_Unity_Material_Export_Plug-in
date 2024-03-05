@@ -12,8 +12,8 @@ Shader "Custom/ColorShader"
     {
 
         Tags { "RenderType" = "Opaque" "RenderPipeline" = "UniversalRenderPipeline"}
-        //Add tags
-        
+        // Add tags
+
         LOD 100
         Blend [_SrcFactor] [_DstFactor]
         BlendOp [_BlendOp]

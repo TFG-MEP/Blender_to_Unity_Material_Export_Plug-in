@@ -29,14 +29,21 @@ Shader "Custom/ShaderTransparencia_"
 		PrincipledBSDF_Tangent("Tangent", Vector) = (0.0, 0.0, 0.0)
 		PrincipledBSDF_Weight("Weight", float) = 0.0
 		// Add properties
+        _SrcFactor("SrcFactor", Float) = 5
+        _DstFactor("DstFactor", Float) = 10
+        _BlendOp("Blend Operation", Float) = 0
     }
 
     SubShader
     {
 
-        Tags { "RenderType" = "Opaque" "RenderPipeline" = "UniversalRenderPipeline" }
-        LOD 100
+        Tags { "RenderType" = "Opaque" "RenderPipeline" = "UniversalRenderPipeline"}
+        Tags{ "Queue" = "Transparent" }
+		
 
+        LOD 100
+        Blend [_SrcFactor] [_DstFactor]
+        BlendOp [_BlendOp]
         Pass
         {
             HLSLPROGRAM
@@ -132,7 +139,7 @@ float PrincipledBSDF_EmissionStrength,float PrincipledBSDF_Alpha, float3 Princip
                 PrincipledBSDF_Emission.rgb *= PrincipledBSDF_EmissionStrength;
                 surfacedata.emission = PrincipledBSDF_Emission;
                 surfacedata.occlusion = 1; //"Ambient occlusion"
-                surfacedata.alpha = 0;
+                surfacedata.alpha = PrincipledBSDF_Alpha;
                 surfacedata.clearCoatMask = 0;
                 surfacedata.clearCoatSmoothness = 0;
 

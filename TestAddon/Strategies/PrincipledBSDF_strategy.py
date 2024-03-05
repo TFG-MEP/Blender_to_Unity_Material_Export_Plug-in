@@ -15,5 +15,10 @@ class PrincipledBSDFNode(Strategy):
             input_property = link.to_socket
 
             shader_content = write_node("HLSLTemplates/BSDF/principled_bsdf.txt", node_properties, input_node , input_property, shader_content)
-
+        
+        print(f'node.inputs["Alpha"].default_value: {node.inputs["Alpha"].default_value}')
+        
+        if node.inputs['Alpha'].default_value < 1:
+            shader_content=write_tags(f'Tags{{ "Queue" = "Transparent" }}\n\t\t', shader_content)
+        
         return shader_content

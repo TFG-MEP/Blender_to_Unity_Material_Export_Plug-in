@@ -38,7 +38,9 @@ Shader "Custom/ShaderTransparencia_"
     {
 
         Tags { "RenderType" = "Opaque" "RenderPipeline" = "UniversalRenderPipeline"}
-        Tags {"Queue" = "Transparent"}
+        Tags{ "Queue" = "Transparent" }
+		
+
         LOD 100
         Blend [_SrcFactor] [_DstFactor]
         BlendOp [_BlendOp]

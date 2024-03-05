@@ -43,7 +43,6 @@ Shader "Custom/Shaderchequ_"
         Pass
         {
             HLSLPROGRAM
-            Blend SrcAlpha OneMinusSrcAlpha
 
             #pragma vertex vert
             #pragma fragment frag

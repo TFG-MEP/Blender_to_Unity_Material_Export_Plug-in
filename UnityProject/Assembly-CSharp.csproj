@@ -70,7 +70,6 @@
     <None Include="Assets\Shaders\Oro_0.shader" />
     <None Include="Assets\Shaders\WaveTexture 1.shader" />
     <None Include="Assets\Shaders\NuevosShaders\EsferaLitPaula.shader" />
-    <None Include="Assets\Shaders\NuevosShaders\Transparencia.shader" />
     <None Include="Assets\Shaders\CelShading.shader" />
     <None Include="Assets\Shaders\checker_material_.shader" />
     <None Include="Assets\Materials\bbb\Material.shader" />
@@ -96,6 +95,7 @@
     <None Include="Assets\Shaders\MyFirstShader.shader" />
     <None Include="Assets\Shaders\aaa.shader" />
     <None Include="Assets\Shaders\wavetexture.shader" />
+    <None Include="Assets\Shaders\NuevosShaders\Transparencia.shader" />
     <None Include="Assets\Materials\aaa\colorRamp.shader" />
   </ItemGroup>
   <ItemGroup>

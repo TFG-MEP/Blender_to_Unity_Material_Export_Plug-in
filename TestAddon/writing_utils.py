@@ -167,6 +167,21 @@ def write_property(line, shader_content) :
 
     return shader_content
 
+def write_tags(line, shader_content) : 
+    """
+    Adds a line to the shader templates tags section
+
+    Args:
+        line (str) : line that contains the tag that must be written
+        shader_content (str) : current shader template content
+
+    Returns:
+        str: Updated shader template with the written tag
+    """
+    shader_content = shader_content.replace("// Add tags", line)
+
+    return shader_content
+
 def write_variable(line, shader_content) : 
     """
     Adds a line to the shader templates variables section
