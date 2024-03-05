@@ -49,6 +49,7 @@ Shader "Custom/ColorShader"
                 #ifdef DYNAMICLIGHTMAP_ON
                 float2  dynamicLightmapUV : TEXCOORD7;
                 #endif
+                float3 worldPos : TEXCOORD8;
             };
 
             // Add variables
@@ -57,6 +58,7 @@ Shader "Custom/ColorShader"
             v2f vert(appdata v)
             {
                 v2f o;
+                o.worldPos = v.positionOS.xyz;
                 VertexPositionInputs vertexInput = GetVertexPositionInputs(v.
                 positionOS.xyz);
                 VertexNormalInputs normalInput = GetVertexNormalInputs(v.normalOS, 
