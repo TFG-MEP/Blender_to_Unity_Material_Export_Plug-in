@@ -19,7 +19,7 @@ float PrincipledBSDF_EmissionStrength,float PrincipledBSDF_Alpha, float3 Princip
                 PrincipledBSDF_Emission.rgb *= PrincipledBSDF_EmissionStrength;
                 surfacedata.emission = PrincipledBSDF_Emission;
                 surfacedata.occlusion = 1; //"Ambient occlusion"
-                surfacedata.alpha = 0;
+                surfacedata.alpha = PrincipledBSDF_Alpha;
                 surfacedata.clearCoatMask = 0;
                 surfacedata.clearCoatSmoothness = 0;
 

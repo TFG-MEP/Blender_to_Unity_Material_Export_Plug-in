@@ -3,14 +3,20 @@ Shader "Custom/ColorShader"
      Properties
     {
         // Add properties
+        _SrcFactor("SrcFactor", Float) = 5
+        _DstFactor("DstFactor", Float) = 10
+        _BlendOp("Blend Operation", Float) = 0
     }
 
     SubShader
     {
 
-        Tags { "RenderType" = "Opaque" "RenderPipeline" = "UniversalRenderPipeline" }
+        Tags { "RenderType" = "Opaque" "RenderPipeline" = "UniversalRenderPipeline"}
+        //Add tags
+        
         LOD 100
-
+        Blend [_SrcFactor] [_DstFactor]
+        BlendOp [_BlendOp]
         Pass
         {
             HLSLPROGRAM
