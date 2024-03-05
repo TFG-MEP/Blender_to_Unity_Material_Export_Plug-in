@@ -24,7 +24,6 @@ def write_include(include_file_path, shader_content):
                 include_index = shader_content.find("//Add includes ")
                 shader_content = shader_content[:include_index] + include + "\n\t\t\t" + shader_content[include_index:]
     return shader_content
-
           
 def write_node(function_file_path, function_parameters, destination_node, destination_property, shader_content) : 
 
@@ -58,7 +57,7 @@ def write_node(function_file_path, function_parameters, destination_node, destin
     prop_type = blender_type_to_hlsl(destination_property.bl_label)
     # Remove any possible blanks from the name
     destination_node = destination_node.name.replace(" ", "")
-    destination_property = destination_property.name.replace(" ", "")
+    destination_property = destination_property.identifier.replace(" ", "")
     # Name of the file minus extension (must be the same as the name of the hlsl function)
     function_name = function_file_path.rsplit('/', 1)[-1]
     dot_index = function_name.find('.')
@@ -113,7 +112,7 @@ def process_property(input_socket, node_name, node_type, shader_content):
         str: Updated shader template with the processed property
     """
 
-    prop_name = input_socket.name
+    prop_name = input_socket.identifier
     prop_label = input_socket.bl_label
 
     # Ignore specific properties or specific node types
@@ -128,7 +127,7 @@ def process_property(input_socket, node_name, node_type, shader_content):
     # Manage "Shader" properties
     if prop_label == 'Shader' : # These properties will be determined by another node
         name = f'float4 {node_name}_{prop_name}'
-        value = " = float4(0.0, 0.0, 0.0, 1.0)"
+        value = " = float4(0.0, 0.0, 0.0, 1.0);"
         line = name + value
         shader_content = write_variable(line, shader_content)
         return shader_content

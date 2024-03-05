@@ -9,8 +9,6 @@ class PrincipledBSDFNode(Strategy):
 
         node_properties.insert(0, 'i')
         
-        shader_content=write_include("HLSLTemplates/BSDF/principled_bsdf_includes.txt",shader_content)
-
         for link in node.outputs["BSDF"].links :
 
             input_node = link.to_node

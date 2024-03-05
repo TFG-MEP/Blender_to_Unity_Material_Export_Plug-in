@@ -59,15 +59,18 @@ def iterate_node(node, shader_content):
 
     print ("Iterating through node: " + node.type + "\n")
     
+    # List of property names in this node
     node_properties = []
 
     for input_socket in node.inputs :
 
         # Store each read property
-        socket_name = input_socket.name.replace(" ", "")
+        socket_name = input_socket.identifier.replace(" ", "")
         socket_name = socket_name.replace(".", "")
-        node_properties.append(node_name + "_" + socket_name)
-       
+        property_name = node_name + "_" + socket_name
+
+        node_properties.append(property_name)
+
         if input_socket.is_linked : # If connected to another node, iterate through it
             # input_socket.links[0] indicates that we are only working with one connection 
             # per property/input. If there were more (Blender does not allow this for the 
@@ -125,7 +128,11 @@ def generate(destination_directory):
 
     # Copy the template to work with it
     shader_content = template_shader
-            
+    
+    # Needed include to work with the template
+    # TODO : revisar pq la plantilla necesita el include
+    shader_content = write_include("HLSLTemplates/BSDF/principled_bsdf_includes.txt",shader_content)
+
     selected_object = bpy.context.active_object
     material = selected_object.active_material
     material.use_nodes = True # ¿?
@@ -152,7 +159,7 @@ def generate(destination_directory):
     print(f"{shader_filename} file successfully generated.")
     print("Process finished.")
 
-    if (get_common_values().MaterialOutput_Surface_added == False) :
+    if (get_common_values().MaterialOutput_Surface_added == False) : # TODO : comprobar que esto se imprime bien
         print("ERROR: You must use a Material Output node with something connected to Surface.")
     
     return material.name, get_common_values().imagesMap

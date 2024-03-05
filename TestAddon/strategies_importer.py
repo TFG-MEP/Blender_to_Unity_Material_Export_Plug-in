@@ -10,6 +10,7 @@ from .Strategies.Mapping_strategy import MappingNode
 from .Strategies.Value_strategy import ValueNode
 from .Strategies.TextureCoordinate_strategy import TextureCoordinateNode
 from .Strategies.Default_strategy import DefaultNode
+from .Strategies.MixShader_strategy import MixShaderNode
 
 # Import all new strategies implemented in the Strategies Directory
 
@@ -23,5 +24,6 @@ node_type_strategy_map = {
     'TEX_IMAGE': ImageTextureNode(),
     'TEX_COORD': TextureCoordinateNode(),
     'MAPPING': MappingNode(),
-    'TEX_CHECKER': CheckerNode()
+    'TEX_CHECKER': CheckerNode(),
+    'ADD_SHADER' : MixShaderNode()
 }
