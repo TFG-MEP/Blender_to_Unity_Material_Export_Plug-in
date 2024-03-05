@@ -2,7 +2,7 @@ Shader "Custom/ShaderTransparencia_"
 {
      Properties
     {
-        PrincipledBSDF_BaseColor("BaseColor", Color) = (0.9035454676387557,0.5070301183665115,0.20972211676247451, 1.0)
+        PrincipledBSDF_BaseColor("BaseColor", Color) = (0.09796343131603392,0.9035454676387557,0.13197893350933487, 1.0)
 		PrincipledBSDF_Subsurface("Subsurface", float) = 0.0
 		PrincipledBSDF_SubsurfaceRadius("SubsurfaceRadius", Vector) = (1.0, 0.20000000298023224, 0.10000000149011612)
 		PrincipledBSDF_SubsurfaceColor("SubsurfaceColor", Color) = (0.903545437039038,0.903545437039038,0.903545437039038, 1.0)
@@ -139,7 +139,7 @@ float PrincipledBSDF_EmissionStrength,float PrincipledBSDF_Alpha, float3 Princip
                 PrincipledBSDF_Emission.rgb *= PrincipledBSDF_EmissionStrength;
                 surfacedata.emission = PrincipledBSDF_Emission;
                 surfacedata.occlusion = 1; //"Ambient occlusion"
-                surfacedata.alpha = PrincipledBSDF_Alpha;
+                surfacedata.alpha = clamp(PrincipledBSDF_Alpha,0,1);
                 surfacedata.clearCoatMask = 0;
                 surfacedata.clearCoatSmoothness = 0;
 
