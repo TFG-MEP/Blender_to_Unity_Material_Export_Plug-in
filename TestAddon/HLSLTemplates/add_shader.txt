@@ -1,3 +1,3 @@
-float4 mix_shader(float4 shader1, float4 shader2) {
+float4 add_shader(float4 shader1, float4 shader2) {
                 return shader1+shader2;
             }
