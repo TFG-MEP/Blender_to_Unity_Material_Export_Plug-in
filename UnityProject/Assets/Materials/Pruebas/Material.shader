@@ -29,6 +29,7 @@ Shader "Custom/ShaderMaterial_"
 		PrincipledBSDF_Alpha("Alpha", float) = 1.0
 		NormalMap_Strength("Strength", float) = 10.0
 		ImageTexture001_Image("Texture", 2D) = "white" {}
+        PrincipledBSDF_Normal("ClearcoatNormal", Vector) = (0.0, 0.0, 0.0)
 		PrincipledBSDF_ClearcoatNormal("ClearcoatNormal", Vector) = (0.0, 0.0, 0.0)
 		PrincipledBSDF_Tangent("Tangent", Vector) = (0.0, 0.0, 0.0)
 		PrincipledBSDF_Weight("Weight", float) = 0.0
@@ -110,6 +111,7 @@ Shader "Custom/ShaderMaterial_"
 			sampler2D ImageTexture001_Image;
 			float3 PrincipledBSDF_ClearcoatNormal;
 			float3 PrincipledBSDF_Tangent;
+            float3 PrincipledBSDF_Normal;
 			float PrincipledBSDF_Weight;
 			// Add variables
     
@@ -234,22 +236,72 @@ SurfaceData surfacedata;
                 return UniversalFragmentPBR(inputData, surfacedata);
 
             }
+            float4 rgb_ramp_lookup(float4 ramp[3],int numcolors, float at, int interpolate, int extrapolate)
+            {
+              float f = at;
+              int table_size = numcolors;
+            
+              if ((f < 0.0 || f > 1.0) && extrapolate) {
+                float4 t0, dy;
+                if (f < 0.0) {
+                  t0 = ramp[0];
+                  dy = t0 - ramp[1];
+                  f = -f;
+                }
+                else {
+                  t0 = ramp[table_size - 1];
+                  dy = t0 - ramp[table_size - 2];
+                  f = f - 1.0;
+                }
+                return t0 + dy * f * (table_size - 1);
+              }
+            
+              f = clamp(at, 0.0, 1.0) * (table_size - 1);
+            
+              /* clamp int as well in case of NaN */
+              int i = (int)f;
+              if (i < 0)
+                i = 0;
+              if (i >= table_size)
+                i = table_size - 1;
+              float t = f - (float)i;
+            
+              float4 result = ramp[i];
+            
+              if (interpolate && t > 0.0)
+                result = (1.0 - t) * result + t * ramp[i + 1];
+            
+              return (result);
+            }
 			// Add methods
             float4 frag (v2f i) : SV_Target
             {
 
-                float3 CheckerTexture_Vector = i.worldPos;
-				float3 ImageTexture_Vector = float3(i.uv,0);
-				float4 CheckerTexture_Color2 = image_texture(ImageTexture_Vector, ImageTexture_Image);
-				float4 PrincipledBSDF_BaseColor = checker(CheckerTexture_Vector, CheckerTexture_Color1, CheckerTexture_Color2, CheckerTexture_Scale);
-				float3 ImageTexture001_Vector = float3(i.uv,0);
-				float4 NormalMap_Color = image_texture(ImageTexture001_Vector, ImageTexture001_Image);
-				float3 PrincipledBSDF_Normal = normal_map(NormalMap_Strength, NormalMap_Color);
-				float4 MaterialOutput_Surface = principled_bsdf(i, PrincipledBSDF_BaseColor, PrincipledBSDF_Subsurface, PrincipledBSDF_SubsurfaceRadius, PrincipledBSDF_SubsurfaceColor, PrincipledBSDF_SubsurfaceIOR, PrincipledBSDF_SubsurfaceAnisotropy, PrincipledBSDF_Metallic, PrincipledBSDF_Specular, PrincipledBSDF_SpecularTint, PrincipledBSDF_Roughness, PrincipledBSDF_Anisotropic, PrincipledBSDF_AnisotropicRotation, PrincipledBSDF_Sheen, PrincipledBSDF_SheenTint, PrincipledBSDF_Clearcoat, PrincipledBSDF_ClearcoatRoughness, PrincipledBSDF_IOR, PrincipledBSDF_Transmission, PrincipledBSDF_TransmissionRoughness, PrincipledBSDF_Emission, PrincipledBSDF_EmissionStrength, PrincipledBSDF_Alpha, PrincipledBSDF_Normal, PrincipledBSDF_ClearcoatNormal, PrincipledBSDF_Tangent, PrincipledBSDF_Weight);
-				// Call methods
-              
+                // float3 CheckerTexture_Vector = i.worldPos;
+				// float3 ImageTexture_Vector = float3(i.uv,0);
+				// float4 CheckerTexture_Color2 = image_texture(ImageTexture_Vector, ImageTexture_Image);
+				float4 PrincipledBSDF_BaseColor = (1,1,1,1);
                 
-                return MaterialOutput_Surface;
+                
+			// 	float3 ImageTexture001_Vector = float3(i.uv,0);
+			//  float4 NormalMap_Color = image_texture(ImageTexture001_Vector, ImageTexture001_Image);
+			// 	float3 PrincipledBSDF_Normal = normal_map(NormalMap_Strength, NormalMap_Color);
+				 float4 MaterialOutput_Surface = principled_bsdf(i, PrincipledBSDF_BaseColor, PrincipledBSDF_Subsurface, PrincipledBSDF_SubsurfaceRadius, PrincipledBSDF_SubsurfaceColor, PrincipledBSDF_SubsurfaceIOR, PrincipledBSDF_SubsurfaceAnisotropy, PrincipledBSDF_Metallic, PrincipledBSDF_Specular, PrincipledBSDF_SpecularTint, PrincipledBSDF_Roughness, PrincipledBSDF_Anisotropic, PrincipledBSDF_AnisotropicRotation, PrincipledBSDF_Sheen, PrincipledBSDF_SheenTint, PrincipledBSDF_Clearcoat, PrincipledBSDF_ClearcoatRoughness, PrincipledBSDF_IOR, PrincipledBSDF_Transmission, PrincipledBSDF_TransmissionRoughness, PrincipledBSDF_Emission, PrincipledBSDF_EmissionStrength, PrincipledBSDF_Alpha, PrincipledBSDF_Normal, PrincipledBSDF_ClearcoatNormal, PrincipledBSDF_Tangent, PrincipledBSDF_Weight);
+				// // Call methods
+                // float4 ramp[30];
+                // ramp[0]=float4(0,1,0,1);
+                // ramp[1]=float4(0,0.0,1,1);
+                // ramp[2]=float4(1,0.0,0,1);
+                
+                // return rgb_ramp_lookup(ramp,3, MaterialOutput_Surface, 1, 0);
+                float4 ramp[3];
+                ramp[0]=float4(0.232889,0.023822,0.1,1);
+                ramp[1]=float4(1,0.112,0.3289711,1);
+                ramp[2]=float4(0.879054,0.359305,0.696122,1);
+               
+                return rgb_ramp_lookup( ramp,3, MaterialOutput_Surface, 1, 0);
+                
+               
                 
             }
             ENDHLSL
