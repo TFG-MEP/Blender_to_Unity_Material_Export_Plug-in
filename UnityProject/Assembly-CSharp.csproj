@@ -68,6 +68,7 @@
     <None Include="Assets\Materials\aaa\waveTexture.shader" />
     <None Include="Assets\Materials\Pruebas2\Material.shader" />
     <None Include="Assets\Shaders\Oro_0.shader" />
+    <None Include="Assets\Shaders\ColorRamp\colorramp2.shader" />
     <None Include="Assets\Materials\qqqq\colorramp2.shader" />
     <None Include="Assets\Shaders\NuevosShaders\CristalAlfa.shader" />
     <None Include="Assets\Shaders\WaveTexture 1.shader" />
