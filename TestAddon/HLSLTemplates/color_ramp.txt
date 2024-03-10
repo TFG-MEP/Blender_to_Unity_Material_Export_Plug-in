@@ -5,7 +5,7 @@ float4 color_ramp( float at,int numcolors, int interpolate,float4 ramp[30],float
             
               f  = clamp(at, 0.0, 1.0) ;
               float4 result=ramp[0];
-              if(f>=pos[numcolors-1]){
+              if(numcolors>1&&f>=pos[numcolors-1]){
                   return ramp[numcolors-1];
               }
       

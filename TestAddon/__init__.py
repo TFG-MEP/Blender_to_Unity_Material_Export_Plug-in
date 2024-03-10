@@ -6,18 +6,19 @@ bl_info = {
 
 import os
 import bpy
-from bpy.props import StringProperty
+from bpy.props import StringProperty,BoolProperty
 from .exporter import export
 
 class GeneraShader(bpy.types.Operator):
     bl_idname = "object.generar_unity_material"
     bl_label = "Generate Material"
     filepath: StringProperty(subtype="FILE_PATH")
+    export_fbx: BoolProperty(name="Export FBX", default=False)
     # Aqui se determina qué ocurre al seleccionar esta opción del panel
     def execute(self, context):
         directory = os.path.dirname(self.filepath)
         print("Ruta seleccionada:", directory)
-        export(directory)
+        export(directory,self.export_fbx)
         return {'FINISHED'}
     def invoke(self, context, event):
         context.window_manager.fileselect_add(self)
@@ -34,6 +35,7 @@ class PT_Panel(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
         # Aqui se determina que aparece en el panel
+        
         layout.operator("object.generar_unity_material")
 
 def menu_func(self, context):
