@@ -1,4 +1,4 @@
-float4 rgb_ramp_lookup(float4 ramp[30],float pos[30],int numcolors, float at, int interpolate )
+float4 color_ramp( float at,int numcolors, int interpolate,float4 ramp[30],float pos[30] )
 {
               float f = at;
               int table_size = numcolors;

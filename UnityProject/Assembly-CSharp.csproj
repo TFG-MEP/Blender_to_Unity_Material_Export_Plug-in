@@ -76,6 +76,7 @@
     <None Include="Assets\Materials\bbb\Material.shader" />
     <None Include="Assets\Shaders\TextureShader.shader" />
     <None Include="Assets\Shaders\NormalMat.shader" />
+    <None Include="Assets\Materials\Pruebas2\colorramp.shader" />
     <None Include="Assets\ShaderlabVSCode\ScriptTemplates\HLSL Shader-New HLSL Shader.hlsl.txt" />
     <None Include="Assets\Shaders\NuevosShaders\Transparencia.shader" />
     <None Include="Assets\Shaders\NuevosShaders\Oro.shader" />
@@ -83,6 +84,7 @@
     <None Include="Assets\Shaders\PruebaOro.shader" />
     <None Include="Assets\Materials\Pruebas\Material.shader" />
     <None Include="Assets\Shaders\prueba.shader" />
+    <None Include="Assets\Materials\bbb\textures\colorramp2.shader" />
     <None Include="Assets\Materials\aaa\voronai.shader" />
     <None Include="Assets\Free Stylized Skybox\ReadMe.txt" />
     <None Include="Assets\Shaders\Madera_0.shader" />

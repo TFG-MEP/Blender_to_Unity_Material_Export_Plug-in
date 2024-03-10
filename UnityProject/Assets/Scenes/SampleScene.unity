@@ -2014,7 +2014,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 05a0b7bb5ac1eb94285aa70f6ca9685b, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: f29e455ac56b1be46ac123af761fbc91, type: 2}
+      objectReference: {fileID: 2100000, guid: 2bd4889b8446d554198fef3915e952fd, type: 2}
     - target: {fileID: 919132149155446097, guid: 05a0b7bb5ac1eb94285aa70f6ca9685b, type: 3}
       propertyPath: m_Name
       value: melon (1)
@@ -2189,7 +2189,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 634f759d3e134317a567989e829299a5, type: 2}
+  - {fileID: 2100000, guid: 800426523cde420cbea13835f6f1eb1a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2228,7 +2228,7 @@ Transform:
   m_GameObject: {fileID: 2028441052}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.49, y: -0.77, z: 2.48}
+  m_LocalPosition: {x: 1.67, y: -0.77, z: 2.48}
   m_LocalScale: {x: 3.5544, y: 3.5544, z: 3.5544}
   m_ConstrainProportionsScale: 0
   m_Children: []
