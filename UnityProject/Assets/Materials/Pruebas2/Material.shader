@@ -3,7 +3,8 @@ Shader "Custom/ShaderMaterial_"
      Properties
     {
         _NormalTex("Normal Map", 2D) = "bump" {}
-        Mapping_Location("Location", Vector) = (0.0, 0.0, 0.0)
+        Value_Value("Value", float) = 0.5
+		Mapping_Location("Location", Vector) = (0.0, 0.0, 0.0)
 		Mapping_Rotation("Rotation", Vector) = (0.0, 0.0, 0.0)
 		Mapping_Scale("Scale", Vector) = (1.0, 1.0, 1.0)
 		ImageTexture002_Image("Texture", 2D) = "white" {}
@@ -29,15 +30,20 @@ Shader "Custom/ShaderMaterial_"
 		PrincipledBSDF_TransmissionRoughness("TransmissionRoughness", float) = 0.0
 		PrincipledBSDF_Emission("Emission", Color) = (0.0,0.0,0.0, 1.0)
 		PrincipledBSDF_EmissionStrength("EmissionStrength", float) = 0.5999984741210938
-		PrincipledBSDF_Alpha("Alpha", float) = 1.0
+		PrincipledBSDF_Alpha("Alpha", float) = 0.5475410223007202
 		PrincipledBSDF_Normal("Normal", Vector) = (0.0, 0.0, 0.0)
 		PrincipledBSDF_ClearcoatNormal("ClearcoatNormal", Vector) = (0.0, 0.0, 0.0)
 		PrincipledBSDF_Tangent("Tangent", Vector) = (0.0, 0.0, 0.0)
 		PrincipledBSDF_Weight("Weight", float) = 0.0
-		PrincipledBSDF001_BaseColor("BaseColor", Color) = (0.903545437039038,0.903545437039038,0.903545437039038, 1.0)
+		Mapping001_Location("Location", Vector) = (0.0, 0.0, 0.0)
+		Mapping001_Rotation("Rotation", Vector) = (0.0, 0.0, 0.0)
+		Mapping001_Scale("Scale", Vector) = (1.0, 1.0, 1.0)
+		RGB_Color("Color", Color) = (0.0,0.4457296297764638,0.37101218209711834, 1.0)
+		CheckerTexture001_Color2("Color2", Color) = (0.0,0.0,0.0, 1.0)
+		CheckerTexture001_Scale("Scale", float) = 5.0
 		PrincipledBSDF001_Subsurface("Subsurface", float) = 0.0
 		PrincipledBSDF001_SubsurfaceRadius("SubsurfaceRadius", Vector) = (1.0, 0.20000000298023224, 0.10000000149011612)
-		PrincipledBSDF001_SubsurfaceColor("SubsurfaceColor", Color) = (0.903545437039038,0.903545437039038,0.903545437039038, 1.0)
+		PrincipledBSDF001_SubsurfaceColor("SubsurfaceColor", Color) = (0.1772529709968061,0.24307256888881068,0.9035454676387557, 1.0)
 		PrincipledBSDF001_SubsurfaceIOR("SubsurfaceIOR", float) = 1.8159637451171875
 		PrincipledBSDF001_SubsurfaceAnisotropy("SubsurfaceAnisotropy", float) = 0.0
 		PrincipledBSDF001_Metallic("Metallic", float) = 0.3527272641658783
@@ -70,7 +76,8 @@ Shader "Custom/ShaderMaterial_"
     {
 
         Tags { "RenderType" = "Opaque" "RenderPipeline" = "UniversalRenderPipeline"}
-        // Add tags
+        Tags{ "Queue" = "Transparent" }
+		// Add tags
 
         LOD 100
         Blend [_SrcFactor] [_DstFactor]
@@ -110,7 +117,8 @@ Shader "Custom/ShaderMaterial_"
                 float3 worldPos : TEXCOORD8;
             };
 
-            float3 Mapping_Location;
+            float Value_Value;
+			float3 Mapping_Location;
 			float3 Mapping_Rotation;
 			float3 Mapping_Scale;
 			sampler2D ImageTexture002_Image;
@@ -141,7 +149,12 @@ Shader "Custom/ShaderMaterial_"
 			float3 PrincipledBSDF_ClearcoatNormal;
 			float3 PrincipledBSDF_Tangent;
 			float PrincipledBSDF_Weight;
-			float4 PrincipledBSDF001_BaseColor;
+			float3 Mapping001_Location;
+			float3 Mapping001_Rotation;
+			float3 Mapping001_Scale;
+			float4 RGB_Color;
+			float4 CheckerTexture001_Color2;
+			float CheckerTexture001_Scale;
 			float PrincipledBSDF001_Subsurface;
 			float3 PrincipledBSDF001_SubsurfaceRadius;
 			float4 PrincipledBSDF001_SubsurfaceColor;
@@ -197,7 +210,11 @@ Shader "Custom/ShaderMaterial_"
                 return o;
             }
             
-              float3 mapping( float3 vectore,float3 location, float3 rotation, float3 scale) {
+            float value(float input_value)
+            {
+                return input_value;
+            }
+			  float3 mapping( float3 vectore,float3 location, float3 rotation, float3 scale) {
     // Añade la ubicación para la traslación
     vectore += location;
 
@@ -304,22 +321,28 @@ float PrincipledBSDF_EmissionStrength,float PrincipledBSDF_Alpha, float3 Princip
                 return UniversalFragmentPBR(inputData, surfacedata);
 
             }
-			float4 add_shader(float4 shader1, float4 shader2) {
-                return shader1+shader2;
+			float4 mix_shader(float mixFactor, float4 shader1, float4 shader2) {
+		float clampedFactor = clamp(mixFactor, 0.0, 1.0);
+                return lerp(shader1, shader2, clampedFactor);
             }
 			// Add methods
             float4 frag (v2f i) : SV_Target
             {
 
-                float3 Mapping_Vector = i.worldPos;
+                float MixShader_Fac = value(Value_Value);
+				float3 Mapping_Vector = i.worldPos;
 				float3 CheckerTexture_Vector = mapping(Mapping_Vector, Mapping_Location, Mapping_Rotation, Mapping_Scale);
 				float3 ImageTexture002_Vector = float3(i.uv,0);
 				float4 CheckerTexture_Color1 = image_texture(ImageTexture002_Vector, ImageTexture002_Image);
 				float4 CheckerTexture_Color2 = rgb(RGB001_Color);
 				float4 PrincipledBSDF_BaseColor = checker(CheckerTexture_Vector, CheckerTexture_Color1, CheckerTexture_Color2, CheckerTexture_Scale);
-				float4 AddShader_Shader = principled_bsdf(i, PrincipledBSDF_BaseColor, PrincipledBSDF_Subsurface, PrincipledBSDF_SubsurfaceRadius, PrincipledBSDF_SubsurfaceColor, PrincipledBSDF_SubsurfaceIOR, PrincipledBSDF_SubsurfaceAnisotropy, PrincipledBSDF_Metallic, PrincipledBSDF_Specular, PrincipledBSDF_SpecularTint, PrincipledBSDF_Roughness, PrincipledBSDF_Anisotropic, PrincipledBSDF_AnisotropicRotation, PrincipledBSDF_Sheen, PrincipledBSDF_SheenTint, PrincipledBSDF_Clearcoat, PrincipledBSDF_ClearcoatRoughness, PrincipledBSDF_IOR, PrincipledBSDF_Transmission, PrincipledBSDF_TransmissionRoughness, PrincipledBSDF_Emission, PrincipledBSDF_EmissionStrength, PrincipledBSDF_Alpha, PrincipledBSDF_Normal, PrincipledBSDF_ClearcoatNormal, PrincipledBSDF_Tangent, PrincipledBSDF_Weight);
-				float4 AddShader_Shader_001 = principled_bsdf(i, PrincipledBSDF001_BaseColor, PrincipledBSDF001_Subsurface, PrincipledBSDF001_SubsurfaceRadius, PrincipledBSDF001_SubsurfaceColor, PrincipledBSDF001_SubsurfaceIOR, PrincipledBSDF001_SubsurfaceAnisotropy, PrincipledBSDF001_Metallic, PrincipledBSDF001_Specular, PrincipledBSDF001_SpecularTint, PrincipledBSDF001_Roughness, PrincipledBSDF001_Anisotropic, PrincipledBSDF001_AnisotropicRotation, PrincipledBSDF001_Sheen, PrincipledBSDF001_SheenTint, PrincipledBSDF001_Clearcoat, PrincipledBSDF001_ClearcoatRoughness, PrincipledBSDF001_IOR, PrincipledBSDF001_Transmission, PrincipledBSDF001_TransmissionRoughness, PrincipledBSDF001_Emission, PrincipledBSDF001_EmissionStrength, PrincipledBSDF001_Alpha, PrincipledBSDF001_Normal, PrincipledBSDF001_ClearcoatNormal, PrincipledBSDF001_Tangent, PrincipledBSDF001_Weight);
-				float4 MaterialOutput_Surface = add_shader(AddShader_Shader, AddShader_Shader_001);
+				float4 MixShader_Shader = principled_bsdf(i, PrincipledBSDF_BaseColor, PrincipledBSDF_Subsurface, PrincipledBSDF_SubsurfaceRadius, PrincipledBSDF_SubsurfaceColor, PrincipledBSDF_SubsurfaceIOR, PrincipledBSDF_SubsurfaceAnisotropy, PrincipledBSDF_Metallic, PrincipledBSDF_Specular, PrincipledBSDF_SpecularTint, PrincipledBSDF_Roughness, PrincipledBSDF_Anisotropic, PrincipledBSDF_AnisotropicRotation, PrincipledBSDF_Sheen, PrincipledBSDF_SheenTint, PrincipledBSDF_Clearcoat, PrincipledBSDF_ClearcoatRoughness, PrincipledBSDF_IOR, PrincipledBSDF_Transmission, PrincipledBSDF_TransmissionRoughness, PrincipledBSDF_Emission, PrincipledBSDF_EmissionStrength, PrincipledBSDF_Alpha, PrincipledBSDF_Normal, PrincipledBSDF_ClearcoatNormal, PrincipledBSDF_Tangent, PrincipledBSDF_Weight);
+				float3 Mapping001_Vector = i.worldPos;
+				float3 CheckerTexture001_Vector = mapping(Mapping001_Vector, Mapping001_Location, Mapping001_Rotation, Mapping001_Scale);
+				float4 CheckerTexture001_Color1 = rgb(RGB_Color);
+				float4 PrincipledBSDF001_BaseColor = checker(CheckerTexture001_Vector, CheckerTexture001_Color1, CheckerTexture001_Color2, CheckerTexture001_Scale);
+				float4 MixShader_Shader_001 = principled_bsdf(i, PrincipledBSDF001_BaseColor, PrincipledBSDF001_Subsurface, PrincipledBSDF001_SubsurfaceRadius, PrincipledBSDF001_SubsurfaceColor, PrincipledBSDF001_SubsurfaceIOR, PrincipledBSDF001_SubsurfaceAnisotropy, PrincipledBSDF001_Metallic, PrincipledBSDF001_Specular, PrincipledBSDF001_SpecularTint, PrincipledBSDF001_Roughness, PrincipledBSDF001_Anisotropic, PrincipledBSDF001_AnisotropicRotation, PrincipledBSDF001_Sheen, PrincipledBSDF001_SheenTint, PrincipledBSDF001_Clearcoat, PrincipledBSDF001_ClearcoatRoughness, PrincipledBSDF001_IOR, PrincipledBSDF001_Transmission, PrincipledBSDF001_TransmissionRoughness, PrincipledBSDF001_Emission, PrincipledBSDF001_EmissionStrength, PrincipledBSDF001_Alpha, PrincipledBSDF001_Normal, PrincipledBSDF001_ClearcoatNormal, PrincipledBSDF001_Tangent, PrincipledBSDF001_Weight);
+				float4 MaterialOutput_Surface = mix_shader(MixShader_Fac, MixShader_Shader, MixShader_Shader_001);
 				// Call methods
               
                 

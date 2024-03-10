@@ -11,6 +11,7 @@ from .Strategies.Value_strategy import ValueNode
 from .Strategies.TextureCoordinate_strategy import TextureCoordinateNode
 from .Strategies.Default_strategy import DefaultNode
 from .Strategies.AddShader_strategy import AddShaderNode
+from .Strategies.MixShader_strategy import MixShaderNode
 from .Strategies.NormalMap_stategy import NormalMapNode
 from .Strategies.ColorRamp_Strategy import ColorRampNode
 
@@ -28,7 +29,8 @@ node_type_strategy_map = {
     'TEX_COORD': TextureCoordinateNode(),
     'MAPPING': MappingNode(),
     'TEX_CHECKER': CheckerNode(),
-    'ADD_SHADER' : AddShaderNode(),
-    'NORMAL_MAP':NormalMapNode(),
-    'VALTORGB':ColorRampNode()
+    'ADD_SHADER': AddShaderNode(),
+    'MIX_SHADER': MixShaderNode(),
+    'NORMAL_MAP': NormalMapNode(),
+    'VALTORGB': ColorRampNode()
 }
