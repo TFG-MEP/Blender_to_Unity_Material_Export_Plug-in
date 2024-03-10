@@ -236,7 +236,7 @@ SurfaceData surfacedata;
                 return UniversalFragmentPBR(inputData, surfacedata);
 
             }
-            float4 rgb_ramp_lookup(float4 ramp[3],int numcolors, float at, int interpolate, int extrapolate)
+            float4 rgb_ramp_lookup(float4 ramp[3],float pos[3],int numcolors, float at, int interpolate, int extrapolate)
             {
               float f = at;
               int table_size = numcolors;
@@ -255,37 +255,57 @@ SurfaceData surfacedata;
                 }
                 return t0 + dy * f * (table_size - 1);
               }
+            f  = clamp(at, 0.0, 1.0) ;
+            float4 result=ramp[0];
+            if(f>=pos[numcolors-1]){
+                return ramp[numcolors-1];
+            }
+    
+            for (int i = 0; i < numcolors - 1; ++i) {
+                if (f  >= pos[i] && f  <= pos[i + 1]){
+                    if (interpolate){
+                        result=ramp[i];
+                        float t = (f - (float)pos[i])/(pos[i+1]-pos[i]);
+                        result = (1.0 - t) * result + t * ramp[i + 1];
+                    } 
+                    else{
+                        result= ramp[i];
+                    }
+                   
+                }
+            }
+              
+            return result;
+    
             
-              f = clamp(at, 0.0, 1.0) * (table_size - 1);
+            //   /* clamp int as well in case of NaN */
+            //   int i = (int)f;
+            //   if (i < 0)
+            //     i = 0;
+            //   if (i >= table_size)
+            //     i = table_size - 1;
+            //   float t = f - (float)i;
             
-              /* clamp int as well in case of NaN */
-              int i = (int)f;
-              if (i < 0)
-                i = 0;
-              if (i >= table_size)
-                i = table_size - 1;
-              float t = f - (float)i;
+            //   float4 result = ramp[i];
             
-              float4 result = ramp[i];
+            // //   if (interpolate && t > 0.0)
+            // //     result = (1.0 - t) * result + t * ramp[i + 1];
             
-              if (interpolate && t > 0.0)
-                result = (1.0 - t) * result + t * ramp[i + 1];
-            
-              return (result);
+            //   return (result);
             }
 			// Add methods
             float4 frag (v2f i) : SV_Target
             {
 
-                // float3 CheckerTexture_Vector = i.worldPos;
-				// float3 ImageTexture_Vector = float3(i.uv,0);
-				// float4 CheckerTexture_Color2 = image_texture(ImageTexture_Vector, ImageTexture_Image);
-				float4 PrincipledBSDF_BaseColor = (1,1,1,1);
+               
+				 float3 ImageTexture_Vector = float3(i.uv,0);
+				float4 CheckerTexture_Color2 = image_texture(ImageTexture_Vector, ImageTexture_Image);
+				float4 PrincipledBSDF_BaseColor = CheckerTexture_Color2;
                 
                 
 			// 	float3 ImageTexture001_Vector = float3(i.uv,0);
 			//  float4 NormalMap_Color = image_texture(ImageTexture001_Vector, ImageTexture001_Image);
-			// 	float3 PrincipledBSDF_Normal = normal_map(NormalMap_Strength, NormalMap_Color);
+			// float3 PrincipledBSDF_Normal = normal_map(NormalMap_Strength, NormalMap_Color);
 				 float4 MaterialOutput_Surface = principled_bsdf(i, PrincipledBSDF_BaseColor, PrincipledBSDF_Subsurface, PrincipledBSDF_SubsurfaceRadius, PrincipledBSDF_SubsurfaceColor, PrincipledBSDF_SubsurfaceIOR, PrincipledBSDF_SubsurfaceAnisotropy, PrincipledBSDF_Metallic, PrincipledBSDF_Specular, PrincipledBSDF_SpecularTint, PrincipledBSDF_Roughness, PrincipledBSDF_Anisotropic, PrincipledBSDF_AnisotropicRotation, PrincipledBSDF_Sheen, PrincipledBSDF_SheenTint, PrincipledBSDF_Clearcoat, PrincipledBSDF_ClearcoatRoughness, PrincipledBSDF_IOR, PrincipledBSDF_Transmission, PrincipledBSDF_TransmissionRoughness, PrincipledBSDF_Emission, PrincipledBSDF_EmissionStrength, PrincipledBSDF_Alpha, PrincipledBSDF_Normal, PrincipledBSDF_ClearcoatNormal, PrincipledBSDF_Tangent, PrincipledBSDF_Weight);
 				// // Call methods
                 // float4 ramp[30];
@@ -298,8 +318,11 @@ SurfaceData surfacedata;
                 ramp[0]=float4(0.232889,0.023822,0.1,1);
                 ramp[1]=float4(1,0.112,0.3289711,1);
                 ramp[2]=float4(0.879054,0.359305,0.696122,1);
-               
-                return rgb_ramp_lookup( ramp,3, MaterialOutput_Surface, 1, 0);
+                float pos[3];
+                pos[0]=0;
+                pos[1]=0.5;
+                pos[2]=1;
+                return rgb_ramp_lookup( ramp,pos,3, MaterialOutput_Surface, 0, 0);
                 
                
                 

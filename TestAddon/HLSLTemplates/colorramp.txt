@@ -1,6 +1,0 @@
-// función que aplica color ramp a un float4
-fixed4 ColorRamp(float4 t, fixed4 color1, fixed4 color2)
-{
-	float4 outcol = lerp(color1, color2, t);
-	return outcol;
-}

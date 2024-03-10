@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Custom_ShaderMaterial_
+  m_Shader: {fileID: 4800000, guid: a6704398a317463a97ea24e8e35dfa22, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - ImageTexture001_Image:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - ImageTexture_Image:
+        m_Texture: {fileID: 2800000, guid: 71fbc246b32f4bdba83077b89e7f40d2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - CheckerTexture_Scale: 5
+    - NormalMap_Strength: 10
+    - PrincipledBSDF_Alpha: 1
+    - PrincipledBSDF_Anisotropic: 0
+    - PrincipledBSDF_AnisotropicRotation: 0
+    - PrincipledBSDF_Clearcoat: 0
+    - PrincipledBSDF_ClearcoatRoughness: 0.03
+    - PrincipledBSDF_EmissionStrength: -0.05
+    - PrincipledBSDF_IOR: 1.45
+    - PrincipledBSDF_Metallic: 0.04
+    - PrincipledBSDF_Roughness: -0.18
+    - PrincipledBSDF_Sheen: 0
+    - PrincipledBSDF_SheenTint: 0.5
+    - PrincipledBSDF_Specular: 0.5
+    - PrincipledBSDF_SpecularTint: 0
+    - PrincipledBSDF_Subsurface: 0
+    - PrincipledBSDF_SubsurfaceAnisotropy: 0.39
+    - PrincipledBSDF_SubsurfaceIOR: 2.12
+    - PrincipledBSDF_Transmission: 0
+    - PrincipledBSDF_TransmissionRoughness: 0
+    - PrincipledBSDF_Weight: 0
+    - _BlendOp: 0
+    - _DstFactor: 10
+    - _SrcFactor: 5
+    m_Colors:
+    - CheckerTexture_Color1: {r: 0.90354544, g: 0.90354544, b: 0.90354544, a: 1}
+    - PrincipledBSDF_ClearcoatNormal: {r: 0, g: 0, b: 0, a: 1}
+    - PrincipledBSDF_Emission: {r: 0.565054, g: 0, b: 0.46255845, a: 1}
+    - PrincipledBSDF_Normal: {r: 0, g: 0, b: 0, a: 1}
+    - PrincipledBSDF_SubsurfaceColor: {r: 0.90354544, g: 0.90354544, b: 0.90354544, a: 1}
+    - PrincipledBSDF_SubsurfaceRadius: {r: 1, g: 0.2, b: 0.1, a: 1}
+    - PrincipledBSDF_Tangent: {r: 0, g: 0, b: 0, a: 1}
+  m_BuildTextureStacks: []
