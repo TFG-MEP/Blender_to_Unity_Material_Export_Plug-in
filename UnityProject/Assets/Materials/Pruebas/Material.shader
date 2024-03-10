@@ -236,7 +236,7 @@ SurfaceData surfacedata;
                 return UniversalFragmentPBR(inputData, surfacedata);
 
             }
-            float4 rgb_ramp_lookup(float4 ramp[3],float pos[3],int numcolors, float at, int interpolate, int extrapolate)
+            float4 rgb_ramp_lookup(float4 ramp[30],float pos[30],int numcolors, float at, int interpolate, int extrapolate)
             {
               float f = at;
               int table_size = numcolors;
@@ -314,11 +314,11 @@ SurfaceData surfacedata;
                 // ramp[2]=float4(1,0.0,0,1);
                 
                 // return rgb_ramp_lookup(ramp,3, MaterialOutput_Surface, 1, 0);
-                float4 ramp[3];
+                float4 ramp[30];
                 ramp[0]=float4(0.232889,0.023822,0.1,1);
                 ramp[1]=float4(1,0.112,0.3289711,1);
                 ramp[2]=float4(0.879054,0.359305,0.696122,1);
-                float pos[3];
+                float pos[30];
                 pos[0]=0;
                 pos[1]=0.5;
                 pos[2]=1;

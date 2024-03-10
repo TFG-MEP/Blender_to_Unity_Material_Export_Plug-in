@@ -12,6 +12,8 @@ from .Strategies.TextureCoordinate_strategy import TextureCoordinateNode
 from .Strategies.Default_strategy import DefaultNode
 from .Strategies.AddShader_strategy import AddShaderNode
 from .Strategies.NormalMap_stategy import NormalMapNode
+from .Strategies.ColorRamp_Strategy import ColorRampNode
+
 
 # Import all new strategies implemented in the Strategies Directory
 
@@ -27,5 +29,6 @@ node_type_strategy_map = {
     'MAPPING': MappingNode(),
     'TEX_CHECKER': CheckerNode(),
     'ADD_SHADER' : AddShaderNode(),
-    'NORMAL_MAP':NormalMapNode()
+    'NORMAL_MAP':NormalMapNode(),
+    'VALTORGB':ColorRampNode()
 }
