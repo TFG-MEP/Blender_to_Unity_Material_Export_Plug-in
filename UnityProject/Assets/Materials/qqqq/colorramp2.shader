@@ -1,4 +1,4 @@
-Shader "Custom/ShaderMaterial_"
+Shader "Custom/Shadercolorramp2_"
 {
      Properties
     {
@@ -22,22 +22,34 @@ Shader "Custom/ShaderMaterial_"
 		PrincipledBSDF_IOR("IOR", float) = 1.4500000476837158
 		PrincipledBSDF_Transmission("Transmission", float) = 0.0
 		PrincipledBSDF_TransmissionRoughness("TransmissionRoughness", float) = 0.0
-		PrincipledBSDF_Emission("Emission", Color) = (0.6173029613933869,0.6173029613933869,0.6173029613933869, 1.0)
-		PrincipledBSDF_EmissionStrength("EmissionStrength", float) = 8.5
+		PrincipledBSDF_Emission("Emission", Color) = (0.0,0.0,0.0, 1.0)
+		PrincipledBSDF_EmissionStrength("EmissionStrength", float) = 6.299999713897705
 		PrincipledBSDF_Alpha("Alpha", float) = 1.0
 		PrincipledBSDF_Normal("Normal", Vector) = (0.0, 0.0, 0.0)
 		PrincipledBSDF_ClearcoatNormal("ClearcoatNormal", Vector) = (0.0, 0.0, 0.0)
 		PrincipledBSDF_Tangent("Tangent", Vector) = (0.0, 0.0, 0.0)
 		PrincipledBSDF_Weight("Weight", float) = 0.0
+		ColorRamp_Color0("ColorRamp_Color0", Color) = (0.1799368623758776,0.06450653869054812,0.11991385051900703, 1.0)
+		ColorRamp_Pos0("ColorRamp_Pos0", Float) = 0.0
+		ColorRamp_Color1("ColorRamp_Color1", Color) = (0.3728577188262493,0.09726524515799365,0.22852447700537956, 1.0)
+		ColorRamp_Pos1("ColorRamp_Pos1", Float) = 0.5136364698410034
+		ColorRamp_Color2("ColorRamp_Color2", Color) = (0.6474567704192329,0.1470427699182262,0.032829007155875486, 1.0)
+		ColorRamp_Pos2("ColorRamp_Pos2", Float) = 1.0
 		// Add properties
+        _SrcFactor("SrcFactor", Float) = 5
+        _DstFactor("DstFactor", Float) = 10
+        _BlendOp("Blend Operation", Float) = 0
     }
 
     SubShader
     {
 
-        Tags { "RenderType" = "Opaque" "RenderPipeline" = "UniversalRenderPipeline" }
-        LOD 100
+        Tags { "RenderType" = "Opaque" "RenderPipeline" = "UniversalRenderPipeline"}
+        // Add tags
 
+        LOD 100
+        Blend [_SrcFactor] [_DstFactor]
+        BlendOp [_BlendOp]
         Pass
         {
             HLSLPROGRAM
@@ -70,6 +82,7 @@ Shader "Custom/ShaderMaterial_"
                 #ifdef DYNAMICLIGHTMAP_ON
                 float2  dynamicLightmapUV : TEXCOORD7;
                 #endif
+                float3 worldPos : TEXCOORD8;
             };
 
             float4 PrincipledBSDF_BaseColor;
@@ -98,12 +111,19 @@ Shader "Custom/ShaderMaterial_"
 			float3 PrincipledBSDF_ClearcoatNormal;
 			float3 PrincipledBSDF_Tangent;
 			float PrincipledBSDF_Weight;
+			float4 ColorRamp_Color0;
+			float ColorRamp_Pos0;
+			float4 ColorRamp_Color1;
+			float ColorRamp_Pos1;
+			float4 ColorRamp_Color2;
+			float ColorRamp_Pos2;
 			// Add variables
     
             sampler2D _NormalTex;
             v2f vert(appdata v)
             {
                 v2f o;
+                o.worldPos = v.positionOS.xyz;
                 VertexPositionInputs vertexInput = GetVertexPositionInputs(v.
                 positionOS.xyz);
                 VertexNormalInputs normalInput = GetVertexNormalInputs(v.normalOS, 
@@ -146,7 +166,7 @@ float PrincipledBSDF_EmissionStrength,float PrincipledBSDF_Alpha, float3 Princip
                 PrincipledBSDF_Emission.rgb *= PrincipledBSDF_EmissionStrength;
                 surfacedata.emission = PrincipledBSDF_Emission;
                 surfacedata.occlusion = 1; //"Ambient occlusion"
-                surfacedata.alpha = 0;
+                surfacedata.alpha = 1;
                 surfacedata.clearCoatMask = 0;
                 surfacedata.clearCoatSmoothness = 0;
 
@@ -189,11 +209,51 @@ float PrincipledBSDF_EmissionStrength,float PrincipledBSDF_Alpha, float3 Princip
                 return UniversalFragmentPBR(inputData, surfacedata);
 
             }
+			float4 shader_to_RGB(float4 shader){
+    return shader;
+}
+			float4 color_ramp( float at,int numcolors, int interpolate,float4 ramp[30],float pos[30] )
+{
+              float f = at;
+              int table_size = numcolors;
+            
+              f  = clamp(at, 0.0, 1.0) ;
+              float4 result=ramp[0];
+              if(f>=pos[numcolors-1]){
+                  return ramp[numcolors-1];
+              }
+      
+              for (int i = 0; i < numcolors - 1; ++i) {
+                  if (f  >= pos[i] && f  <= pos[i + 1]){
+                      if (interpolate){
+                          result=ramp[i];
+                          float t = (f - (float)pos[i])/(pos[i+1]-pos[i]);
+                          result = (1.0 - t) * result + t * ramp[i + 1];
+                      } 
+                      else{
+                          result= ramp[i];
+                      }
+                    
+                  }
+              }
+                
+              return result;
+}
 			// Add methods
             float4 frag (v2f i) : SV_Target
             {
 
-                float4 MaterialOutput_Surface = principled_bsdf(i, PrincipledBSDF_BaseColor, PrincipledBSDF_Subsurface, PrincipledBSDF_SubsurfaceRadius, PrincipledBSDF_SubsurfaceColor, PrincipledBSDF_SubsurfaceIOR, PrincipledBSDF_SubsurfaceAnisotropy, PrincipledBSDF_Metallic, PrincipledBSDF_Specular, PrincipledBSDF_SpecularTint, PrincipledBSDF_Roughness, PrincipledBSDF_Anisotropic, PrincipledBSDF_AnisotropicRotation, PrincipledBSDF_Sheen, PrincipledBSDF_SheenTint, PrincipledBSDF_Clearcoat, PrincipledBSDF_ClearcoatRoughness, PrincipledBSDF_IOR, PrincipledBSDF_Transmission, PrincipledBSDF_TransmissionRoughness, PrincipledBSDF_Emission, PrincipledBSDF_EmissionStrength, PrincipledBSDF_Alpha, PrincipledBSDF_Normal, PrincipledBSDF_ClearcoatNormal, PrincipledBSDF_Tangent, PrincipledBSDF_Weight);
+                float4 ShadertoRGB_Shader = principled_bsdf(i, PrincipledBSDF_BaseColor, PrincipledBSDF_Subsurface, PrincipledBSDF_SubsurfaceRadius, PrincipledBSDF_SubsurfaceColor, PrincipledBSDF_SubsurfaceIOR, PrincipledBSDF_SubsurfaceAnisotropy, PrincipledBSDF_Metallic, PrincipledBSDF_Specular, PrincipledBSDF_SpecularTint, PrincipledBSDF_Roughness, PrincipledBSDF_Anisotropic, PrincipledBSDF_AnisotropicRotation, PrincipledBSDF_Sheen, PrincipledBSDF_SheenTint, PrincipledBSDF_Clearcoat, PrincipledBSDF_ClearcoatRoughness, PrincipledBSDF_IOR, PrincipledBSDF_Transmission, PrincipledBSDF_TransmissionRoughness, PrincipledBSDF_Emission, PrincipledBSDF_EmissionStrength, PrincipledBSDF_Alpha, PrincipledBSDF_Normal, PrincipledBSDF_ClearcoatNormal, PrincipledBSDF_Tangent, PrincipledBSDF_Weight);
+				float ColorRamp_Fac = shader_to_RGB(ShadertoRGB_Shader);
+				float ColorRamp_pos[30];
+				float4 ColorRamp_ramp[30];
+				ColorRamp_ramp[0]=ColorRamp_Color0;
+				ColorRamp_pos[0]=ColorRamp_Pos0;
+				ColorRamp_ramp[1]=ColorRamp_Color1;
+				ColorRamp_pos[1]=ColorRamp_Pos1;
+				ColorRamp_ramp[2]=ColorRamp_Color2;
+				ColorRamp_pos[2]=ColorRamp_Pos2;
+				float4 MaterialOutput_Surface = color_ramp(ColorRamp_Fac, 3, 1, ColorRamp_ramp, ColorRamp_pos);
 				// Call methods
               
                 

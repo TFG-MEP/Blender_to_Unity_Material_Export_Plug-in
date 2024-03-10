@@ -68,6 +68,7 @@
     <None Include="Assets\Materials\aaa\waveTexture.shader" />
     <None Include="Assets\Materials\Pruebas2\Material.shader" />
     <None Include="Assets\Shaders\Oro_0.shader" />
+    <None Include="Assets\Materials\qqqq\colorramp2.shader" />
     <None Include="Assets\Shaders\NuevosShaders\CristalAlfa.shader" />
     <None Include="Assets\Shaders\WaveTexture 1.shader" />
     <None Include="Assets\Shaders\NuevosShaders\EsferaLitPaula.shader" />
@@ -94,7 +95,6 @@
     <None Include="Assets\Shaders\Celshade.shader" />
     <None Include="Assets\Materials\bbb\chequ.shader" />
     <None Include="Assets\Shaders\NormalVectors.shader" />
-    <None Include="Assets\Materials\qqqq\Material.shader" />
     <None Include="Assets\Materials\aaa\chequ.shader" />
     <None Include="Assets\Shaders\s.shader" />
     <None Include="Assets\Materials\aaa\node_hash.hlsl" />

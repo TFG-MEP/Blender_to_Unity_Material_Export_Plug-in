@@ -1,0 +1,3 @@
+float4 shader_to_RGB(float4 shader){
+    return shader;
+}
