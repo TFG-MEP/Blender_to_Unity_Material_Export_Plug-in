@@ -92,24 +92,8 @@ def iterate_node(node, shader_content):
             # print("Property of " + node_type + ": " + input_socket.name + " with type: " + input_socket.bl_label)
             shader_content = process_property(input_socket, node_name, node_type, shader_content)
 
-
     strategy = node_type_strategy_map.get(node.type)
     context = Context(strategy=strategy)
-
-    # if node.type == 'VALUE':
-    #     context.strategy = ValueNode()
-    # elif node.type == 'RGB' : 
-    #     context.strategy = RGBNode()
-    # elif node.type == 'BSDF_PRINCIPLED' :
-    #     context.strategy = PrincipledBSDFNode()
-    # elif node.type == 'TEX_IMAGE' :
-    #     context.strategy = ImageTextureNode()
-    # elif node.type == 'TEX_COORD' :
-    #     context.strategy= TextureCoordinateNode()
-    # elif node.type=='MAPPING' :
-    #     context.strategy = MappingNode()
-    # elif  node.type=='TEX_CHECKER':
-    #     context.strategy = CheckerNode()
 
     shader_content = context.write_node(node=node, node_properties=node_properties, shader_content=shader_content)
 
