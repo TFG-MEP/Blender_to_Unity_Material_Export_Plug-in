@@ -12,6 +12,7 @@ from .Strategies.TextureCoordinate_strategy import TextureCoordinateNode
 from .Strategies.Default_strategy import DefaultNode
 from .Strategies.AddShader_strategy import AddShaderNode
 from .Strategies.MixShader_strategy import MixShaderNode
+from .Strategies.Mix_strategy import MixNode
 from .Strategies.NormalMap_statregy import NormalMapNode
 from .Strategies.ColorRamp_Strategy import ColorRampNode
 from .Strategies.ShaderToRGB_strategy import ShaderToRgbNode
@@ -35,4 +36,5 @@ node_type_strategy_map = {
     'NORMAL_MAP': NormalMapNode(),
     'VALTORGB': ColorRampNode(),
     'SHADERTORGB':ShaderToRgbNode(),
+    'MIX' : MixNode()
 }
