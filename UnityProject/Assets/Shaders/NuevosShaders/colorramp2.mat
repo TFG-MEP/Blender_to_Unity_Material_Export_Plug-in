@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: colorramp2
-  m_Shader: {fileID: 4800000, guid: f3d3e57cd6144adfaf927f04280d8ddf, type: 3}
+  m_Shader: {fileID: 4800000, guid: 3fd27ac1e4b049fd87c036179f3ae726, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -22,18 +22,12 @@ Material:
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs:
-    - _NormalTex:
-        m_Texture: {fileID: 0}
+    m_TexEnvs: 
+    - ImageTexture_Image:
+        m_Texture: {fileID: 2800000, guid: ade2d7ecd2744aa9a167602a9d7caa3e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats:
-    - CheckerTexture_Scale: 1
-    - _BlendOp: 0
-    - _DstFactor: 10
-    - _SrcFactor: 5
-    m_Colors:
-    - CheckerTexture_Color1: {r: 0.90354544, g: 0.90354544, b: 0.90354544, a: 1}
-    - CheckerTexture_Color2: {r: 0.4811564, g: 0.4811564, b: 0.4811564, a: 1}
+    m_Floats: []
+    m_Colors: []
   m_BuildTextureStacks: []

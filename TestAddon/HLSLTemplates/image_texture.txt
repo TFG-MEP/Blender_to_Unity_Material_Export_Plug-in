@@ -3,3 +3,10 @@ float4 image_texture( float2 texcoord,sampler2D textura){
 	float4 colorImage=tex2D(textura, texcoord);
 	return colorImage;
 }
+float image_texture( float2 texcoord,sampler2D textura){
+	float4 colorImage=tex2D(textura, texcoord);
+	float gray = (colorImage.r + colorImage.g + colorImage.b) / 3.0;
+    // Normalize grayscale value to the range [0, 1]
+    gray = gray > 1.0 ? 1.0 : (gray < 0.0 ? 0.0 : gray);
+	return gray;
+}

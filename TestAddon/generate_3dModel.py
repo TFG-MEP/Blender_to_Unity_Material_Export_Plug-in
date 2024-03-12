@@ -6,7 +6,7 @@ def generate_3dModel(destination_directory):
     name_object = objeto.name
 
     # Appy Transforms to the object
-    bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+    bpy.ops.object.transform_apply(location=False, rotation=True, scale=True)
     path_fbx = destination_directory+'\\' + name_object + ".fbx"
 
     # Export object to fbx

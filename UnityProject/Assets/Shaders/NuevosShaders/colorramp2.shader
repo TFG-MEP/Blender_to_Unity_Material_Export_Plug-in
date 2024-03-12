@@ -1,4 +1,4 @@
-Shader "Custom/Shadercolorramp445_"
+Shader "Custom/Shadercolorramp2_"
 {
      Properties
     {
@@ -107,16 +107,12 @@ float4 image_texture( float2 texcoord,sampler2D textura){
 	return colorImage;
 }
 
-			float4 color_ramp( float4 at,int numcolors, int interpolate,float4 ramp[30],float pos[30] )
+			float4 color_ramp( float at,int numcolors, int interpolate,float4 ramp[30],float pos[30] )
 {
-
+              float f = at;
+              int table_size = numcolors;
             
-             float gray = (at.r + at.g + at.b) / 3.0;
-
-            // Normalize grayscale value to the range [0, 1]
-            gray = gray > 1.0 ? 1.0 : (gray < 0.0 ? 0.0 : gray);
-            float f = gray;
-             
+              f  = clamp(at, 0.0, 1.0) ;
               float4 result=ramp[0];
               if(numcolors>1&&f>=pos[numcolors-1]){
                   return ramp[numcolors-1];
@@ -143,11 +139,7 @@ float4 image_texture( float2 texcoord,sampler2D textura){
             {
 
                 float3 ImageTexture_Vector = float3(i.uv,0);
-
-
-                
-				float4 ColorRamp_Fac = image_texture(ImageTexture_Vector, ImageTexture_Image);
-
+				float ColorRamp_Fac = image_texture(ImageTexture_Vector, ImageTexture_Image);
 				float ColorRamp_pos[30];
 				float4 ColorRamp_ramp[30];
 				ColorRamp_ramp[0]=ColorRamp_Color0;
