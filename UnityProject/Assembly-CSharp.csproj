@@ -93,12 +93,12 @@
     <None Include="Assets\Shaders\VoronaiTetxture.shader" />
     <None Include="Assets\Shaders\ColorRamp.shader" />
     <None Include="Assets\Shaders\Celshade.shader" />
+    <None Include="Assets\Shaders\ColorRamp\image.shader" />
     <None Include="Assets\Materials\bbb\chequ.shader" />
     <None Include="Assets\Shaders\NormalVectors.shader" />
     <None Include="Assets\Shaders\ColorRamp\colorramp2.shader" />
     <None Include="Assets\Materials\aaa\chequ.shader" />
     <None Include="Assets\Shaders\s.shader" />
-    <None Include="Assets\Shaders\ColorRamp\chesss.shader" />
     <None Include="Assets\Materials\aaa\node_hash.hlsl" />
     <None Include="Assets\Shaders\MyFirstShader.shader" />
     <None Include="Assets\Shaders\aaa.shader" />

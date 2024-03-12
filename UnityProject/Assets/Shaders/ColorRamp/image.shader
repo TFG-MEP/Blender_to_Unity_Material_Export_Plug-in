@@ -1,9 +1,10 @@
-Shader "Custom/ColorShader"
+Shader "Custom/Shaderimage_"
 {
      Properties
     {
         _NormalTex("Normal Map", 2D) = "bump" {}
-        // Add properties
+        ImageTexture_Image("Texture", 2D) = "white" {}
+		// Add properties
         _SrcFactor("SrcFactor", Float) = 5
         _DstFactor("DstFactor", Float) = 10
         _BlendOp("Blend Operation", Float) = 0
@@ -24,7 +25,8 @@ Shader "Custom/ColorShader"
             #pragma vertex vert
             #pragma fragment frag
           
-            //Add includes 
+            #include"Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+			//Add includes 
             //Datos de entrada en el vertex shader
             struct appdata
             {
@@ -51,9 +53,15 @@ Shader "Custom/ColorShader"
                 #endif
                 float3 worldPos : TEXCOORD8;
             };
-            // Add structs
+            struct Image_texture{
+    float3 Color;
+    float Alpha;
+};
 
-            // Add variables
+			// Add structs
+
+            sampler2D ImageTexture_Image;
+			// Add variables
     
             sampler2D _NormalTex;
             v2f vert(appdata v)
@@ -83,11 +91,23 @@ Shader "Custom/ColorShader"
                 return o;
             }
             
-            // Add methods
+            // función que crea una textura a partir de un sampler2D
+Image_texture image_texture( float2 texcoord,sampler2D textura){
+	Image_texture tex;
+	float4 colorImage=tex2D(textura, texcoord);
+	tex.Color=colorImage.xyz;
+	tex.Alpha=colorImage.w;
+	return tex;
+}
+
+			// Add methods
             float4 frag (v2f i) : SV_Target
             {
 
-                // Call methods
+                float3 ImageTexture_Vector = float3(i.uv,0);
+				Image_texture ImageTexture = image_texture(ImageTexture_Vector, ImageTexture_Image);
+				float4 MaterialOutput_Surface = float4(ImageTexture.Color,1);
+				// Call methods
               
                 
                 return MaterialOutput_Surface;

@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: chesss
-  m_Shader: {fileID: 4800000, guid: bc40e8f81f4d403d9ced57f54c533033, type: 3}
+  m_Name: image
+  m_Shader: {fileID: 4800000, guid: cae8ae85ae7b435e9bbd62f4dabcbc68, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -24,7 +24,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs: 
     - ImageTexture_Image:
-        m_Texture: {fileID: 2800000, guid: 96c3bc5351664cd5aeb680d0caed4a17, type: 3}
+        m_Texture: {fileID: 2800000, guid: 865433ff001e453482c4d1fc295235ab, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
