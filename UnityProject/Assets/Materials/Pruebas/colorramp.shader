@@ -237,14 +237,14 @@ float PrincipledBSDF_EmissionStrength,float PrincipledBSDF_Alpha, float3 Princip
             float4 frag (v2f i) : SV_Target
             {
 
-                float4 ShadertoRGB_Shader = principled_bsdf(i, PrincipledBSDF_BaseColor, PrincipledBSDF_Subsurface, PrincipledBSDF_SubsurfaceRadius, PrincipledBSDF_SubsurfaceColor, PrincipledBSDF_SubsurfaceIOR, PrincipledBSDF_SubsurfaceAnisotropy, PrincipledBSDF_Metallic, PrincipledBSDF_Specular, PrincipledBSDF_SpecularTint, PrincipledBSDF_Roughness, PrincipledBSDF_Anisotropic, PrincipledBSDF_AnisotropicRotation, PrincipledBSDF_Sheen, PrincipledBSDF_SheenTint, PrincipledBSDF_Clearcoat, PrincipledBSDF_ClearcoatRoughness, PrincipledBSDF_IOR, PrincipledBSDF_Transmission, PrincipledBSDF_TransmissionRoughness, PrincipledBSDF_Emission, PrincipledBSDF_EmissionStrength, PrincipledBSDF_Alpha, PrincipledBSDF_Normal, PrincipledBSDF_ClearcoatNormal, PrincipledBSDF_Tangent, PrincipledBSDF_Weight);
+                BSDF ShadertoRGB_Shader.shader = principled_bsdf(i, PrincipledBSDF_BaseColor, PrincipledBSDF_Subsurface, PrincipledBSDF_SubsurfaceRadius, PrincipledBSDF_SubsurfaceColor, PrincipledBSDF_SubsurfaceIOR, PrincipledBSDF_SubsurfaceAnisotropy, PrincipledBSDF_Metallic, PrincipledBSDF_Specular, PrincipledBSDF_SpecularTint, PrincipledBSDF_Roughness, PrincipledBSDF_Anisotropic, PrincipledBSDF_AnisotropicRotation, PrincipledBSDF_Sheen, PrincipledBSDF_SheenTint, PrincipledBSDF_Clearcoat, PrincipledBSDF_ClearcoatRoughness, PrincipledBSDF_IOR, PrincipledBSDF_Transmission, PrincipledBSDF_TransmissionRoughness, PrincipledBSDF_Emission, PrincipledBSDF_EmissionStrength, PrincipledBSDF_Alpha, PrincipledBSDF_Normal, PrincipledBSDF_ClearcoatNormal, PrincipledBSDF_Tangent, PrincipledBSDF_Weight);
 				float ColorRamp_pos[30];
 				float4 ColorRamp_ramp[30];
 				ColorRamp_ramp[0]=float4(0.1799368623758776,0.06450653869054812,0.11991385051900703, 1.0);
 				ColorRamp_pos[0]=0.0;
 				ColorRamp_ramp[1]=float4(0.3728577188262493,0.09726524515799365,0.22852447700537956, 1.0);
 				ColorRamp_pos[1]=0.5;
-				float4 MaterialOutput_Surface = color_ramp(ShadertoRGB_Shader, 2, ColorRamp_Interpolation, ColorRamp_ramp, ColorRamp_pos);
+				ColorRamp MaterialOutput_Surface = color_ramp(ShadertoRGB_Shader, 2, ColorRamp_Interpolation, ColorRamp_ramp, ColorRamp_pos);
 				// Call methods
               
                 

@@ -1,5 +1,0 @@
-// función que crea una textura a partir de un sampler2D
-float4 image_texture( float2 texcoord,sampler2D textura){
-	float4 colorImage=tex2D(textura, texcoord);
-	return colorImage;
-}

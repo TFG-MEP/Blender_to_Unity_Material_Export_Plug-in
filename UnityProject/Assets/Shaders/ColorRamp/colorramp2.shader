@@ -107,11 +107,11 @@ float4 image_texture( float2 texcoord,sampler2D textura){
 	return colorImage;
 }
 
-			float4 color_ramp( float4 at,int numcolors, int interpolate,float4 ramp[30],float pos[30] )
+float4 color_ramp( float4 at,int numcolors, int interpolate,float4 ramp[30],float pos[30] )
 {
 
             
-             float gray = (at.r + at.g + at.b) / 3.0;
+            float gray = (at.r + at.g + at.b) / 3.0;
 
             // Normalize grayscale value to the range [0, 1]
             gray = gray > 1.0 ? 1.0 : (gray < 0.0 ? 0.0 : gray);
