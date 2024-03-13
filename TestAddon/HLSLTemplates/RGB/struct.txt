@@ -1,0 +1,3 @@
+struct RGB{
+                float4 Color;
+            };
