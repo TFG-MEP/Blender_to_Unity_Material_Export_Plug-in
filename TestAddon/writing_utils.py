@@ -1,7 +1,8 @@
 import bpy
+import re
 from .format_conversion_utils import *
 from .common_utils import *
-import re
+
 def write_include(include_file_path, shader_content):
     """ Add an HLSL include 
 
@@ -35,6 +36,32 @@ def write_include(include_file_path, shader_content):
                 shader_content = shader_content[:pragma_index] + define + "\n\t\t\t" + shader_content[pragma_index:]
     return shader_content
           
+def write_function(function_file_path, shader_content) :
+
+    """ Add an HLSL function to the shader template
+    Args:
+        function_file_path (str) :  Path to the file that contains the HLSL function
+        shader_content (str) : Current template content
+    Returns:
+        str: Updated shader template with the HLSL method.
+    """
+
+    # Check if the HLSL function has already been added to the shader
+    if function_file_path not in get_common_values().added_functions:
+
+        # Read the file that contains the required HLSL function
+        with open(function_file_path, "r") as node_func_file:
+            node_function = node_func_file.read()
+
+        # Add the function to the shader template
+        methods_index = shader_content.find("// Add methods")
+        shader_content = shader_content[:methods_index] + node_function + "\n\t\t\t" + shader_content[methods_index:]
+        
+        # Add the function to the written functions group
+        get_common_values().added_functions.add(function_file_path)
+
+    return shader_content
+
 def write_node(function_file_path, function_parameters, destination_node, destination_property, shader_content) : 
 
     """ Add an HLSL function and its respective call to the shader template
@@ -50,29 +77,26 @@ def write_node(function_file_path, function_parameters, destination_node, destin
         str: Updated shader template with the HLSL method and its call.
     """
 
-    # Check if the HLSL function has already been added to the shader
-    if function_file_path not in get_common_values().added_functions:
-
-        # Read the file that contains the required HLSL function
-        with open(function_file_path, "r") as node_func_file:
-            node_function = node_func_file.read()
-
-        # Add the function to the shader template
-        methods_index = shader_content.find("// Add methods")
-        shader_content = shader_content[:methods_index] + node_function + "\n\t\t\t" + shader_content[methods_index:]
-
-        # Add the function to the written functions group
-        get_common_values().added_functions.add(function_file_path)
+    shader_content = write_function(function_file_path, shader_content)
 
     prop_type = blender_type_to_hlsl(destination_property.bl_label)
+    
     # Remove any possible blanks from the name
     destination_node = destination_node.name.replace(" ", "")
     destination_property = destination_property.identifier.replace(" ", "")
+
     # Name of the file minus extension (must be the same as the name of the hlsl function)
     function_name = function_file_path.rsplit('/', 1)[-1]
     dot_index = function_name.find('.')
     if dot_index != -1:
         function_name = function_name[:dot_index]
+
+    # Get returned type from function name
+
+    # If types are different, add call to conversion method
+
+    
+
     # Add the function call to the shader template
     fragment_index = shader_content.find("// Call methods")
     destination_node = destination_node.replace(" ", "").replace(".", "")
@@ -81,7 +105,6 @@ def write_node(function_file_path, function_parameters, destination_node, destin
     all_parameters = ', '.join(function_parameters)
 
     func_line = f'{prop_type} {destination_name} = {function_name}({all_parameters});\n\t\t\t\t'
-    #func_line = f'{destination_name} = {function_name}({all_parameters});\n\t\t\t\t'
     shader_content = shader_content[:fragment_index] + func_line + shader_content[fragment_index:]
 
     # Check when the MeterialOutput node has been added to ensure correct shaders
@@ -160,7 +183,6 @@ def process_property(input_socket, node_name, node_type, shader_content):
 
     return shader_content
 
-
 def write_property(line, shader_content) : 
     """
     Adds a line to the shader templates properties section
@@ -213,5 +235,35 @@ def assign_variable(line, shader_content) :
 
     variables_index = shader_content.find("//Equal Variables")
     shader_content = shader_content[:variables_index] + line + shader_content[variables_index:]
+
+    return shader_content
+
+def write_struct(struct_file_path, shader_content) :
+
+    struct_index = shader_content.find("// Add structs")
+    with open(struct_file_path, "r") as struct_file:
+        struct = struct_file.read()
+
+    # TODO : revisar tabulación
+    shader_content = shader_content[:struct_index] + struct + "\n\t\t\t" + shader_content[struct_index:]
+    return shader_content
+
+def write_struct_node(node_name, struct_name, function_name, function_parameters, shader_content) : 
+
+    fragment_index = shader_content.find("// Call methods")
+
+    func_line = f'{struct_name} {node_name} = {function_name}({function_parameters});\n\t\t\t\t'
+    shader_content = shader_content[:fragment_index] + func_line + shader_content[fragment_index:]
+
+    return shader_content
+
+def write_struct_property(struct_name, struct_property, struct_property_type, input_node, input_property, shader_content) :
+
+    fragment_index = shader_content.find("// Call methods")
+    destination_node = input_node.name.replace(" ", "").replace(".", "")
+    destination_name = destination_node + "_" + input_property.identifier
+
+    line = f'{struct_property_type} {destination_name} = {struct_name}.{struct_property};\n\t\t\t\t'
+    shader_content = shader_content[:fragment_index] + line + shader_content[fragment_index:]
 
     return shader_content

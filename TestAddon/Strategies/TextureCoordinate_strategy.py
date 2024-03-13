@@ -12,7 +12,7 @@ class TextureCoordinateNode(Strategy):
         if node.outputs.get('UV').is_linked:
             print("The Texture Coordinate UV node is connected to another node.")
             parameter='float3(i.uv,0)'
-            exit_connections = node.outputs["UV"].links[0]
+            exit_connections = node.outputs["UV"].links
 
         elif node.outputs.get('Object').is_linked:
             print("The Texture Coordinate UV node is NOT connected to another node.")
