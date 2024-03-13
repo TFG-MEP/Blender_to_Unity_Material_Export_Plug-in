@@ -1,4 +1,0 @@
-float value(float input_value)
-            {
-                return input_value;
-            }

@@ -1,9 +1,10 @@
-Shader "Custom/ColorShader"
+Shader "Custom/ShaderValueMaterial_"
 {
      Properties
     {
         _NormalTex("Normal Map", 2D) = "bump" {}
-        // Add properties
+        Value_Value("Value", float) = 0.30000001192092896
+		// Add properties
         _SrcFactor("SrcFactor", Float) = 5
         _DstFactor("DstFactor", Float) = 10
         _BlendOp("Blend Operation", Float) = 0
@@ -24,7 +25,8 @@ Shader "Custom/ColorShader"
             #pragma vertex vert
             #pragma fragment frag
           
-            //Add includes 
+            #include"Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+			//Add includes 
             //Datos de entrada en el vertex shader
             struct appdata
             {
@@ -51,9 +53,13 @@ Shader "Custom/ColorShader"
                 #endif
                 float3 worldPos : TEXCOORD8;
             };
-            // Add structs
+            struct Value{
+                float Value;
+            };
+			// Add structs
 
-            // Add variables
+            float Value_Value;
+			// Add variables
     
             sampler2D _NormalTex;
             v2f vert(appdata v)
@@ -83,11 +89,19 @@ Shader "Custom/ColorShader"
                 return o;
             }
             
-            // Add methods
+            Value value(float input_value)
+            {
+                Value output_value;
+                output_value.Value = input_value;
+                return output_value;
+            }
+			// Add methods
             float4 frag (v2f i) : SV_Target
             {
 
-                // Call methods
+                Value Value = value(Value_Value);
+				float MaterialOutput_Surface = Value.Value;
+				// Call methods
               
                 
                 return MaterialOutput_Surface;
