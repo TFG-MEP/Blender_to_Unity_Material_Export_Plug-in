@@ -13,7 +13,7 @@ def gamma_correction(rgb) :
     
 
 def blender_value_to_hlsl(blender_input, input_type) : 
-    """Converts a Blender value to HLSL-compatible format.
+    """Transforms a Blender value to HLSL-compatible format.
 
     Args:
         blender_input: The input value from Blender.
@@ -36,7 +36,7 @@ def blender_value_to_hlsl(blender_input, input_type) :
         return blender_input
 
 def blender_type_to_hlsl(blender_input):
-    """Converts a Blender data type to HLSL-compatible data type.
+    """Transforms a Blender data type to HLSL-compatible data type.
 
     Args:
         blender_input (str): The Blender data type.
@@ -58,7 +58,7 @@ def blender_type_to_hlsl(blender_input):
     return output
 
 def blender_type_to_properties(blender_input):
-    """Convert a Blender data type to a shader properties-compatible data type.
+    """Transforms a Blender data type to a shader properties-compatible data type.
 
     Args:
         blender_input (str): The Blender data type.

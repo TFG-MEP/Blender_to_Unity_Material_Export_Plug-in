@@ -91,12 +91,6 @@ def write_node(function_file_path, function_parameters, destination_node, destin
     if dot_index != -1:
         function_name = function_name[:dot_index]
 
-    # Get returned type from function name
-
-    # If types are different, add call to conversion method
-
-    
-
     # Add the function call to the shader template
     fragment_index = shader_content.find("// Call methods")
     destination_node = destination_node.replace(" ", "").replace(".", "")
@@ -263,7 +257,14 @@ def write_struct_property(struct_name, struct_property, struct_property_type, in
     destination_node = input_node.name.replace(" ", "").replace(".", "")
     destination_name = destination_node + "_" + input_property.identifier
 
-    line = f'{struct_property_type} {destination_name} = {struct_name}.{struct_property};\n\t\t\t\t'
-    shader_content = shader_content[:fragment_index] + line + shader_content[fragment_index:]
+    input_property_type = blender_type_to_hlsl(input_property.bl_label)
+    if (struct_property_type != struct_property_type) : 
+        # Add conversion method
+        conversion_function = conversion_function_name = f'{struct_property_type}_to_{input_property_type}'
+        line = f'{input_property_type} {destination_name} = {conversion_function}({struct_name}.{struct_property});\n\t\t\t\t'
+        shader_content = shader_content[:fragment_index] + line + shader_content[fragment_index:]
+    else :
+        line = f'{input_property_type} {destination_name} = {struct_name}.{struct_property};\n\t\t\t\t'
+        shader_content = shader_content[:fragment_index] + line + shader_content[fragment_index:]
 
     return shader_content

@@ -11,6 +11,7 @@ class ImageTextureNode(Strategy):
 
         imagesMap = get_common_values().imagesMap
 
+        # Add Image to imagesMap to create a copy of it
         image_path = bpy.path.abspath(node.image.filepath)
         print(f'Image Path: {image_path}')
         if image_path not in imagesMap:
@@ -22,34 +23,28 @@ class ImageTextureNode(Strategy):
 
         variable_line = f'sampler2D {node_name}_Image;\n\t\t\t'
         shader_content = write_variable(variable_line, shader_content)
-        ## add struct 
-        struct_index = shader_content.find("// Add structs")
-        with open("HLSLTemplates/Image_Texture/struct.txt", "r") as struct_file:
-            struct = struct_file.read()
-        shader_content = shader_content[:struct_index] + struct + "\n\t\t\t" + shader_content[struct_index:]
 
-        # Add the function to the shader template,METER MAPP
-        with open("HLSLTemplates/Image_Texture/image_texture.txt", "r") as node_func_file:
-            node_function = node_func_file.read()
-        methods_index = shader_content.find("// Add methods")
-        shader_content = shader_content[:methods_index] + node_function + "\n\t\t\t" + shader_content[methods_index:]
+        # Add the struct (TODO : llevar la cuenta de structs ya añadidos)
+        shader_content = write_struct("HLSLTemplates/Image_Texture/struct.txt", shader_content)
+
+        # Add the function to the shader template
+        shader_content = write_function("HLSLTemplates/Image_Texture/image_texture.txt", shader_content)
         
-
-         # Add the function call to the shader template
-        fragment_index = shader_content.find("// Call methods")
+        # Add the function call to the shader template
         all_parameters = ', '.join(node_properties)
+        shader_content = write_struct_node(node_name, "Image_texture", "image_texture", all_parameters, shader_content)
 
-        func_line = f'Image_texture {node_name} = image_texture({all_parameters});\n\t\t\t\t'
-        shader_content = shader_content[:fragment_index] + func_line + shader_content[fragment_index:]
-        
         for exit_connection in node.outputs["Color"].links  :
             input_node = exit_connection.to_node
             input_property = exit_connection.to_socket
-            fragment_index = shader_content.find("// Call methods")
-            destination_node = input_node.name.replace(" ", "").replace(".", "")
-            destination_name = destination_node + "_" + input_property.identifier
-            line = f'float4 {destination_name} = {node_name}.Color;\n\t\t\t\t'
-            shader_content = shader_content[:fragment_index] + line + shader_content[fragment_index:]
+
+            shader_content = write_struct_property(node_name, "Color", "float4", input_node, input_property, shader_content)
+
+        for exit_connection in node.outputs["Alpha"].links :
+            input_node = exit_connection.to_node
+            input_property = exit_connection.to_socket
+
+            shader_content = write_struct_property(node_name, "Alpha", "float", input_node, input_property, shader_content)
            
 
         get_common_values().imagesMap = imagesMap
