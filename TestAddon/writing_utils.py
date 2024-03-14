@@ -255,7 +255,7 @@ def write_struct_property(struct_name, struct_property, struct_property_type, in
 
     fragment_index = shader_content.find("// Call methods")
     destination_node = input_node.name.replace(" ", "").replace(".", "")
-    destination_name = destination_node + "_" + input_property.identifier
+    destination_name = destination_node + "_" + input_property.identifier.replace(" ", "").replace(".","")
 
     input_property_type = blender_type_to_hlsl(input_property.bl_label)
     if (struct_property_type != input_property_type) : 
