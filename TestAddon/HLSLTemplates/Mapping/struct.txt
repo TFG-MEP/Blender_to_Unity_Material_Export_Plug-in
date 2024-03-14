@@ -1,6 +1,3 @@
 struct Mapping{
                 float3 Vector;
-		float3 Location;
-		float3 Rotation;
-		float3 Scale;
             };

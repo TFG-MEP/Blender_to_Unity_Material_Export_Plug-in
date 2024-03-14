@@ -13,9 +13,6 @@ Mapping mapping( float3 vectore,float3 location, float3 rotation, float3 scale) 
         			rotated_vector *= scale;
 
         			map.Vector = rotated_vector;
-        			map.Location = location;
-        			map.Rotation = rotation;
-        			map.Scale = scale;
         
         			return map;
       			}
