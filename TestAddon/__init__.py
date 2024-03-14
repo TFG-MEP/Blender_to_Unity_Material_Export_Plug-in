@@ -1,3 +1,4 @@
+
 bl_info = {
     "name": "GENERATE UNITY MATERIAL",
     "blender": (2, 80, 0),
@@ -10,13 +11,18 @@ from bpy.props import StringProperty,BoolProperty
 from .exporter import export
 
 class GeneraShader(bpy.types.Operator):
+   
     bl_idname = "object.generar_unity_material"
     bl_label = "Generate Material"
     filepath: StringProperty(subtype="FILE_PATH")
     export_fbx: BoolProperty(name="Export FBX", default=False)
     # Aqui se determina qué ocurre al seleccionar esta opción del panel
     def execute(self, context):
+        print("RUTA ANTES:" + os.getcwd())
+        os.chdir(os.path.dirname(os.path.abspath(__file__)))
+        print("RUTA ANTES:" + os.getcwd())
         directory = os.path.dirname(self.filepath)
+        print("holaaa"+os.path.dirname(os.path.abspath(__file__)))
         print("Ruta seleccionada:", directory)
         export(directory,self.export_fbx)
         return {'FINISHED'}

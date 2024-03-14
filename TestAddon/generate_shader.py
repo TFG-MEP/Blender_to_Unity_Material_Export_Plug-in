@@ -105,7 +105,7 @@ def generate(destination_directory):
     get_common_values().clear_common_variables()
 
     # Load the .shader template
-    template_shader_path = "FileTemplates/template.shader"
+    template_shader_path = "./FileTemplates/template.shader"
 
     with open(template_shader_path, "r") as template_file:
         template_shader = template_file.read()

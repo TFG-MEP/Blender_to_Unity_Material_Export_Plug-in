@@ -34,3 +34,4 @@ class RGBNode(Strategy):
             shader_content = write_struct_property(node_name, "Color", "float4", input_node, input_property, shader_content)
 
         return shader_content
+    
