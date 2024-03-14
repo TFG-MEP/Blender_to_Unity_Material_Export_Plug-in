@@ -38,7 +38,7 @@ class ImageTextureNode(Strategy):
             input_node = exit_connection.to_node
             input_property = exit_connection.to_socket
 
-            shader_content = write_struct_property(node_name, "Color", "float4", input_node, input_property, shader_content)
+            shader_content = write_struct_property(node_name, "Color", "float3", input_node, input_property, shader_content)
 
         for exit_connection in node.outputs["Alpha"].links :
             input_node = exit_connection.to_node

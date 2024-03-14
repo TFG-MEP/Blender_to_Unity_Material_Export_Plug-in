@@ -258,7 +258,7 @@ def write_struct_property(struct_name, struct_property, struct_property_type, in
     destination_name = destination_node + "_" + input_property.identifier
 
     input_property_type = blender_type_to_hlsl(input_property.bl_label)
-    if (struct_property_type != struct_property_type) : 
+    if (struct_property_type != input_property_type) : 
         # Add conversion method
         conversion_function = conversion_function_name = f'{struct_property_type}_to_{input_property_type}'
         line = f'{input_property_type} {destination_name} = {conversion_function}({struct_name}.{struct_property});\n\t\t\t\t'
