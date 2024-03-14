@@ -6,18 +6,26 @@ class PrincipledBSDFNode(Strategy):
         
         node_name = node.name.replace(" ", "")
         node_name=node.name.replace(".", "")
-
+        node_name = node.name.replace(" ", "_") #Caso único para el nodo principled bsdf
+        
         node_properties.insert(0, 'i')
+        # Add the struct (TODO : llevar la cuenta de structs ya añadidos)
+        shader_content = write_struct("HLSLTemplates/BSDF/struct.txt", shader_content)
+
+        # Add the function to the shader template
+        shader_content = write_function("HLSLTemplates/BSDF/principled_bsdf.txt", shader_content)
+        
+        # Add the function call to the shader template
+        all_parameters = ', '.join(node_properties)
+        shader_content = write_struct_node(node_name, "BSDF", "principled_bsdf", all_parameters, shader_content)
         
         for link in node.outputs["BSDF"].links :
 
             input_node = link.to_node
             input_property = link.to_socket
 
-            shader_content = write_node("HLSLTemplates/BSDF/principled_bsdf.txt", node_properties, input_node , input_property, shader_content)
-        
-        print(f'node.inputs["Alpha"].default_value: {node.inputs["Alpha"].default_value}')
-        
+            shader_content = write_struct_property(node_name, "BSDF_output", "float4", input_node, input_property, shader_content)
+                
         if get_common_values().blending_mode == 'BLEND' or get_common_values().blending_mode == 'CLIP':
                 if node.inputs['Alpha'].default_value < 1:
                     shader_content=write_tags("HLSLTemplates/BSDF/principled_bsdf_tags.txt", shader_content)
