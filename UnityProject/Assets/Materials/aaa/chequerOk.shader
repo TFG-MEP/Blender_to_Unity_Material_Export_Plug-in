@@ -37,13 +37,19 @@ Shader "Tutorial/011_Chessboard"
                 float4 Color;
                 float Fac;
             };
+            cbuffer ConstantBuffer : register(b0) {
+                matrix WorldViewProjection;
+            };
+            
             v2f vert(appdata v){
                 v2f o;
+
                 //calculate the position in clip space to render the object
                 o.position = UnityObjectToClipPos(v.vertex);
                 //calculate the position of the vertex in the world
                 o.worldPos = mul(unity_ObjectToWorld, v.vertex);
-                o.Pos=v.vertex.xyz;
+                o.Pos= v.vertex;
+               
                 return o;
             }
             Checker checker(float3  ip, float4 color1, float4 color2,float Scale)
@@ -69,8 +75,7 @@ Shader "Tutorial/011_Chessboard"
             }
             
             fixed4 frag(v2f i) : SV_TARGET{
-                //scale the position to adjust for shader input and floor the values so we have whole numbers
-                float3 adjustedWorldPos = floor(i.worldPos / _Scale);
+               
                 //add different dimensions
                 Checker check=checker(i.Pos, _OddColor, _EvenColor, _Scale);
                 // float chessboard = adjustedWorldPos.x + adjustedWorldPos.y + adjustedWorldPos.z;
