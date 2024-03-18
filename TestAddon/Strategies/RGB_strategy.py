@@ -25,7 +25,7 @@ class RGBNode(Strategy):
         shader_content = write_function("HLSLTemplates/RGB/rgb.txt", shader_content)
 
         all_parameters = ', '.join(node_properties)
-        shader_content = write_struct_node(node_name, "RGB", "rgb", all_parameters, shader_content)
+        shader_content = write_struct_node(node_name, "RGB_output", "rgb", all_parameters, shader_content)
         
         for exit_connection in node.outputs["Color"].links :
             input_node = exit_connection.to_node

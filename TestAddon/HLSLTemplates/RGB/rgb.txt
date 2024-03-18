@@ -1,6 +1,6 @@
-RGB rgb(float4 input_color)
+RGB_output rgb(float4 input_color)
             {
-                RGB output_color;
+                RGB_output output_color;
                 output_color.Color = input_color;
                 return output_color;
             }

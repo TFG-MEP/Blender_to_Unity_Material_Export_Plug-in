@@ -1,4 +1,0 @@
-float3 mix_vector(float mixFactorFloat, float3 mixFactorVector, float floatA, float floatB, float3 vectorA, float3 vectorB, float4 colorA, float4 colorB) {
-		         float clampedFactor = clamp(mixFactorVector, 0.0, 1.0);
-                return lerp(vectorA, vectorB, clampedFactor);
-            }

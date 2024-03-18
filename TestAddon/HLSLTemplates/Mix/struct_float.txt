@@ -1,0 +1,3 @@
+struct Mix_float{
+                float4 Result;
+            };

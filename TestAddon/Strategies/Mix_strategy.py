@@ -14,10 +14,15 @@ class MixNode(Strategy) :
 
             data_type = output.type
 
-            template = "HLSLTemplates/mix_color.txt"
+            struct_prop='Result'
+            struct_type='float4'
 
             if data_type == 'RGBA':
-                template = "HLSLTemplates/mix_color.txt"
+                struct_name='Mix_color'
+                node_name=node_name+'_color'
+                function_name='mix_color'
+                shader_content = write_struct("HLSLTemplates/Mix/struct_color.txt", shader_content)
+                shader_content = write_function("HLSLTemplates/Mix/mix_color.txt", shader_content)
                 
                 blending_mode = node.blend_type
                 #print(f"Blending mode is... {blending_mode}")
@@ -26,22 +31,38 @@ class MixNode(Strategy) :
                 #print(f"Clamp result is... {clamp_result}")
 
             elif data_type == 'VECTOR':
-                template = "HLSLTemplates/mix_vector.txt"
-
+                #struct_prop='Result'
+                struct_name='Mix_vector'
+                node_name=node_name+'_vector'
+                function_name='mix_vector'
+                struct_type='float3'
+                shader_content = write_struct("HLSLTemplates/Mix/struct_vector.txt", shader_content)
+                shader_content = write_function("HLSLTemplates/Mix/mix_vector.txt", shader_content)
+                
                 factor_mode = node.factor_mode
                 #print(f"Factor Mode is... {factor_mode}")
 
             elif data_type == 'VALUE':
-                template = "HLSLTemplates/mix_float.txt"
-
-
+                struct_name='Mix_float'
+                node_name=node_name+'_float'
+                function_name='mix_float'
+                shader_content = write_struct("HLSLTemplates/Mix/struct_float.txt", shader_content)
+                shader_content = write_function("HLSLTemplates/Mix/mix_float.txt", shader_content)
+            
+            all_parameters = ', '.join(node_properties) #Revisar si es necesario
+            shader_content = write_struct_node(node_name, struct_name, function_name, all_parameters, shader_content)
+            
             for link in output.links :
                 input_node = link.to_node
                 input_property = link.to_socket
-
-                shader_content = write_node(template, node_properties, input_node , input_property, shader_content)
-
+                shader_content = write_struct_property(node_name, struct_prop, struct_type, input_node, input_property, shader_content)
+                
         return shader_content
 
+# Add the struct 
+        #shader_content = write_struct("HLSLTemplates/RGB/struct.txt", shader_content)
+
+        # Add the function to the shader template
+        #shader_content = write_function("HLSLTemplates/RGB/rgb.txt", shader_content)
 
 
