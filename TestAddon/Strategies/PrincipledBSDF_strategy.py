@@ -4,12 +4,12 @@ from ..writing_utils import *
 class PrincipledBSDFNode(Strategy):
     def write_node(self, node, node_properties, shader_content):
         
-        node_name = node.name.replace(" ", "")
-        node_name=node.name.replace(".", "")
-        node_name = node.name.replace(" ", "_") #Caso único para el nodo principled bsdf
+        #node_name = node.name.replace(" ", "")
+        node_name=node.name.replace(".", "_")
+        node_name = node_name.replace(" ", "_") #Caso único para el nodo principled bsdf
         
         node_properties.insert(0, 'i')
-        # Add the struct (TODO : llevar la cuenta de structs ya añadidos)
+      
         shader_content = write_struct("HLSLTemplates/BSDF/struct.txt", shader_content)
 
         # Add the function to the shader template
@@ -18,7 +18,7 @@ class PrincipledBSDFNode(Strategy):
         # Add the function call to the shader template
         all_parameters = ', '.join(node_properties)
         shader_content = write_struct_node(node_name, "BSDF", "principled_bsdf", all_parameters, shader_content)
-        
+        print(f"node_name: {node_name}")
         for link in node.outputs["BSDF"].links :
 
             input_node = link.to_node
