@@ -140,6 +140,7 @@ Shader "Custom/Shadercolorramp2_"
                 o.tangentWS = float4(normalInput.tangentWS.xyz, sign);
                 o.viewDirWS = GetWorldSpaceNormalizeViewDir(vertexInput.positionWS);
                 o.shadowCoord = GetShadowCoord(vertexInput);
+                //create the lightmap uv
                 OUTPUT_LIGHTMAP_UV(v.staticLightmapUV, unity_LightmapST, 
                 o.staticLightmapUV);
 
