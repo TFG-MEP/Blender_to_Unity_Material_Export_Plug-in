@@ -5,6 +5,7 @@ class CommonValues() :
         self.visited_nodes = set()
         self.imagesMap = {}
         self.added_functions = set()
+        self.added_structs = set()
         self.added_includes = set()
         self.added_tags= set()
         self.blending_mode = ''
@@ -15,6 +16,7 @@ class CommonValues() :
         self.visited_nodes = set()
         self.imagesMap = {}
         self.added_functions = set()
+        self.added_structs = set()
         self.added_includes = set()
         self.added_tags= set()
         self.blending_mode = ''

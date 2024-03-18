@@ -235,11 +235,15 @@ def assign_variable(line, shader_content) :
 def write_struct(struct_file_path, shader_content) :
 
     struct_index = shader_content.find("// Add structs")
-    with open(struct_file_path, "r") as struct_file:
-        struct = struct_file.read()
+    
+    if struct_file_path not in get_common_values().added_structs:
+        with open(struct_file_path, "r") as struct_file:
+            struct = struct_file.read()
 
-    # TODO : revisar tabulación
-    shader_content = shader_content[:struct_index] + struct + "\n\t\t\t" + shader_content[struct_index:]
+        # TODO : revisar tabulación
+        get_common_values().added_structs.add(struct_file_path)
+    
+        shader_content = shader_content[:struct_index] + struct + "\n\t\t\t" + shader_content[struct_index:]
     return shader_content
 
 def write_struct_node(node_name, struct_name, function_name, function_parameters, shader_content) : 
