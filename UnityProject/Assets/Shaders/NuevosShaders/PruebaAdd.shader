@@ -3,14 +3,8 @@ Shader "Custom/ShaderPruebaAdd_"
      Properties
     {
         _NormalTex("Normal Map", 2D) = "bump" {}
-        Mix_Factor_Float("Factor_Float", float) = 0.5
-		Mix_Factor_Vector("Factor_Vector", Vector) = (0.5, 0.5, 0.5)
-		Mix_A_Float("A_Float", float) = 0.0
-		Mix_B_Float("B_Float", float) = 0.0
-		Mix_A_Vector("A_Vector", Vector) = (0.0, 0.0, 0.0)
-		Mix_B_Vector("B_Vector", Vector) = (0.0, 0.0, 0.0)
-		RGB_Color("Color", Color) = (0.6035959029505733,0.7297400528407231,0.0, 1.0)
-		RGB001_Color("Color", Color) = (0.0,0.5592711788195932,0.7297400528407231, 1.0)
+        Value_Value("Value", float) = 0.5
+		PrincipledBSDF001_BaseColor("BaseColor", Color) = (0.22440018048326396,0.0,0.9035454676387557, 1.0)
 		PrincipledBSDF001_Subsurface("Subsurface", float) = 0.0
 		PrincipledBSDF001_SubsurfaceRadius("SubsurfaceRadius", Vector) = (1.0, 0.20000000298023224, 0.10000000149011612)
 		PrincipledBSDF001_SubsurfaceColor("SubsurfaceColor", Color) = (0.903545437039038,0.903545437039038,0.903545437039038, 1.0)
@@ -36,6 +30,32 @@ Shader "Custom/ShaderPruebaAdd_"
 		PrincipledBSDF001_ClearcoatNormal("ClearcoatNormal", Vector) = (0.0, 0.0, 0.0)
 		PrincipledBSDF001_Tangent("Tangent", Vector) = (0.0, 0.0, 0.0)
 		PrincipledBSDF001_Weight("Weight", float) = 0.0
+		PrincipledBSDF_BaseColor("BaseColor", Color) = (0.903545437039038,0.903545437039038,0.903545437039038, 1.0)
+		PrincipledBSDF_Subsurface("Subsurface", float) = 0.0
+		PrincipledBSDF_SubsurfaceRadius("SubsurfaceRadius", Vector) = (1.0, 0.20000000298023224, 0.10000000149011612)
+		PrincipledBSDF_SubsurfaceColor("SubsurfaceColor", Color) = (0.903545437039038,0.903545437039038,0.903545437039038, 1.0)
+		PrincipledBSDF_SubsurfaceIOR("SubsurfaceIOR", float) = 1.399999976158142
+		PrincipledBSDF_SubsurfaceAnisotropy("SubsurfaceAnisotropy", float) = 0.0
+		PrincipledBSDF_Metallic("Metallic", float) = 0.6872727274894714
+		PrincipledBSDF_Specular("Specular", float) = 0.5
+		PrincipledBSDF_SpecularTint("SpecularTint", float) = 0.0
+		PrincipledBSDF_Roughness("Roughness", float) = 0.5
+		PrincipledBSDF_Anisotropic("Anisotropic", float) = 0.0
+		PrincipledBSDF_AnisotropicRotation("AnisotropicRotation", float) = 0.0
+		PrincipledBSDF_Sheen("Sheen", float) = 0.0
+		PrincipledBSDF_SheenTint("SheenTint", float) = 0.5
+		PrincipledBSDF_Clearcoat("Clearcoat", float) = 0.0
+		PrincipledBSDF_ClearcoatRoughness("ClearcoatRoughness", float) = 0.029999999329447746
+		PrincipledBSDF_IOR("IOR", float) = 1.4500000476837158
+		PrincipledBSDF_Transmission("Transmission", float) = 0.0
+		PrincipledBSDF_TransmissionRoughness("TransmissionRoughness", float) = 0.0
+		PrincipledBSDF_Emission("Emission", Color) = (0.0,0.0,0.0, 1.0)
+		PrincipledBSDF_EmissionStrength("EmissionStrength", float) = 1.0
+		PrincipledBSDF_Alpha("Alpha", float) = 1.0
+		PrincipledBSDF_Normal("Normal", Vector) = (0.0, 0.0, 0.0)
+		PrincipledBSDF_ClearcoatNormal("ClearcoatNormal", Vector) = (0.0, 0.0, 0.0)
+		PrincipledBSDF_Tangent("Tangent", Vector) = (0.0, 0.0, 0.0)
+		PrincipledBSDF_Weight("Weight", float) = 0.0
 		// Add properties
         _SrcFactor("SrcFactor", Float) = 5
         _DstFactor("DstFactor", Float) = 10
@@ -86,31 +106,19 @@ Shader "Custom/ShaderPruebaAdd_"
                 #endif
                 float3 worldPos : TEXCOORD8;
             };
-            struct RGB_output{
-                float4 Color;
-            };
-			struct Mix_float{
-                float4 Result;
-            };
-			struct Mix_vector{
-                float3 Result;
-            };
-			struct Mix_color{
-                float4 Result;
+            struct Value{
+                float Value;
             };
 			struct BSDF{
                 float4 BSDF_output;
             };
+			struct Mix_shader{
+                float4 Shader;
+            };
 			// Add structs
 
-            float Mix_Factor_Float;
-			float3 Mix_Factor_Vector;
-			float Mix_A_Float;
-			float Mix_B_Float;
-			float3 Mix_A_Vector;
-			float3 Mix_B_Vector;
-			float4 RGB_Color;
-			float4 RGB001_Color;
+            float Value_Value;
+			float4 PrincipledBSDF001_BaseColor;
 			float PrincipledBSDF001_Subsurface;
 			float3 PrincipledBSDF001_SubsurfaceRadius;
 			float4 PrincipledBSDF001_SubsurfaceColor;
@@ -136,6 +144,32 @@ Shader "Custom/ShaderPruebaAdd_"
 			float3 PrincipledBSDF001_ClearcoatNormal;
 			float3 PrincipledBSDF001_Tangent;
 			float PrincipledBSDF001_Weight;
+			float4 PrincipledBSDF_BaseColor;
+			float PrincipledBSDF_Subsurface;
+			float3 PrincipledBSDF_SubsurfaceRadius;
+			float4 PrincipledBSDF_SubsurfaceColor;
+			float PrincipledBSDF_SubsurfaceIOR;
+			float PrincipledBSDF_SubsurfaceAnisotropy;
+			float PrincipledBSDF_Metallic;
+			float PrincipledBSDF_Specular;
+			float PrincipledBSDF_SpecularTint;
+			float PrincipledBSDF_Roughness;
+			float PrincipledBSDF_Anisotropic;
+			float PrincipledBSDF_AnisotropicRotation;
+			float PrincipledBSDF_Sheen;
+			float PrincipledBSDF_SheenTint;
+			float PrincipledBSDF_Clearcoat;
+			float PrincipledBSDF_ClearcoatRoughness;
+			float PrincipledBSDF_IOR;
+			float PrincipledBSDF_Transmission;
+			float PrincipledBSDF_TransmissionRoughness;
+			float4 PrincipledBSDF_Emission;
+			float PrincipledBSDF_EmissionStrength;
+			float PrincipledBSDF_Alpha;
+			float3 PrincipledBSDF_Normal;
+			float3 PrincipledBSDF_ClearcoatNormal;
+			float3 PrincipledBSDF_Tangent;
+			float PrincipledBSDF_Weight;
 			// Add variables
     
             sampler2D _NormalTex;
@@ -166,29 +200,11 @@ Shader "Custom/ShaderPruebaAdd_"
                 return o;
             }
             
-            RGB_output rgb(float4 input_color)
+            Value value(float input_value)
             {
-                RGB_output output_color;
-                output_color.Color = input_color;
-                return output_color;
-            }
-			Mix_float mix_float(float mixFactorFloat, float3 mixFactorVector, float floatA, float floatB, float3 vectorA, float3 vectorB, float4 colorA, float4 colorB) {
-		        Mix_float mixed;
-                float clampedFactor = clamp(mixFactorFloat, 0.0, 1.0);
-                mixed.Result=lerp(floatA, floatB, clampedFactor);
-                return mixed;
-            }
-			Mix_vector mix_vector(float mixFactorFloat, float3 mixFactorVector, float floatA, float floatB, float3 vectorA, float3 vectorB, float4 colorA, float4 colorB) {
-		         Mix_vector mixed;
-                 float clampedFactor = clamp(mixFactorVector, 0.0, 1.0);
-                 mixed.Result=lerp(vectorA, vectorB, clampedFactor);
-                return mixed;
-            }
-			Mix_color mix_color(float mixFactorFloat, float3 mixFactorVector, float floatA, float floatB, float3 vectorA, float3 vectorB, float4 colorA, float4 colorB) {
-		        Mix_color mixed;
-                float clampedFactor = clamp(mixFactorFloat, 0.0, 1.0);
-                mixed.Result=lerp(colorA, colorB, clampedFactor);
-                return mixed;
+                Value output_value;
+                output_value.Value = input_value;
+                return output_value;
             }
 			BSDF principled_bsdf(v2f i, float4 PrincipledBSDF_BaseColor,float PrincipledBSDF_Subsurface, float3 PrincipledBSDF_SubsurfaceRadius, float4 PrincipledBSDF_SubsurfaceColor,float PrincipledBSDF_SubsurfaceIOR,float PrincipledBSDF_SubsurfaceAnisotropy,
 float PrincipledBSDF_Metallic, float PrincipledBSDF_Specular,float PrincipledBSDF_SpecularTint,float PrincipledBSDF_Roughness,float PrincipledBSDF_Anisotropic, float PrincipledBSDF_AnisotropicRotation,float PrincipledBSDF_Sheen, 
@@ -255,20 +271,24 @@ float PrincipledBSDF_EmissionStrength,float PrincipledBSDF_Alpha, float3 Princip
                 return output;
 
             }
+			Mix_shader mix_shader(float mixFactor, float4 shader1, float4 shader2) {
+        Mix_shader mixed;
+		float clampedFactor = clamp(mixFactor, 0.0, 1.0);
+        mixed.Shader=lerp(shader1, shader2, clampedFactor);
+                return mixed;
+            }
 			// Add methods
             float4 frag (v2f i) : SV_Target
             {
 
-                RGB_output RGB = rgb(RGB_Color);
-				float4 Mix_A_Color = RGB.Color;
-				RGB_output RGB001 = rgb(RGB001_Color);
-				float4 Mix_B_Color = RGB001.Color;
-				Mix_float Mix_float = mix_float(Mix_Factor_Float, Mix_Factor_Vector, Mix_A_Float, Mix_B_Float, Mix_A_Vector, Mix_B_Vector, Mix_A_Color, Mix_B_Color);
-				Mix_vector Mix_float_vector = mix_vector(Mix_Factor_Float, Mix_Factor_Vector, Mix_A_Float, Mix_B_Float, Mix_A_Vector, Mix_B_Vector, Mix_A_Color, Mix_B_Color);
-				Mix_color Mix_float_vector_color = mix_color(Mix_Factor_Float, Mix_Factor_Vector, Mix_A_Float, Mix_B_Float, Mix_A_Vector, Mix_B_Vector, Mix_A_Color, Mix_B_Color);
-				float4 PrincipledBSDF001_BaseColor = Mix_float_vector_color.Result;
+                Value Value = value(Value_Value);
+				float MixShader_Fac = Value.Value;
 				BSDF Principled_BSDF_001 = principled_bsdf(i, PrincipledBSDF001_BaseColor, PrincipledBSDF001_Subsurface, PrincipledBSDF001_SubsurfaceRadius, PrincipledBSDF001_SubsurfaceColor, PrincipledBSDF001_SubsurfaceIOR, PrincipledBSDF001_SubsurfaceAnisotropy, PrincipledBSDF001_Metallic, PrincipledBSDF001_Specular, PrincipledBSDF001_SpecularTint, PrincipledBSDF001_Roughness, PrincipledBSDF001_Anisotropic, PrincipledBSDF001_AnisotropicRotation, PrincipledBSDF001_Sheen, PrincipledBSDF001_SheenTint, PrincipledBSDF001_Clearcoat, PrincipledBSDF001_ClearcoatRoughness, PrincipledBSDF001_IOR, PrincipledBSDF001_Transmission, PrincipledBSDF001_TransmissionRoughness, PrincipledBSDF001_Emission, PrincipledBSDF001_EmissionStrength, PrincipledBSDF001_Alpha, PrincipledBSDF001_Normal, PrincipledBSDF001_ClearcoatNormal, PrincipledBSDF001_Tangent, PrincipledBSDF001_Weight);
-				float4 MaterialOutput_Surface = Principled_BSDF_001.BSDF_output;
+				float4 MixShader_Shader = Principled_BSDF_001.BSDF_output;
+				BSDF Principled_BSDF = principled_bsdf(i, PrincipledBSDF_BaseColor, PrincipledBSDF_Subsurface, PrincipledBSDF_SubsurfaceRadius, PrincipledBSDF_SubsurfaceColor, PrincipledBSDF_SubsurfaceIOR, PrincipledBSDF_SubsurfaceAnisotropy, PrincipledBSDF_Metallic, PrincipledBSDF_Specular, PrincipledBSDF_SpecularTint, PrincipledBSDF_Roughness, PrincipledBSDF_Anisotropic, PrincipledBSDF_AnisotropicRotation, PrincipledBSDF_Sheen, PrincipledBSDF_SheenTint, PrincipledBSDF_Clearcoat, PrincipledBSDF_ClearcoatRoughness, PrincipledBSDF_IOR, PrincipledBSDF_Transmission, PrincipledBSDF_TransmissionRoughness, PrincipledBSDF_Emission, PrincipledBSDF_EmissionStrength, PrincipledBSDF_Alpha, PrincipledBSDF_Normal, PrincipledBSDF_ClearcoatNormal, PrincipledBSDF_Tangent, PrincipledBSDF_Weight);
+				float4 MixShader_Shader_001 = Principled_BSDF.BSDF_output;
+				Mix_shader MixShader = mix_shader(MixShader_Fac, MixShader_Shader, MixShader_Shader_001);
+				float4 MaterialOutput_Surface = MixShader.Shader;
 				// Call methods
               
                 

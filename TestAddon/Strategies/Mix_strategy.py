@@ -58,11 +58,6 @@ class MixNode(Strategy) :
                 shader_content = write_struct_property(node_name, struct_prop, struct_type, input_node, input_property, shader_content)
                 
         return shader_content
-
-# Add the struct 
-        #shader_content = write_struct("HLSLTemplates/RGB/struct.txt", shader_content)
-
-        # Add the function to the shader template
-        #shader_content = write_function("HLSLTemplates/RGB/rgb.txt", shader_content)
+    #TODO: comprobar funcionamiento para casos que no son color
 
 

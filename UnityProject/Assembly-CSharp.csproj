@@ -67,7 +67,6 @@
   <ItemGroup>
     <None Include="Assets\Materials\aaa\waveTexture.shader" />
     <None Include="Assets\Materials\Pruebas\Material.shader" />
-    <None Include="Assets\Shaders\NuevosShaders\PruebaAdd.shader" />
     <None Include="Assets\Shaders\Oro_0.shader" />
     <None Include="Assets\Shaders\NuevosShaders\CristalAlfa.shader" />
     <None Include="Assets\Shaders\WaveTexture 1.shader" />
@@ -104,6 +103,7 @@
     <None Include="Assets\Materials\aaa\chequ.shader" />
     <None Include="Assets\Shaders\NuevosShaders\utils.hlsl" />
     <None Include="Assets\Shaders\s.shader" />
+    <None Include="Assets\Shaders\NuevosShaders\PruebaAdd.shader" />
     <None Include="Assets\Materials\aaa\node_hash.hlsl" />
     <None Include="Assets\Shaders\MyFirstShader.shader" />
     <None Include="Assets\Shaders\aaa.shader" />

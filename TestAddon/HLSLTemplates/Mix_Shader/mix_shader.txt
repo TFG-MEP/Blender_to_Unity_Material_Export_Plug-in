@@ -1,4 +1,6 @@
-float4 mix_shader(float mixFactor, float4 shader1, float4 shader2) {
+Mix_shader mix_shader(float mixFactor, float4 shader1, float4 shader2) {
+        Mix_shader mixed;
 		float clampedFactor = clamp(mixFactor, 0.0, 1.0);
-                return lerp(shader1, shader2, clampedFactor);
+        mixed.Shader=lerp(shader1, shader2, clampedFactor);
+                return mixed;
             }
