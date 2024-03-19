@@ -1,5 +1,0 @@
- float3 normal_map(float strenght,float4 color){
-                float3 normal=UnpackNormal(color);
-                normal.rg*=strenght;
-                return normal;
-}
