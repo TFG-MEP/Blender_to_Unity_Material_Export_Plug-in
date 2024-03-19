@@ -1,12 +1,15 @@
-float4 color_ramp( float at,int numcolors, int interpolate,float4 ramp[30],float pos[30] )
-{
-              float f = at;
+ColorRamp_output color_ramp( float at,int numcolors, int interpolate,float4 ramp[30],float pos[30] ){ 
+             ColorRamp_output output;
+             float f = at;
               int table_size = numcolors;
             
               f  = clamp(at, 0.0, 1.0) ;
               float4 result=ramp[0];
               if(numcolors>1&&f>=pos[numcolors-1]){
-                  return ramp[numcolors-1];
+                float4 res=ramp[numcolors-1];
+                    output.Color=res.xyz;
+                    output.Alpha=res.w;
+                  return output;
               }
       
               for (int i = 0; i < numcolors - 1; ++i) {
@@ -22,6 +25,7 @@ float4 color_ramp( float at,int numcolors, int interpolate,float4 ramp[30],float
                     
                   }
               }
-                
-              return result;
+                output.Color=result.xyz;
+                output.Alpha=result.w;
+              return output;
 }

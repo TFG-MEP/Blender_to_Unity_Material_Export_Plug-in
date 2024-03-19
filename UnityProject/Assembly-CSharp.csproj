@@ -72,6 +72,7 @@
     <None Include="Assets\Shaders\WaveTexture 1.shader" />
     <None Include="Assets\Shaders\NuevosShaders\EsferaLitPaula.shader" />
     <None Include="Assets\Materials\Pruebas\fotobsdf.shader" />
+    <None Include="Assets\Shaders\NuevosShaders\PruebaAdd.shader" />
     <None Include="Assets\Materials\Pruebas\colorramp2.shader" />
     <None Include="Assets\Shaders\NuevosShaders\ValueMaterial.shader" />
     <None Include="Assets\Shaders\CelShading.shader" />
@@ -103,7 +104,6 @@
     <None Include="Assets\Materials\aaa\chequ.shader" />
     <None Include="Assets\Shaders\NuevosShaders\utils.hlsl" />
     <None Include="Assets\Shaders\s.shader" />
-    <None Include="Assets\Shaders\NuevosShaders\PruebaAdd.shader" />
     <None Include="Assets\Materials\aaa\node_hash.hlsl" />
     <None Include="Assets\Shaders\MyFirstShader.shader" />
     <None Include="Assets\Shaders\aaa.shader" />

@@ -1,0 +1,4 @@
+struct ColorRamp_output{
+                float3 Color;
+                float Alpha;
+            };

@@ -8,6 +8,15 @@ class ColorRampNode(Strategy):
         node_name = node.name.replace(" ", "")
         node_name=node_name.replace(".", "")
 
+        # Add the struct (TODO : llevar la cuenta de structs ya añadidos)
+        shader_content = write_struct("HLSLTemplates/ColorRamp/struct.txt", shader_content)
+
+        # Add the function to the shader template
+        shader_content = write_function("HLSLTemplates/ColorRamp/color_ramp.txt", shader_content)
+        # Add the function call to the shader template
+        all_parameters = ', '.join(node_properties)
+        shader_content = write_struct_node(node_name,"ColorRamp_output", "color_ramp", all_parameters, shader_content)
+        
         for exit_connection in node.outputs["Color"].links :
             input_node = exit_connection.to_node
             input_property = exit_connection.to_socket
@@ -52,6 +61,12 @@ class ColorRampNode(Strategy):
                 fragment_index = shader_content.find("// Call methods")
                 shader_content = shader_content[:fragment_index] + pos_line + shader_content[fragment_index:]
 
-            shader_content = write_node("HLSLTemplates/color_ramp.txt", node_properties, input_node, input_property, shader_content)
+            shader_content = write_struct_property(node_name, "Color", "float3", input_node, input_property, shader_content)
+            
+        for exit_connection in node.outputs["Alpha"].links :
+            input_node = exit_connection.to_node
+            input_property = exit_connection.to_socket
 
+            shader_content = write_struct_property(node_name, "Alpha", "float", input_node, input_property, shader_content)
+           
         return shader_content
