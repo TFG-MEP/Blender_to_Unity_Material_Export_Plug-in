@@ -264,9 +264,11 @@ def write_struct_property(struct_name, struct_property, struct_property_type, in
     input_property_type = blender_type_to_hlsl(input_property.bl_label)
     if (struct_property_type != input_property_type) : 
         # Add conversion method
-        conversion_function = conversion_function_name = f'{struct_property_type}_to_{input_property_type}'
+        conversion_function = f'{struct_property_type}_to_{input_property_type}'
+        shader_content=write_function(f'HLSLTemplates/Utils/{conversion_function}.txt',shader_content)
         line = f'{input_property_type} {destination_name} = {conversion_function}({struct_name}.{struct_property});\n\t\t\t\t'
         shader_content = shader_content[:fragment_index] + line + shader_content[fragment_index:]
+       
     else :
         line = f'{input_property_type} {destination_name} = {struct_name}.{struct_property};\n\t\t\t\t'
         shader_content = shader_content[:fragment_index] + line + shader_content[fragment_index:]
