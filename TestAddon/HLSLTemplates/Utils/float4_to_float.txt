@@ -1,0 +1,3 @@
+float float4_to_float(float4 vec){
+    return (vec.x + vec.y + vec.z + vec.w) / 4.0;
+}

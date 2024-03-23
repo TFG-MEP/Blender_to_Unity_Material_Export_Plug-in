@@ -25,7 +25,7 @@ Shader "Custom/ColorShader"
             #pragma fragment frag
           
             //Add includes 
-            #include "utils.hlsl"
+           
             //Datos de entrada en el vertex shader
             struct appdata
             {

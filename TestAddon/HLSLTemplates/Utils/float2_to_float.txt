@@ -1,0 +1,4 @@
+float float2_to_float(float2 vec){
+    return (vec.x + vec.y) / 2.0;
+}
+
