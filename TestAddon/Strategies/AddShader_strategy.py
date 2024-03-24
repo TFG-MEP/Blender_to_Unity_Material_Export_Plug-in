@@ -7,7 +7,6 @@ class AddShaderNode(Strategy) :
         node_name = node_name.replace(".", "")
 
         shader_content = write_struct("HLSLTemplates/Add_Shader/struct.txt", shader_content)
-
         # Add the function to the shader template
         shader_content = write_function("HLSLTemplates/Add_Shader/add_shader.txt", shader_content)
         

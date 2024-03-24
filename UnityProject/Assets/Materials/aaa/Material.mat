@@ -37,7 +37,7 @@ Material:
     - PrincipledBSDF_EmissionStrength: 1
     - PrincipledBSDF_IOR: 1.45
     - PrincipledBSDF_Metallic: 0
-    - PrincipledBSDF_Roughness: -0.73
+    - PrincipledBSDF_Roughness: 0.5
     - PrincipledBSDF_Sheen: 0
     - PrincipledBSDF_SheenTint: 0.5
     - PrincipledBSDF_Specular: 0.5
