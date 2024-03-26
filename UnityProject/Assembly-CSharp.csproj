@@ -106,6 +106,7 @@
     <None Include="Assets\Shaders\s.shader" />
     <None Include="Assets\Materials\aaa\node_hash.hlsl" />
     <None Include="Assets\Shaders\MyFirstShader.shader" />
+    <None Include="Assets\Free Stylized Skybox\CubeMap\Materials\NewUnlitShader.shader" />
     <None Include="Assets\Shaders\aaa.shader" />
     <None Include="Assets\Shaders\wavetexture.shader" />
     <None Include="Assets\Materials\aaa\colorRamp.shader" />
