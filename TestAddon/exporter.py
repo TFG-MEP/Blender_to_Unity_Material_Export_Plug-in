@@ -2,6 +2,8 @@ from .generate_material import generate_files
 from .generate_shader import generate
 from .generate_3dModel import generate_3dModel
 
+import bpy
+
 def export(path,export) :
 
     # Generate  .shader
@@ -13,4 +15,5 @@ def export(path,export) :
     if export:
         # Generate 3D model
         generate_3dModel(path)
+
 

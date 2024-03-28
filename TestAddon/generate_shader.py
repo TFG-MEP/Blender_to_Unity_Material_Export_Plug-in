@@ -101,7 +101,8 @@ def iterate_node(node, shader_content):
 
 def clean_material_name(name) : 
     material_name = re.sub(r'[^\w\s]', '', name).replace(' ', '')
-    #nombre_limpiado = re.sub(r'[_\.]+', '_', nombre_limpiado)
+    if material_name == "" :
+        raise SystemExit("Material name contains only invalid symbols. Please use alphanumeric characters.")
     return material_name
 
 
@@ -109,6 +110,20 @@ def generate(destination_directory):
 
     # Reset global variables
     get_common_values().clear_common_variables()
+
+    # Check if there's a selected object
+    if bpy.context.active_object is not None:
+        selected_object = bpy.context.active_object
+        # Check if there's a material assigned to the object
+        if len(selected_object.material_slots) > 0:
+            material = selected_object.active_material
+            material.use_nodes = True # ¿?
+        else:
+            raise SystemExit("No material is assigned to the object.")
+    else:
+        raise SystemExit("No object is selected.")
+
+    material_name = clean_material_name(material.name)
 
     # Load the .shader template
     template_shader_path = "./FileTemplates/template.shader"
@@ -123,9 +138,6 @@ def generate(destination_directory):
     # TODO : revisar pq la plantilla necesita el include
     shader_content = write_include("HLSLTemplates/BSDF/principled_bsdf_includes.txt",shader_content)
 
-    selected_object = bpy.context.active_object
-    material = selected_object.active_material
-    material.use_nodes = True # ¿?
     #------------------------------------------------------BLENDING MODE?
     get_common_values().blending_mode = material.blend_method
     print(f'Blending mode: {get_common_values().blending_mode}')
@@ -139,8 +151,6 @@ def generate(destination_directory):
 
     # Rename the shader
     #material_name = material.name.replace(" ", "").replace(".", "")
-    material_name = clean_material_name(material.name)
-    print(material_name)
     shader_content = shader_content.replace("Custom/ColorShader", f"Custom/Shader{material_name}_")
 
     shader_filename = f"{material_name}.shader"

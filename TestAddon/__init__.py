@@ -24,8 +24,15 @@ class GeneraShader(bpy.types.Operator):
         directory = os.path.dirname(self.filepath)
         print("holaaa"+os.path.dirname(os.path.abspath(__file__)))
         print("Ruta seleccionada:", directory)
-        export(directory,self.export_fbx)
+        
+        try :
+            export(directory,self.export_fbx)
+        except SystemExit as e:
+            error_message = "Execution stopped due to error: " + str(e)
+            self.report({'ERROR'}, error_message)
+
         return {'FINISHED'}
+
     def invoke(self, context, event):
         context.window_manager.fileselect_add(self)
         return {'RUNNING_MODAL'}
