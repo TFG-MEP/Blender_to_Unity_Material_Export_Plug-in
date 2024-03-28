@@ -57,7 +57,7 @@ def iterate_node(node, shader_content):
     else :
         get_common_values().visited_nodes.add(node_name)
 
-    print ("Iterating through node: " + node.type + "\n")
+    # print ("Iterating through node: " + node.type + "\n")
     
     # List of property names in this node
     node_properties = []
@@ -99,6 +99,12 @@ def iterate_node(node, shader_content):
 
     return shader_content
 
+def clean_material_name(name) : 
+    material_name = re.sub(r'[^\w\s]', '', name).replace(' ', '')
+    #nombre_limpiado = re.sub(r'[_\.]+', '_', nombre_limpiado)
+    return material_name
+
+
 def generate(destination_directory):
 
     # Reset global variables
@@ -132,7 +138,9 @@ def generate(destination_directory):
     # que no pueda ir en el nombre del shader o como nombre de archivo
 
     # Rename the shader
-    material_name = material.name.replace(" ", "").replace(".", "")
+    #material_name = material.name.replace(" ", "").replace(".", "")
+    material_name = clean_material_name(material.name)
+    print(material_name)
     shader_content = shader_content.replace("Custom/ColorShader", f"Custom/Shader{material_name}_")
 
     shader_filename = f"{material_name}.shader"
@@ -144,9 +152,8 @@ def generate(destination_directory):
         shader_file.write(shader_content)
 
     print(f"{shader_filename} file successfully generated.")
-    print("Process finished.")
-
-    if (get_common_values().MaterialOutput_Surface_added == False) : # TODO : comprobar que esto se imprime bien
-        print("ERROR: You must use a Material Output node with something connected to Surface.")
     
-    return material.name, get_common_values().imagesMap
+    #if (get_common_values().MaterialOutput_Surface_added == False) : # TODO : comprobar que esto se imprime bien
+    #    print("ERROR: You must use a Material Output node with something connected to Surface.")
+    
+    return material_name, get_common_values().imagesMap
