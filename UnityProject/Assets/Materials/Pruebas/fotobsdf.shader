@@ -52,8 +52,15 @@ Shader "Custom/Shaderfotobsdf_"
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-          
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE
+            #pragma multi_compile _ _SHADOWS_SOFT
+            #pragma shader_feature _ALPHATEST_ON
             #include"Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+          
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 			//Add includes 
             #include "utils.hlsl"
             //Datos de entrada en el vertex shader

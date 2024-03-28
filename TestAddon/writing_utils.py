@@ -13,8 +13,8 @@ def write_include(include_file_path, shader_content):
         str: Updated shader template with the HLSL method and its call.
     """
     with open(include_file_path, "r") as include_file:
-     
-        includes = re.findall(r'#include\s*"[^"]+"', include_file.read())
+       
+        includes = re.findall(r'#include \s*"[^"]+"', include_file.read())
 
         #Clean every include and assure that ther are not two equal
         includes = [re.sub(r'\s+', ' ', include.strip().replace('\n', '')) for include in includes]
@@ -24,11 +24,12 @@ def write_include(include_file_path, shader_content):
                 get_common_values().added_includes.add(include)
                 include_index = shader_content.find("//Add includes ")
                 shader_content = shader_content[:include_index] + include + "\n\t\t\t" + shader_content[include_index:]
-        pragmas = re.findall(r'#pragma\s*"[^"]+"', include_file.read())
+    with open(include_file_path, "r") as include_file:   
+        pragmas = re.findall(r'#pragma\s+.+', include_file.read())
 
        #Clean every pragma and assure that ther are not two equal
         pragmas = [re.sub(r'\s+', ' ', define.strip().replace('\n', '')) for define in pragmas]
-        pragmas = [pragma.replace(' ', '') for pragma in pragmas]
+     
         for define in pragmas:
             if define not in get_common_values().added_includes:
                 get_common_values().added_includes.add(define)
