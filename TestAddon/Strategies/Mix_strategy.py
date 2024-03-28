@@ -3,6 +3,14 @@ from ..writing_utils import *
 
 class MixNode(Strategy) : # TODO : revisar esta estrategia, se repiten muchos FOR
 
+    function_path_color = "HLSLTemplates/Mix/mix_color.txt"
+    function_path_vector = "HLSLTemplates/Mix/mix_vector.txt"
+    function_path_value = "HLSLTemplates/Mix/mix_float.txt"
+
+    struct_path_color = "HLSLTemplates/Mix/struct_color.txt"
+    struct_path_vector = "HLSLTemplates/Mix/struct_vector.txt"
+    struct_path_value = "HLSLTemplates/Mix/struct_float.txt"
+
     def add_custom_properties(self, node, node_properties, shader_content):
         return node_properties, shader_content
     
@@ -21,7 +29,7 @@ class MixNode(Strategy) : # TODO : revisar esta estrategia, se repiten muchos FO
                 struct_name='Mix_color'
                 node_name=node_name+'_color'
                 function_name='mix_color'
-                shader_content = write_struct("HLSLTemplates/Mix/struct_color.txt", shader_content)
+                shader_content = write_struct(struct_path_color, shader_content)
                 
                 blending_mode = node.blend_type
 
@@ -32,7 +40,7 @@ class MixNode(Strategy) : # TODO : revisar esta estrategia, se repiten muchos FO
                 node_name=node_name+'_vector'
                 function_name='mix_vector'
                 struct_type='float3'
-                shader_content = write_struct("HLSLTemplates/Mix/struct_vector.txt", shader_content)
+                shader_content = write_struct(struct_path_vector, shader_content)
                 
                 factor_mode = node.factor_mode
 
@@ -40,7 +48,7 @@ class MixNode(Strategy) : # TODO : revisar esta estrategia, se repiten muchos FO
                 struct_name='Mix_float'
                 node_name=node_name+'_float'
                 function_name='mix_float'
-                shader_content = write_struct("HLSLTemplates/Mix/struct_float.txt", shader_content)
+                shader_content = write_struct(struct_path_value, shader_content)
             
             shader_content = write_struct_node(node_name, struct_name, function_name, all_parameters, shader_content)
             
@@ -52,11 +60,11 @@ class MixNode(Strategy) : # TODO : revisar esta estrategia, se repiten muchos FO
 
             data_type = output.type
             if data_type == 'RGBA':
-                shader_content = write_function("HLSLTemplates/Mix/mix_color.txt", shader_content)
+                shader_content = write_function(function_path_color, shader_content)
             elif data_type == 'VECTOR':
-                shader_content = write_function("HLSLTemplates/Mix/mix_vector.txt", shader_content)
+                shader_content = write_function(function_path_vector, shader_content)
             elif data_type == 'VALUE':
-                shader_content = write_function("HLSLTemplates/Mix/mix_float.txt", shader_content)
+                shader_content = write_function(function_path_value, shader_content)
 
         return shader_content
     

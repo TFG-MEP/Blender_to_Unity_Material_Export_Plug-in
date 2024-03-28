@@ -41,6 +41,7 @@ def texturesInMaterial(imageVariables):
     # if imageVariables.items()==0:
     #     textList.append('[]')
     return textList 
+    
 def generate_files(path, material_name,imagesMap):
 
     material_guid = generate_unity_style_guid()

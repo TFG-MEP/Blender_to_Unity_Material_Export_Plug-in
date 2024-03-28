@@ -3,18 +3,21 @@ from ..writing_utils import *
 
 class MixShaderNode(Strategy) :
 
+    function_path = "HLSLTemplates/Mix_Shader/mix_shader.txt"
+    struct_path = "HLSLTemplates/Mix_Shader/struct.txt"
+
     def add_custom_properties(self, node, node_properties, shader_content):
         return node_properties, shader_content
     
     def add_struct(self, node, node_properties, shader_content):
-        shader_content = write_struct("HLSLTemplates/Mix_Shader/struct.txt", shader_content)
+        shader_content = write_struct(struct_path, shader_content)
         all_parameters = ', '.join(node_properties)
         shader_content = write_struct_node(self.node_name(node), "Mix_shader", "mix_shader", all_parameters, shader_content)
 
         return shader_content
    
     def add_function(self, node, node_properties, shader_content):
-        shader_content = write_function("HLSLTemplates/Mix_Shader/mix_shader.txt", shader_content)
+        shader_content = write_function(function_path, shader_content)
         return shader_content
     
     def write_outputs(self, node, node_properties, shader_content) :

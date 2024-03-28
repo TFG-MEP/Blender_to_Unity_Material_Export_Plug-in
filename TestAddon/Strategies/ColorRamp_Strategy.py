@@ -4,6 +4,9 @@ from ..writing_utils import *
 
 class ColorRampNode(Strategy):
 
+    function_path = "HLSLTemplates/Color_Ramp/color_ramp.txt"
+    struct_path = "HLSLTemplates/Color_Ramp/struct.txt"
+
     def add_custom_properties(self, node, node_properties, shader_content):
         MAX_COLORS=32
         node_name = self.node_name(node)
@@ -52,13 +55,13 @@ class ColorRampNode(Strategy):
     
     def add_struct(self, node, node_properties, shader_content):
 
-        shader_content = write_struct("HLSLTemplates/Color_Ramp/struct.txt", shader_content)
+        shader_content = write_struct(struct_path, shader_content)
         all_parameters = ', '.join(node_properties)
         shader_content = write_struct_node(self.node_name(node), "Color_Ramp", "color_ramp", all_parameters, shader_content)
         return shader_content
    
     def add_function(self, node, node_properties, shader_content):
-        shader_content = write_function("HLSLTemplates/Color_Ramp/color_ramp.txt", shader_content)
+        shader_content = write_function(function_path, shader_content)
         return shader_content
     
     def write_outputs(self, node, node_properties, shader_content) :

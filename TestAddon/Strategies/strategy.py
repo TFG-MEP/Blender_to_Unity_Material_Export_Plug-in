@@ -9,7 +9,10 @@ class Strategy(ABC):
     Strategies.
     """
 
-    def write_node(self, node, node_properties, shader_content): # TODO : Podemos mirar meter esta info en un "struct"
+    function_path = None
+    struct_path = None
+
+    def write_node(self, node, node_properties, shader_content): # TODO : Podemos mirar meter esta info en un "struc t"
         node_properties, shader_content = self.add_custom_properties(node=node, node_properties=node_properties, shader_content=shader_content)
         shader_content = self.add_struct(node=node, node_properties=node_properties, shader_content=shader_content)
         shader_content = self.add_function(node=node, node_properties=node_properties, shader_content=shader_content)
