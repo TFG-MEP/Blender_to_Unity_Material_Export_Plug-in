@@ -3,17 +3,15 @@ from ..writing_utils import *
 
 
 class ColorRampNode(Strategy):
-    def write_node(self, node, node_properties, shader_content):
-        MAX_COLORS=32
-        node_name = node.name.replace(" ", "")
-        node_name=node_name.replace(".", "")
 
+    def add_custom_properties(self, node, node_properties, shader_content):
+        MAX_COLORS=32
+        node_name = self.node_name(node)
      
         color_ramp = node.color_ramp
         positions = [color.position for color in color_ramp.elements]
         colors = [ blender_value_to_hlsl(color.color, 'Color') for color in color_ramp.elements]
 
-        
         node_properties.append( str(len(colors)))
 
         type_interpolation = color_ramp.interpolation
@@ -50,16 +48,23 @@ class ColorRampNode(Strategy):
             fragment_index = shader_content.find("// Call methods")
             shader_content = shader_content[:fragment_index] + pos_line + shader_content[fragment_index:]
         
+        return node_properties, shader_content
+    
+    def add_struct(self, node, node_properties, shader_content):
+
         shader_content = write_struct("HLSLTemplates/Color_Ramp/struct.txt", shader_content)
-
-        # Add the function to the shader template
-        shader_content = write_function("HLSLTemplates/Color_Ramp/color_ramp.txt", shader_content)
-        # Add the function call to the shader template
         all_parameters = ', '.join(node_properties)
+        shader_content = write_struct_node(self.node_name(node), "Color_Ramp", "color_ramp", all_parameters, shader_content)
+        return shader_content
+   
+    def add_function(self, node, node_properties, shader_content):
+        shader_content = write_function("HLSLTemplates/Color_Ramp/color_ramp.txt", shader_content)
+        return shader_content
+    
+    def write_outputs(self, node, node_properties, shader_content) :
 
-        shader_content = write_struct_node(node_name, "Color_Ramp", "color_ramp", all_parameters, shader_content)
-      
-
+        node_name = self.node_name(node)
+        
         for exit_connection in node.outputs["Color"].links  :
             input_node = exit_connection.to_node
             input_property = exit_connection.to_socket
@@ -72,6 +77,4 @@ class ColorRampNode(Strategy):
 
             shader_content = write_struct_property(node_name, "Alpha", "float", input_node, input_property, shader_content)
            
-            
-
         return shader_content

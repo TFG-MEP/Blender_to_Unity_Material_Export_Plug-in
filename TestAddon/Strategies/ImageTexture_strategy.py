@@ -3,10 +3,10 @@ from ..writing_utils import *
 from ..common_utils import *
 
 class ImageTextureNode(Strategy):
-    def write_node(self, node, node_properties, shader_content):
-        
-        node_name = node.name.replace(" ", "")
-        node_name=node_name.replace(".", "")
+
+    def add_custom_properties(self, node, node_properties, shader_content):
+        node_name = self.node_name(node)
+
         node_properties.append(node_name + "_Image")
 
         imagesMap = get_common_values().imagesMap
@@ -17,6 +17,7 @@ class ImageTextureNode(Strategy):
         if image_path not in imagesMap:
             imagesMap[image_path] = []
         imagesMap[image_path].append(f'{node_name}_Image')
+        get_common_values().imagesMap = imagesMap
 
         property_line = f'{node_name}_Image("Texture", 2D) = "white" {{}}\n\t\t'
         shader_content = write_property(property_line, shader_content)
@@ -24,15 +25,22 @@ class ImageTextureNode(Strategy):
         variable_line = f'sampler2D {node_name}_Image;\n\t\t\t'
         shader_content = write_variable(variable_line, shader_content)
 
-        # Add the struct (TODO : llevar la cuenta de structs ya añadidos)
-        shader_content = write_struct("HLSLTemplates/Image_Texture/struct.txt", shader_content)
+        return node_properties, shader_content
 
-        # Add the function to the shader template
-        shader_content = write_function("HLSLTemplates/Image_Texture/image_texture.txt", shader_content)
-        
-        # Add the function call to the shader template
+    def add_struct(self, node, node_properties, shader_content):
+        shader_content = write_struct("HLSLTemplates/Image_Texture/struct.txt", shader_content)
         all_parameters = ', '.join(node_properties)
-        shader_content = write_struct_node(node_name, "Image_texture", "image_texture", all_parameters, shader_content)
+        shader_content = write_struct_node(self.node_name(node), "Image_texture", "image_texture", all_parameters, shader_content)
+
+        return shader_content
+
+    def add_function(self, node, node_properties, shader_content):
+        shader_content = write_function("HLSLTemplates/Image_Texture/image_texture.txt", shader_content)
+        return shader_content
+
+    def write_outputs(self, node, node_properties, shader_content) :
+        
+        node_name = self.node_name(node)
 
         for exit_connection in node.outputs["Color"].links  :
             input_node = exit_connection.to_node
@@ -45,8 +53,5 @@ class ImageTextureNode(Strategy):
             input_property = exit_connection.to_socket
 
             shader_content = write_struct_property(node_name, "Alpha", "float", input_node, input_property, shader_content)
-           
 
-        get_common_values().imagesMap = imagesMap
-        
         return shader_content
