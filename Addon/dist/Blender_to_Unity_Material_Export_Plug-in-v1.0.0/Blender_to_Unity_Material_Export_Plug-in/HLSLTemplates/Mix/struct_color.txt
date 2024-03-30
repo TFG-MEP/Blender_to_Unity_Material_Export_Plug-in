@@ -1,0 +1,3 @@
+struct Mix_color{
+                float4 Result;
+            };

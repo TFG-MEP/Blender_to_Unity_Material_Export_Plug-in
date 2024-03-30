@@ -1,0 +1,4 @@
+struct Checker{
+                float4 Color;
+                float Fac;
+            };

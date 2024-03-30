@@ -1,0 +1,3 @@
+float2 float3_to_float2(float3 vec){
+    return vec.xy;
+}

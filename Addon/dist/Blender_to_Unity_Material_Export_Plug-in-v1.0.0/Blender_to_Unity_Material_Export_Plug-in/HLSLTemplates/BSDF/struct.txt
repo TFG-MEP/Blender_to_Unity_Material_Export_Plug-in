@@ -1,0 +1,3 @@
+struct BSDF{
+                float4 BSDF_output;
+            };

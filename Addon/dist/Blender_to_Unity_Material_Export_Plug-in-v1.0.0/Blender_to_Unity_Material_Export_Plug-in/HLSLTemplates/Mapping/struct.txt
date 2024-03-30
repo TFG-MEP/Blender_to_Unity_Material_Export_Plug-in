@@ -1,0 +1,3 @@
+struct Mapping{
+                float3 Vector;
+            };
