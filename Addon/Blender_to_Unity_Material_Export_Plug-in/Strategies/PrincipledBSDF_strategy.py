@@ -40,6 +40,7 @@ class PrincipledBSDFNode(Strategy):
         if get_common_values().blending_mode == 'BLEND' or get_common_values().blending_mode == 'CLIP':
             if node.inputs['Alpha'].default_value < 1:
                 shader_content=write_tags("HLSLTemplates/BSDF/principled_bsdf_tags.txt", shader_content)
+                shader_content=write_pass_properties("HLSLTemplates/BSDF/alpha_pass_properties.txt", shader_content)
         else:
             shader_content=shader_content.replace("clamp(PrincipledBSDF_Alpha,0,1)", "1")
         

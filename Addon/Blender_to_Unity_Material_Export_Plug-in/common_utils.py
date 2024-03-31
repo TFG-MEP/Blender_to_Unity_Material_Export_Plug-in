@@ -8,6 +8,7 @@ class CommonValues() :
         self.added_structs = set()
         self.added_includes = set()
         self.added_tags= set()
+        self.added_pass_properties = set()
         self.blending_mode = ''
         self.MaterialOutput_Surface_added = False
 
@@ -19,6 +20,7 @@ class CommonValues() :
         self.added_structs = set()
         self.added_includes = set()
         self.added_tags= set()
+        self.added_pass_properties = set()
         self.blending_mode = ''
         self.MaterialOutput_Surface_added = False
 

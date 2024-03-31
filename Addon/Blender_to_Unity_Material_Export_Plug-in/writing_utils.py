@@ -210,6 +210,21 @@ def write_tags(tag_file_path, shader_content) :
         
     return shader_content
 
+def write_pass_properties(pass_properties_file_path, shader_content) : 
+    """
+    Adds a line to the shader templates tags section
+    """
+ 
+    with open(pass_properties_file_path, "r") as pass_file:
+        pass_properties= re.findall(r'Property:\s*([^:\n]+)', pass_file.read())
+        
+        for pass_prop in pass_properties:
+            if pass_prop not in get_common_values().added_pass_properties:
+                get_common_values().added_pass_properties.add(pass_prop)
+                pass_index = shader_content.find("// Add pass properties")
+                shader_content = shader_content[:pass_index] + pass_prop + "\n\t\t" + shader_content[pass_index:]
+        
+    return shader_content
 def write_variable(line, shader_content) : 
     """
     Adds a line to the shader templates variables section

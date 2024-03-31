@@ -1,0 +1,2 @@
+        Property:ZWrite Off
+        Property:Blend SrcAlpha OneMinusSrcAlpha

@@ -16,6 +16,7 @@ Shader "Custom/ColorShader"
         // Add tags
 
         LOD 100
+        // Add pass properties
         //Blend [_SrcFactor] [_DstFactor]
         //BlendOp [_BlendOp]
         Pass
