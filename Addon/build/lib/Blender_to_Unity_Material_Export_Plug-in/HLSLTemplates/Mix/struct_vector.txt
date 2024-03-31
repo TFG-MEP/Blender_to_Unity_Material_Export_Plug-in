@@ -1,0 +1,3 @@
+struct Mix_vector{
+                float3 Result;
+            };

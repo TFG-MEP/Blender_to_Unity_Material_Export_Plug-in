@@ -1,0 +1,18 @@
+Mapping mapping( float3 vectore,float3 location, float3 rotation, float3 scale) {
+                		Mapping map;
+				// Añade la ubicación para la traslación
+				vectore += location;
+
+				// Aplica la rotación (en radianes)
+        			float3 rotated_vector;
+        			rotated_vector.x = vectore.x * cos(rotation.y) * cos(rotation.z) - vectore.y * (sin(rotation.x) * sin(rotation.z) - cos(rotation.x) * cos(rotation.z) * sin(rotation.y)) + vectore.z * (cos(rotation.x) * sin(rotation.z) + cos(rotation.z) * sin(rotation.x) * sin(rotation.y));
+        			rotated_vector.y = vectore.x * sin(rotation.y) * cos(rotation.z) + vectore.y * (cos(rotation.x) * cos(rotation.z) + sin(rotation.x) * sin(rotation.y) * sin(rotation.z)) - vectore.z * (cos(rotation.y) * sin(rotation.x) - cos(rotation.x) * sin(rotation.y) * sin(rotation.z));
+        			rotated_vector.z = -vectore.x * sin(rotation.z) + vectore.y * cos(rotation.z) * sin(rotation.x) + vectore.z * cos(rotation.x) * cos(rotation.y);
+
+        			// Aplica la escala
+        			rotated_vector *= scale;
+
+        			map.Vector = rotated_vector;
+        
+        			return map;
+      			}

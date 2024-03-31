@@ -1,0 +1,29 @@
+Color_Ramp color_ramp( float at,int numcolors, int interpolate,float4 ramp[30],float pos[30] )
+            {
+              float f = at;
+              int table_size = numcolors;
+              f  = clamp(at, 0.0, 1.0) ;
+              float4 result=ramp[0];
+              Color_Ramp colores;
+              if(numcolors>1&&f>=pos[numcolors-1]){
+                  colores.Color = ramp[numcolors - 1].xyz;
+                  colores.Alpha = ramp[numcolors - 1].w;
+                  return colores;
+              }
+              for (int i = 0; i < numcolors - 1; ++i) {
+                  if (f  >= pos[i] && f  <= pos[i + 1]){
+                      if (interpolate){
+                          result=ramp[i];
+                          float t = (f - (float)pos[i])/(pos[i+1]-pos[i]);
+                          result = (1.0 - t) * result + t * ramp[i + 1];
+                      } 
+                      else{
+                          result= ramp[i];
+                      }
+                    
+                  }
+              }
+              colores.Color=result.xyz;
+              colores.Alpha=result.w;
+              return colores;
+            }

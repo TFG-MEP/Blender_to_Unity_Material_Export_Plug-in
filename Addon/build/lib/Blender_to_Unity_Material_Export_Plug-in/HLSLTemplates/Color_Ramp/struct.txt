@@ -1,0 +1,4 @@
+struct Color_Ramp{
+                float3 Color;
+                float Alpha;
+            };

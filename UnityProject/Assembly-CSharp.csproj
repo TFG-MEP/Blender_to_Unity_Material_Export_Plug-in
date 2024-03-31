@@ -108,6 +108,7 @@
     <None Include="Assets\Materials\aaa\chequ.shader" />
     <None Include="Assets\Shaders\NuevosShaders\utils.hlsl" />
     <None Include="Assets\Shaders\s.shader" />
+    <None Include="Assets\PruebasCompare\chquea.shader" />
     <None Include="Assets\Materials\aaa\node_hash.hlsl" />
     <None Include="Assets\Shaders\MyFirstShader.shader" />
     <None Include="Assets\Free Stylized Skybox\CubeMap\Materials\NewUnlitShader.shader" />
@@ -117,6 +118,7 @@
     <None Include="Assets\Materials\Pruebas\Mix.shader" />
     <None Include="Assets\Materials\aaa\chequerOk.shader" />
     <None Include="Assets\Shaders\NuevosShaders\colorramp2.shader" />
+    <None Include="Assets\Materials\Pruebas\SuperMaterial.shader" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

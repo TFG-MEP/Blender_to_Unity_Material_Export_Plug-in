@@ -1,0 +1,4 @@
+struct Image_texture{
+    float3 Color;
+    float Alpha;
+};
