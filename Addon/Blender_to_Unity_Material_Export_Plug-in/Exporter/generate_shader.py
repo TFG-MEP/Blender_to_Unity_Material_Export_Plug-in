@@ -2,7 +2,7 @@ import bpy
 from .strategies_importer import *
 from .format_conversion_utils import *
 from .writing_utils import *
-from .unity_style_guid_generator import *
+from .meta_generator import *
 from .common_utils import *
 
 class Context():

@@ -1,4 +1,4 @@
-from .unity_style_guid_generator import *
+from .meta_generator import *
 def texturesInMaterial(imageVariables):
     textList = []
     for index, (nombre_variable, guid) in enumerate(imageVariables.items()):

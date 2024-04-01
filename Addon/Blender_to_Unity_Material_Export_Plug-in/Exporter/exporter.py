@@ -1,6 +1,6 @@
 from .generate_material import generate_material
 from .generate_shader import generate_shader
-from .generate_3dModel import generate_3dModel
+from .generate_3D_model import generate_3D_model
 from .generate_textures import generate_textures
 
 import os
@@ -20,6 +20,6 @@ def export(path,export) :
 
     if export:
         # Generate 3D model
-        generate_3dModel(path)
+        generate_3D_model(path)
 
 

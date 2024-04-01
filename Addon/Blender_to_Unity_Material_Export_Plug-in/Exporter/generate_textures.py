@@ -1,4 +1,4 @@
-from .unity_style_guid_generator import *
+from .meta_generator import *
 import shutil
 def generate_textures(path, imagesMap):
     """Iterates through the images used in tyhe blender Material.
