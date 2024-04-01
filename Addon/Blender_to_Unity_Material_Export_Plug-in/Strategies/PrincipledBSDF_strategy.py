@@ -4,6 +4,7 @@ from ..writing_utils import *
 class PrincipledBSDFNode(Strategy):
 
     function_path = "HLSLTemplates/BSDF/principled_bsdf.txt"
+    alternative_function_path = "HLSLTemplates/BSDF/principled_bsdf_alpha.txt"
     struct_path = "HLSLTemplates/BSDF/struct.txt"
 
     def add_custom_properties(self, node, node_properties, shader_content):
@@ -21,8 +22,19 @@ class PrincipledBSDFNode(Strategy):
         shader_content = write_struct_node(node_name, "BSDF", "principled_bsdf", all_parameters, shader_content)
 
         return shader_content
-   
+       
     def add_function(self, node, node_properties, shader_content):
+        #self.add_alpha_property(node,self.function_path,shader_content)
+
+        #TODO: metodo que adapte el shader content segun la transparencia/mover de sitio 
+        if get_common_values().blending_mode == 'BLEND':
+            if node.inputs['Alpha'].default_value < 1:
+                self.function_path = self.alternative_function_path
+                shader_content=write_tags("HLSLTemplates/BSDF/principled_bsdf_tags.txt", shader_content)
+                shader_content=write_pass_properties("HLSLTemplates/BSDF/alpha_pass_properties.txt", shader_content)
+
+        #else if get_common_values().blending_mode == 'CLIP':
+                
         shader_content = write_function(self.function_path, shader_content)
         return shader_content
     
@@ -36,13 +48,7 @@ class PrincipledBSDFNode(Strategy):
             input_property = link.to_socket
 
             shader_content = write_struct_property(node_name, "BSDF_output", "float4", input_node, input_property, shader_content)
-                
-        if get_common_values().blending_mode == 'BLEND' or get_common_values().blending_mode == 'CLIP':
-            if node.inputs['Alpha'].default_value < 1:
-                shader_content=write_tags("HLSLTemplates/BSDF/principled_bsdf_tags.txt", shader_content)
-                shader_content=write_pass_properties("HLSLTemplates/BSDF/alpha_pass_properties.txt", shader_content)
-        else:
-            shader_content=shader_content.replace("clamp(PrincipledBSDF_Alpha,0,1)", "1")
-        
         return shader_content
+    
+        
     
