@@ -35,11 +35,14 @@ class PrincipledBSDFNode(Strategy):
                 shader_content=write_pass_properties("HLSLTemplates/BSDF/alpha_pass_properties.txt", shader_content)
 
         elif get_common_values().blending_mode == 'CLIP':
-            line = f"_Cutoff (\"Alpha Cutoff\", Range(0, 1)) = {get_common_values().cutoff}\n\t\t"
-            if(line not in shader_content):
-                shader_content=write_property(line, shader_content)
-            
+            property_line = f"_Cutoff (\"Alpha Cutoff\", Range(0, 1)) = {get_common_values().cutoff}\n\t\t"
+            if(property_line not in shader_content):
+                shader_content=write_property(property_line, shader_content)
                 
+            variable_line = f"float _Cutoff;\n\t\t\t"
+            if(variable_line not in shader_content):
+                shader_content=write_variable(variable_line, shader_content)
+              
         shader_content = write_function(self.function_path, shader_content)
         return shader_content
     
