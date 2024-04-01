@@ -91,6 +91,7 @@ Shader "Custom/ColorShader"
 
                 // Call methods
               
+                // Add cutoff
                 
                 return MaterialOutput_Surface;
                 
