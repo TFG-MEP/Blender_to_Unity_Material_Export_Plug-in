@@ -32,8 +32,13 @@ def export(path, export):
         if len(selected_object.material_slots) > 0:
             for material_slot in selected_object.material_slots:
                 material = material_slot.material
-                material.use_nodes = True  
-                exportMaterial(path,material)
+                if material is not None:
+                   
+                    if material.use_nodes:
+                        material.use_nodes = True  
+                        exportMaterial(path,material)
+                    else:
+                        print("The material is None")
         else:
             raise SystemExit("No material is assigned to the object.")
     else:
