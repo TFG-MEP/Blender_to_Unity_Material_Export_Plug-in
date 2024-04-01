@@ -129,6 +129,13 @@ def generate_shader(destination_directory,material):
     #------------------------------------------------------BLENDING MODE?
     get_common_values().blending_mode = material.blend_method
     print(f'Blending mode: {get_common_values().blending_mode}')
+    
+    #TODO: escribir el valor exacto de este de cutoff en el shader
+    if material.blend_method== 'CLIP' :
+        get_common_values().cutoff = material.alpha_threshold
+    
+    print(f'Cutoff: {get_common_values().cutoff}')
+        
     node_tree = material.node_tree
     nodes = node_tree.nodes
     # TODO : Qué pasa si hay más de un Material Output?
