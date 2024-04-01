@@ -33,7 +33,7 @@ def third_party_modules_sitedir():
 site.addsitedir(third_party_modules_sitedir())
 
 
-from .exporter import export
+from Exporter.exporter import export
 
 class GeneraShader(bpy.types.Operator):
    
@@ -43,9 +43,7 @@ class GeneraShader(bpy.types.Operator):
     export_fbx: BoolProperty(name="Export FBX", default=False)
     # Aqui se determina qué ocurre al seleccionar esta opción del panel
     def execute(self, context):
-        print("RUTA ANTES:" + os.getcwd())
-        os.chdir(os.path.dirname(os.path.abspath(__file__)))
-        print("RUTA ANTES:" + os.getcwd())
+        
         directory = os.path.dirname(self.filepath)
         print("holaaa"+os.path.dirname(os.path.abspath(__file__)))
         print("Ruta seleccionada:", directory)
