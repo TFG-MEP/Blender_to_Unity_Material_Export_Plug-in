@@ -31,12 +31,10 @@ class PrincipledBSDFNode(Strategy):
         if get_common_values().blending_mode != 'OPAQUE':
             shader_content=write_tags("HLSLTemplates/BSDF/principled_bsdf_tags.txt", shader_content)
             shader_content=write_pass_properties("HLSLTemplates/BSDF/alpha_pass_properties.txt", shader_content)
-            
-        if get_common_values().blending_mode == 'BLEND':
-            if node.inputs['Alpha'].default_value < 1:
-                self.function_path = self.alpha_blend_function_path
+            self.function_path = self.alpha_blend_function_path
+
         
-        elif get_common_values().blending_mode == 'CLIP':
+        if get_common_values().blending_mode == 'CLIP':
             #Agrega la propiedad
             property_line = f"_Cutoff (\"Alpha Cutoff\", Range(0, 1)) = {get_common_values().cutoff}\n\t\t"
             if(property_line not in shader_content):
