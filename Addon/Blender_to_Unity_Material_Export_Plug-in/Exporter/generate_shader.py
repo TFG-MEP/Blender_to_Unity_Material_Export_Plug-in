@@ -106,22 +106,10 @@ def clean_material_name(name) :
     return material_name
 
 
-def generate_shader(destination_directory):
+def generate_shader(destination_directory,material):
 
     # Reset global variables
     get_common_values().clear_common_variables()
-
-    # Check if there's a selected object
-    if bpy.context.active_object is not None:
-        selected_object = bpy.context.active_object
-        # Check if there's a material assigned to the object
-        if len(selected_object.material_slots) > 0:
-            material = selected_object.active_material
-            material.use_nodes = True # ¿?
-        else:
-            raise SystemExit("No material is assigned to the object.")
-    else:
-        raise SystemExit("No object is selected.")
 
     material_name = clean_material_name(material.name)
 

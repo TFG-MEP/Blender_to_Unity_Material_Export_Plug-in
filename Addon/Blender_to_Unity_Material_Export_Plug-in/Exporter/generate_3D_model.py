@@ -1,5 +1,5 @@
 import bpy
-def generate_3dModel(destination_directory):
+def generate_3D_model(destination_directory):
     objeto = bpy.context.active_object
 
     # Name of the object
