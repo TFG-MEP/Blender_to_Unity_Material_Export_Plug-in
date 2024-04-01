@@ -2,7 +2,7 @@ import bpy
 from .strategies_importer import *
 from .format_conversion_utils import *
 from .writing_utils import *
-
+from .meta_generator import *
 from .common_utils import *
 
 class Context():
@@ -106,7 +106,7 @@ def clean_material_name(name) :
     return material_name
 
 
-def generate(destination_directory):
+def generate_shader(destination_directory):
 
     # Reset global variables
     get_common_values().clear_common_variables()
@@ -165,5 +165,5 @@ def generate(destination_directory):
     
     #if (get_common_values().MaterialOutput_Surface_added == False) : # TODO : comprobar que esto se imprime bien
     #    print("ERROR: You must use a Material Output node with something connected to Surface.")
-    
-    return material_name, get_common_values().imagesMap
+    shader_guid = generate_meta_file('FileTemplates/template.shader.meta',destination_directory,material_name,'.shader')
+    return material_name, get_common_values().imagesMap,shader_guid
