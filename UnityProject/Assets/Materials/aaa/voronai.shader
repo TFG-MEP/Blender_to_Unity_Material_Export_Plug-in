@@ -47,6 +47,7 @@ Shader "Custom/voro"
                 float3 normal : TEXCOORD2;
                 float3 viewDir : TEXCOORD3;
                 float3 globalPos : TEXCOORD4;
+                float3 worldPos:TEXCOORD6;
                 DECLARE_LIGHTMAP_OR_SH(lightmapUV, vertexSH, 5);
             };
             float voro_Scale;
@@ -60,6 +61,7 @@ Shader "Custom/voro"
                 o.normal = TransformObjectToWorldNormal(v.normal.xyz);
                 o.viewDir = normalize(_WorldSpaceCameraPos - o.positionWS);
                 o.uv = v.uv;
+                o.worldPos=v.vertex.xyz;
                 o.vertex = TransformWorldToHClip(o.positionWS);
                 OUTPUT_LIGHTMAP_UV(v.texcoord1, unity_LightmapST, o.lightmapUV);
                 OUTPUT_SH(o.normal.xyz, o.vertexSH);
@@ -133,8 +135,8 @@ Shader "Custom/voro"
 			// Add methods
             float4 frag (v2f i) : SV_Target
             {
-                
-                return voronoi_f1(voro_rand,voro_Scale, i.positionWS );
+                float3 CheckerTexture_Vector = (i.worldPos + float3(1,1,1))/2;
+                return voronoi_f1(voro_rand,voro_Scale, CheckerTexture_Vector );
                 
             }
             ENDHLSL

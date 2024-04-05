@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Custom_voro
+  m_Name: Custom_voro 1
   m_Shader: {fileID: 4800000, guid: 8842101381b53d54ba64e62b7fbeb23b, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -25,7 +25,7 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - voro_Scale: 19.65
-    - voro_rand: 0.8
+    - voro_Scale: 5
+    - voro_rand: 5
     m_Colors: []
   m_BuildTextureStacks: []
