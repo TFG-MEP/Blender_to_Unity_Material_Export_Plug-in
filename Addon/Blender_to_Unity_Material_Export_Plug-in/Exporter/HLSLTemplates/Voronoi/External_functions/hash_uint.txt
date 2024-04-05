@@ -1,0 +1,10 @@
+uint hash_uint(uint kx)
+{
+    uint a, b, c;
+    a = b = c = 0xdeadbeef + (1 << 2) + 13;
+
+    a += kx;
+    final(a, b, c);
+
+    return c;
+}

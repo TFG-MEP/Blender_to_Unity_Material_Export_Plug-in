@@ -1,0 +1,6 @@
+float3 hash_vector3_to_vector3(float3 k)
+{
+  return float3(hash_vector3_to_float(k),
+                 hash_vector4_to_float(float4(k[0], k[1], k[2], 1.0)),
+                 hash_vector4_to_float(float4(k[0], k[1], k[2], 2.0)));
+}

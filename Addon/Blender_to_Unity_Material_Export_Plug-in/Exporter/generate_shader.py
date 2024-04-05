@@ -81,7 +81,7 @@ def iterate_node(node, shader_content):
             connected_node = input_socket.links[0].from_node
             shader_content = iterate_node(connected_node, shader_content)
         elif socket_name == 'Vector':
-            parameter='i.worldPos'
+            parameter='(i.worldPos + float3(1,1,1))/2;'
             if node.type == 'TEX_IMAGE' :
                 parameter='float3(i.uv,0)'
             fragment_index = shader_content.find("// Call methods")

@@ -136,7 +136,7 @@ Shader "Custom/voro"
             float4 frag (v2f i) : SV_Target
             {
                 float3 CheckerTexture_Vector = (i.worldPos + float3(1,1,1))/2;
-                return voronoi_f1(voro_rand,voro_Scale, CheckerTexture_Vector );
+                return voronoi_f1(voro_rand,voro_Scale, float3(i.uv,0) );
                 
             }
             ENDHLSL

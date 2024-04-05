@@ -29,7 +29,7 @@ class TextureCoordinateNode(Strategy):
         elif node.outputs.get('Generated').is_linked:
             print("The Texture Coordinate UV node is NOT connected to another node.")
             exit_connections = node.outputs["Generated"].links
-            parameter='i.worldPos'
+            parameter='(i.worldPos + float3(1,1,1))/2;'
 
         for exit_connection in exit_connections :
         

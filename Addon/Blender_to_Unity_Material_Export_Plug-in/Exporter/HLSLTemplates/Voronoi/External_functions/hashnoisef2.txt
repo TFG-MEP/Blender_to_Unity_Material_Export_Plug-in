@@ -1,0 +1,6 @@
+float hashnoisef2(float2 p)
+{
+    const uint x =uint(p.x);
+    const uint y = uint(p.y);
+    return hash_uint2(x, y) /float(~0u);
+}

@@ -1,0 +1,7 @@
+float hashnoisef3(float3 p)
+{
+    const uint x = uint(p.x);
+    const uint y = uint(p.y);
+    const uint z =uint(p.z);
+    return hash_uint3(x, y, z) /float(~0u);
+}

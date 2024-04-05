@@ -51,6 +51,10 @@ uint hash_uint(uint kx)
 
     return c;
 }
+
+
+
+
 uint hash_uint2(uint kx, uint ky)
 {
     uint a, b, c;
@@ -62,12 +66,22 @@ uint hash_uint2(uint kx, uint ky)
 
     return c;
 }
-float hashnoise(float p)
+
+
+
+
+
+float hashnoisef(float p)
 {
     uint x = asuint(p);
     return hash_uint(x) / float(~0u);// ~0u es igual a 4294967295
 }
-float hashnoise(float2 p)
+
+
+
+
+
+float hashnoisef2(float2 p)
 {
     const uint x =uint(p.x);
     const uint y = uint(p.y);
@@ -79,20 +93,37 @@ float hashnoise(float2 p)
 // }
 float hash_float_to_float(float k)
 {
-    return hashnoise(k);
+    return hashnoisef(k);
 
 }
+
+
+
+
 
 float hash_vector2_to_float(float2 k)
 {
-    return hashnoise(float2(k.x, k.y));//??
+    return hashnoisef2(float2(k.x, k.y));//??
 }
+
+
+
+
+
+
+
+
 float4 hash_float_to_color(float k)
 {
     return float4(hash_float_to_float(k),
                 hash_vector2_to_float(float2(k, 1.0)),
                 hash_vector2_to_float(float2(k, 2.0)),1);
 }
+
+
+
+
+
 uint hash_uint3(uint kx, uint ky, uint kz)
 {
     uint a, b, c;
@@ -105,13 +136,26 @@ uint hash_uint3(uint kx, uint ky, uint kz)
 
     return c;
 }
-float hashnoise(float3 p)
+
+
+
+
+
+
+
+float hashnoisef3(float3 p)
 {
     const uint x = uint(p.x);
     const uint y = uint(p.y);
     const uint z =uint(p.z);
     return hash_uint3(x, y, z) /float(~0u);
 }
+
+
+
+
+
+
 uint hash_uint4(uint kx, uint ky, uint kz, uint kw)
 {
     uint a, b, c;
@@ -127,7 +171,11 @@ uint hash_uint4(uint kx, uint ky, uint kz, uint kw)
 
     return c;
 }
-float hashnoise(float4 p)
+
+
+
+
+float hashnoisef4(float4 p)
 {
     const uint x =uint(p.x);
     const uint y =uint(p.y);
@@ -135,26 +183,63 @@ float hashnoise(float4 p)
     const uint w = uint(p.w);
     return hash_uint4(x, y, z, w) /float(~0u);
 }
+
+
+
+
+
+
+
+
+
 float hash_vector4_to_float(float4 k)
 {
- return hashnoise(float4(k.x, k.y, k.z,k.w));
+ return hashnoisef4(float4(k.x, k.y, k.z,k.w));
 }
+
+
+
+
+
+
 
 float hash_vector3_to_float(float3 k)
 {
-  return hashnoise(k);
+  return hashnoisef3(k);
 }
+
+
+
+
+
 
 float2 hash_vector2_to_vector2(float2 k)
 {
   return float2(hash_vector2_to_float(k), hash_vector3_to_float(float3(k.x, k.y, 1.0)));
 }
+
+
+
+
+
+
+
+
+
 float3 hash_vector3_to_vector3(float3 k)
 {
   return float3(hash_vector3_to_float(k),
                  hash_vector4_to_float(float4(k[0], k[1], k[2], 1.0)),
                  hash_vector4_to_float(float4(k[0], k[1], k[2], 2.0)));
 }
+
+
+
+
+
+
+
+
 float4 hash_vector4_to_vector4(float4 k)
 {
     return float4(hash_vector4_to_float(k),
@@ -162,18 +247,33 @@ float4 hash_vector4_to_vector4(float4 k)
                     hash_vector4_to_float(float4(k.z, k.w, k.x, k.y)),
                     hash_vector4_to_float(float4(k.y, k.z, k.w, k.x)));
 }
+
+
+
+
+
 float4  hash_vector4_to_color(float4 k)
 {
   return float4(hash_vector4_to_float(k),
                hash_vector4_to_float(float4(k.z, k.x, k.w, k.y)),
                hash_vector4_to_float(float4(k.w, k.z, k.y, k.x)),1);
 }
+
+
+
+
+
+
 float4 hash_vector3_to_color(float3 k)
 {
   return float4(hash_vector3_to_float(k),
                hash_vector4_to_float(float4(k[0], k[1], k[2], 1.0)),
                hash_vector4_to_float(float4(k[0], k[1], k[2], 2.0)),1);
 }
+
+
+
+
 float4 hash_vector2_to_color(float2 k)
 {
   return float4(hash_vector2_to_float(k),

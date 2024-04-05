@@ -1,0 +1,5 @@
+float hashnoise(float p)
+{
+    uint x = asuint(p);
+    return hash_uint(x) / float(~0u);// ~0u es igual a 4294967295
+}
