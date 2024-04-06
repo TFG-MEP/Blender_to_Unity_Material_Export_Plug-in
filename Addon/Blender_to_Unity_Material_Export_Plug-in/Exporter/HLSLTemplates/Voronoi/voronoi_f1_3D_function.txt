@@ -4,7 +4,7 @@
             } 
 
                   
-            Voronoi_texture voronoi_f1(float randomness ,float sclae,float3 coord)
+            Voronoi_texture voronoi_f1_3D_function(float3 coord, float VoronoiTexture_W, float sclae,float VoronoiTexture_Smoothness, float VoronoiTexture_Exponent, float randomness)
             {                               
                 coord *= sclae;
                 float3 cellPosition = floor(coord);

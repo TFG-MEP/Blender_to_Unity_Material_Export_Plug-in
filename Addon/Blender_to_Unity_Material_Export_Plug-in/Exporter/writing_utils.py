@@ -261,7 +261,19 @@ def write_struct(struct_file_path, shader_content) :
     
         shader_content = shader_content[:struct_index] + struct + "\n\t\t\t" + shader_content[struct_index:]
     return shader_content
+def write_defines(defines_file_path, shader_content) :
 
+    define_index = shader_content.find("// Add defines")
+    
+    if defines_file_path not in get_common_values().added_defines:
+        with open(defines_file_path, "r") as struct_file:
+            struct = struct_file.read()
+
+        # TODO : revisar tabulación
+        get_common_values().added_structs.add(defines_file_path)
+    
+        shader_content = shader_content[:define_index] + struct + "\n\t\t\t" + shader_content[define_index:]
+    return shader_content
 def write_struct_node(node_name, struct_name, function_name, function_parameters, shader_content) : 
 
     fragment_index = shader_content.find("// Call methods")

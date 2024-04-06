@@ -6,6 +6,7 @@ class CommonValues() :
         self.imagesMap = {}
         self.added_functions = set()
         self.added_structs = set()
+        self.added_defines = set()
         self.added_includes = set()
         self.added_tags= set()
         self.added_pass_properties = set()
@@ -20,6 +21,7 @@ class CommonValues() :
         self.added_functions = set()
         self.added_structs = set()
         self.added_includes = set()
+        self.added_defines=set()
         self.added_tags= set()
         self.added_pass_properties = set()
         self.blending_mode = ''

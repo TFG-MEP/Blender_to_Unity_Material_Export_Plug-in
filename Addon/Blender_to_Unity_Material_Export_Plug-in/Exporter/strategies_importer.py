@@ -16,6 +16,7 @@ from .Strategies.Mix_strategy import MixNode
 from .Strategies.NormalMap_statregy import NormalMapNode
 from .Strategies.ColorRamp_Strategy import ColorRampNode
 from .Strategies.ShaderToRGB_strategy import ShaderToRgbNode
+from .Strategies.Voronoi_strategy import VaronoiNode
 
 
 # Import all new strategies implemented in the Strategies Directory
@@ -36,5 +37,7 @@ node_type_strategy_map = {
     'NORMAL_MAP': NormalMapNode(),
     'VALTORGB': ColorRampNode(),
     'SHADERTORGB':ShaderToRgbNode(),
-    'MIX' : MixNode()
+    'MIX' : MixNode(),
+    'TEX_VORONOI' : VaronoiNode()
+
 }
