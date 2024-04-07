@@ -126,10 +126,14 @@ def generate_shader(destination_directory,material):
     # TODO : revisar pq la plantilla necesita el include
     shader_content = write_include("HLSLTemplates/BSDF/principled_bsdf_includes.txt",shader_content)
 
-    #------------------------------------------------------BLENDING MODE?
+    #------------------------------------------------------BLENDING MODE AND CULLING MODE------------------------------------------------------
     get_common_values().blending_mode = material.blend_method
     print(f'Blending mode: {get_common_values().blending_mode}')
-
+    
+    #Agregamos aqui el culling mode porque es parte de los ajustes del material, no corresponde a un nodo especifico
+    if material.use_backface_culling == False :
+        shader_content= shader_content.replace("// Add culling", "Cull Off")
+    
     #TODO: escribir el valor exacto de este de cutoff en el shader
     if material.blend_method== 'CLIP' :
         get_common_values().cutoff = material.alpha_threshold
