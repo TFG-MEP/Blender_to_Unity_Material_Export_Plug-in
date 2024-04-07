@@ -1,4 +1,4 @@
-float voronoi_distance(float3 a, float3 b)
+float voronoi_distance_f3(float3 a, float3 b)
 {
     return length(a - b);           
 } 

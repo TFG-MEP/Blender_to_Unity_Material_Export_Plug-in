@@ -14,7 +14,7 @@
                             float3 cellOffset = float3(i, j, k);
                             float3 pointPosition = cellOffset + hash_vector3_to_vector3(cellPosition + cellOffset) *
                                                                     randomness;
-                            float distanceToPoint = voronoi_distance(pointPosition, localPosition);
+                            float distanceToPoint = voronoi_distance_f3(pointPosition, localPosition);
                             if (distanceToPoint < minDistance) {
                                 targetOffset = cellOffset;
                                 minDistance = distanceToPoint;

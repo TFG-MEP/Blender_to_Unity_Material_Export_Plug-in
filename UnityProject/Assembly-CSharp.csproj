@@ -68,6 +68,7 @@
     <None Include="Assets\Materials\aaa\waveTexture.shader" />
     <None Include="Assets\Materials\Pruebas\Material.shader" />
     <None Include="Assets\Shaders\Oro_0.shader" />
+    <None Include="Assets\Free Stylized Skybox\CubeMap\Materials\Material001.shader" />
     <None Include="Assets\Shaders\NuevosShaders\CristalAlfa.shader" />
     <None Include="Assets\Shaders\WaveTexture 1.shader" />
     <None Include="Assets\Shaders\NuevosShaders\EsferaLitPaula.shader" />

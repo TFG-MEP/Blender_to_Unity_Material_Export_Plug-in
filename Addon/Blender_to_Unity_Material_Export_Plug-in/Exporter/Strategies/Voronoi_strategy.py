@@ -13,6 +13,7 @@ class VaronoiNode(Strategy):
         return shader_content
     
     def add_function(self, node, node_properties, shader_content):
+        
         #functions for 3D
         functions = ["hash_uint4","hash_uint3","hashnoisef3", "hashnoisef4", "hash_vector4_to_float",
                        "hash_vector3_to_float","hash_vector3_to_color","hash_vector3_to_vector3","voronoi_distance_f3"]
