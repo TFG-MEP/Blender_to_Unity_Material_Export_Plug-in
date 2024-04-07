@@ -1,9 +1,4 @@
-            float voronoi_distance(float3 a, float3 b)
-            {
-              return length(a - b);           
-            } 
-
-                  
+                
             Voronoi_texture voronoi_f1_3D_function(float3 coord, float VoronoiTexture_W, float sclae,float VoronoiTexture_Smoothness, float VoronoiTexture_Exponent, float randomness)
             {                               
                 coord *= sclae;

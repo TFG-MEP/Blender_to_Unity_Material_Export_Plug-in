@@ -7,16 +7,17 @@ class VaronoiNode(Strategy):
     external_function_path="HLSLTemplates/Voronoi/External_functions/"
     struct_path = "HLSLTemplates/Voronoi/struct.txt"
     defines_path = "HLSLTemplates/Voronoi/voronoi_defines.txt"
-    function_name="voronoi_f1_3D_fuction"
+    function_name="voronoi_f1_3D_function"
     def add_defines(self, node, node_properties, shader_content):
         shader_content = write_defines(self.defines_path, shader_content)
         return shader_content
     
     def add_function(self, node, node_properties, shader_content):
-        functions3D = ["hash_uint4","hash_uint3","hashnoisef3", "hashnoisef4", "hash_vector4_to_float",
-                       "hash_vector3_to_float","hash_vector3_to_color","hash_vector3_to_vector3"]
+        #functions for 3D
+        functions = ["hash_uint4","hash_uint3","hashnoisef3", "hashnoisef4", "hash_vector4_to_float",
+                       "hash_vector3_to_float","hash_vector3_to_color","hash_vector3_to_vector3","voronoi_distance_f3"]
 
-        for function in functions3D:
+        for function in functions:
              shader_content = write_function(self.external_function_path+""+function+".txt", shader_content)
         shader_content = write_function(self.function_path+""+"voronoi_f1_3D_function.txt", shader_content)
         return shader_content
