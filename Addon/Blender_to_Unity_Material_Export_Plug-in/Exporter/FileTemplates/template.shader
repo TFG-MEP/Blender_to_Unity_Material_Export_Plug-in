@@ -14,7 +14,7 @@ Shader "Custom/ColorShader"
 
         LOD 100
         // Add pass properties
-
+        // Add culling
         Pass
         {
             HLSLPROGRAM
