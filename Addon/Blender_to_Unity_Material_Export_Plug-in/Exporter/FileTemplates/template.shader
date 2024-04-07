@@ -4,9 +4,6 @@ Shader "Custom/ColorShader"
     {
         _NormalTex("Normal Map", 2D) = "bump" {}
         // Add properties
-        _SrcFactor("SrcFactor", Float) = 5
-        _DstFactor("DstFactor", Float) = 10
-        _BlendOp("Blend Operation", Float) = 0
     }
 
     SubShader
@@ -17,8 +14,7 @@ Shader "Custom/ColorShader"
 
         LOD 100
         // Add pass properties
-        //Blend [_SrcFactor] [_DstFactor]
-        //BlendOp [_BlendOp]
+
         Pass
         {
             HLSLPROGRAM

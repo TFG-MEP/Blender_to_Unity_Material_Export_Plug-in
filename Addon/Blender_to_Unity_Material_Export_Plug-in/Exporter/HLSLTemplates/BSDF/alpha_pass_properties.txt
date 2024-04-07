@@ -1,2 +1,3 @@
         Property:ZWrite Off
-        Property:Blend SrcAlpha OneMinusSrcAlpha
+        Property:Blend [_SrcFactor] [_DstFactor]
+        Property:BlendOp [_BlendOp]
