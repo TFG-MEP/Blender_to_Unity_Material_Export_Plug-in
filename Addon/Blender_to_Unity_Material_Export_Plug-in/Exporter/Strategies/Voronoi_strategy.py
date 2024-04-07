@@ -30,12 +30,14 @@ class VaronoiNode(Strategy):
         functions=[]      
         voronoi_dimensions=node.voronoi_dimensions
         voronoi_feature=node.feature
+        
         if voronoi_dimensions=='3D':
              functions = ["hash_uint4","hash_uint3","hashnoisef3", "hashnoisef4", "hash_vector4_to_float",
                        "hash_vector3_to_float","hash_vector3_to_color","hash_vector3_to_vector3","voronoi_distance_f3"]
         elif voronoi_dimensions=='2D':
             functions = ["hash_uint2","hash_uint3","hashnoisef3", "hashnoisef2", "hash_vector2_to_float",
                        "hash_vector3_to_float","hash_vector2_to_color","hash_vector2_to_vector2","voronoi_distance_f2"]
+        
         for function in functions:
              shader_content = write_function(self.external_function_path+""+function+".txt", shader_content)
         self.function_name="voronoi_"+voronoi_dimensions+"_"+voronoi_feature+"_function"

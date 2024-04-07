@@ -1,17 +1,14 @@
-Shader "Custom/ShadermatVoro_"
+Shader "Custom/Shadersmooth_"
 {
      Properties
     {
         _NormalTex("Normal Map", 2D) = "bump" {}
         VoronoiTexture_W("W", float) = 0.0
-		VoronoiTexture_Scale("Scale", float) = 12.299999237060547
+		VoronoiTexture_Scale("Scale", float) = 6.59999942779541
 		VoronoiTexture_Smoothness("Smoothness", float) = 1.0
-		VoronoiTexture_Exponent("Exponent", float) = 0.5
-		VoronoiTexture_Randomness("Randomness", float) = 1.0
+		VoronoiTexture_Exponent("Exponent", float) = 0.0
+		VoronoiTexture_Randomness("Randomness", float) = 0.8583333492279053
 		// Add properties
-        _SrcFactor("SrcFactor", Float) = 5
-        _DstFactor("DstFactor", Float) = 10
-        _BlendOp("Blend Operation", Float) = 0
     }
 
     SubShader
@@ -22,8 +19,7 @@ Shader "Custom/ShadermatVoro_"
 
         LOD 100
         // Add pass properties
-        //Blend [_SrcFactor] [_DstFactor]
-        //BlendOp [_BlendOp]
+
         Pass
         {
             HLSLPROGRAM
@@ -119,6 +115,7 @@ Shader "Custom/ShadermatVoro_"
                 float2  dynamicLightmapUV : TEXCOORD7;
                 #endif
                 float3 worldPos : TEXCOORD8;
+                float3 normalOS:TEXCOORD9;
             };
             struct Voronoi_texture{
                 float3 Color;
@@ -144,6 +141,7 @@ Shader "Custom/ShadermatVoro_"
                 positionOS.xyz);
                 VertexNormalInputs normalInput = GetVertexNormalInputs(v.normalOS, 
                 v.tangentOS);
+                o.normalOS=v.normalOS;
                 o.positionWS = vertexInput.positionWS;
                 o.positionCS = vertexInput.positionCS;
                 o.uv = v.uv;
@@ -225,11 +223,29 @@ Shader "Custom/ShadermatVoro_"
                  hash_vector4_to_float(float4(k[0], k[1], k[2], 1.0)),
                  hash_vector4_to_float(float4(k[0], k[1], k[2], 2.0)));
 }
-			float voronoi_distance_f3(float3 a, float3 b)
+			float voronoi_distance_f3(float3 a, float3 b, int metric,float exponent)
 {
-    return length(a - b);           
-}
-Voronoi_texture voronoi_3D_SMOOTH_F1_function(float3 coord, float VoronoiTexture_W, float sclae,float VoronoiTexture_Smoothness, float VoronoiTexture_Exponent, float randomness)
+if (metric == 0) {
+    return length(a - b);
+  }
+  else if (metric == 1) {
+    return abs(a[0] - b[0]) + abs(a[1] - b[1]) + abs(a[2] - b[2]);
+  }
+  else if (metric == 2) {
+    return max(abs(a[0] - b[0]), max(abs(a[1] - b[1]), abs(a[2] - b[2])));
+  }
+  else if (metric == 3) {
+    return pow(pow(abs(a[0] - b[0]), exponent) + pow(abs(a[1] - b[1]), exponent) +
+                   pow(abs(a[2] - b[2]), exponent),
+               1.0 / exponent);
+  }
+  else {
+    return 0.0;
+  }
+               
+} 
+
+			Voronoi_texture voronoi_3D_SMOOTH_F1_function(float3 coord, float VoronoiTexture_W, float sclae,float VoronoiTexture_Smoothness, float VoronoiTexture_Exponent, float randomness,int distance)
 {         
 
     coord *= sclae;
@@ -246,21 +262,14 @@ Voronoi_texture voronoi_3D_SMOOTH_F1_function(float3 coord, float VoronoiTexture
                 float3 cellOffset = float3(i, j, k);
                 float3 pointPosition = cellOffset + hash_vector3_to_vector3(cellPosition + cellOffset) *
                                                         randomness;
-                float distanceToPoint = voronoi_distance_f3(pointPosition, localPosition);
-                
-                float x= 0.5 + 0.5 * (smoothDistance - distanceToPoint) / VoronoiTexture_Smoothness;
-                float t = saturate((x -0.0) / (1.0-0.0));                            
-                float h= t * t * (3 - 2 * t);
+                float distanceToPoint =  voronoi_distance_f3(pointPosition, localPosition,distance,VoronoiTexture_Exponent);
+                float val=0.5 + 0.5 * (smoothDistance - distanceToPoint) / VoronoiTexture_Smoothness;
+                float x = clamp((val - 0.0) / (1.0 - 0.0), float(0.), float(1.));
+                float h= x * x * (3 - 2 * x);    
                 float correctionFactor = VoronoiTexture_Smoothness * h * (1.0 - h);
                 smoothDistance = 
-                (smoothDistance, distanceToPoint, h) - correctionFactor;
-
-
-
+                lerp(smoothDistance, distanceToPoint, h) - correctionFactor;
                 correctionFactor=correctionFactor /( 1.0 + 3.0 * VoronoiTexture_Smoothness);
-
-
-
                  float3 cellColor = hash_vector3_to_color(cellPosition + cellOffset);
                  smoothColor = lerp(smoothColor, cellColor, h) - correctionFactor;
                 smoothPosition = lerp(smoothPosition, pointPosition, h) - correctionFactor;
@@ -273,50 +282,15 @@ Voronoi_texture voronoi_3D_SMOOTH_F1_function(float3 coord, float VoronoiTexture
     voro.Position=cellPosition + smoothPosition;
     return voro;
 } 
-			                
-            Voronoi_texture voronoi_f1_3D_function(float3 coord, float VoronoiTexture_W, float sclae,float VoronoiTexture_Smoothness, float VoronoiTexture_Exponent, float randomness)
-            {                               
-                coord *= sclae;
-                float3 cellPosition = floor(coord);
-                float3 localPosition = coord - cellPosition;
-
-                float minDistance = FLT_MAX;
-                float3 targetOffset = float3(0.0, 0.0, 0.0);
-                float3 targetPosition = float3(0.0, 0.0, 0.0);
-                for (int k = -1; k <= 1; k++) {
-                    for (int j = -1; j <= 1; j++) {
-                        for (int i = -1; i <= 1; i++) {
-                            float3 cellOffset = float3(i, j, k);
-                            float3 pointPosition = cellOffset + hash_vector3_to_vector3(cellPosition + cellOffset) *
-                                                                    randomness;
-                            float distanceToPoint = voronoi_distance_f3(pointPosition, localPosition);
-                            if (distanceToPoint < minDistance) {
-                                targetOffset = cellOffset;
-                                minDistance = distanceToPoint;
-                                targetPosition = pointPosition;
-                            }
-                        }
-                    }
-                }
-                Voronoi_texture voro;
-                voro.Distance=minDistance;
-                voro.Color=hash_vector3_to_color(cellPosition + targetOffset);
-                voro.Position=targetPosition + cellPosition;
-                return voro;
-            }
-           
 						float4 float3_to_float4(float3 vec){
                 return float4(vec,1);
-            }
-            float4 float_to_float4(float val){
-                return float4(val, val, val, val);
             }
 			// Add methods
             float4 frag (v2f i) : SV_Target
             {
 
                 float3 VoronoiTexture_Vector = (i.worldPos + float3(1,1,1))/2;;
-				Voronoi_texture VoronoiTexture = voronoi_f1_3D_function(VoronoiTexture_Vector, VoronoiTexture_W, VoronoiTexture_Scale, VoronoiTexture_Smoothness, VoronoiTexture_Exponent, VoronoiTexture_Randomness);
+				Voronoi_texture VoronoiTexture = voronoi_3D_SMOOTH_F1_function(VoronoiTexture_Vector, VoronoiTexture_W, VoronoiTexture_Scale, VoronoiTexture_Smoothness, VoronoiTexture_Exponent, VoronoiTexture_Randomness, 0);
 				float4 MaterialOutput_Surface = float3_to_float4(VoronoiTexture.Color);
 				// Call methods
               
