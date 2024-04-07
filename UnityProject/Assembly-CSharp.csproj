@@ -71,6 +71,7 @@
     <None Include="Assets\Free Stylized Skybox\CubeMap\Materials\Material001.shader" />
     <None Include="Assets\Shaders\NuevosShaders\CristalAlfa.shader" />
     <None Include="Assets\Shaders\WaveTexture 1.shader" />
+    <None Include="Assets\Free Stylized Skybox\matVoro.shader" />
     <None Include="Assets\Shaders\NuevosShaders\EsferaLitPaula.shader" />
     <None Include="Assets\Materials\Pruebas\fotobsdf.shader" />
     <None Include="Assets\Materials\Pruebas\colorramp2.shader" />
@@ -101,6 +102,8 @@
     <None Include="Assets\Shaders\VoronaiTetxture.shader" />
     <None Include="Assets\Shaders\NuevosShaders\PruebaAdd.shader" />
     <None Include="Assets\Shaders\ColorRamp.shader" />
+    <None Include="Assets\Free Stylized Skybox\CubeMap\plastiliniso.shader" />
+    <None Include="Assets\Free Stylized Skybox\CubeMap\Materials\matVoro.shader" />
     <None Include="Assets\Shaders\Celshade.shader" />
     <None Include="Assets\Materials\Pruebas\utils.hlsl" />
     <None Include="Assets\Shaders\ColorRamp\image.shader" />

@@ -55,6 +55,7 @@ Shader "Custom/ColorShader"
                 float2  dynamicLightmapUV : TEXCOORD7;
                 #endif
                 float3 worldPos : TEXCOORD8;
+                float3 normalOS:TEXCOORD9;
             };
             // Add structs
 
@@ -69,6 +70,7 @@ Shader "Custom/ColorShader"
                 positionOS.xyz);
                 VertexNormalInputs normalInput = GetVertexNormalInputs(v.normalOS, 
                 v.tangentOS);
+                o.normalOS=v.normalOS;
                 o.positionWS = vertexInput.positionWS;
                 o.positionCS = vertexInput.positionCS;
                 o.uv = v.uv;

@@ -24,7 +24,9 @@
                     }
                 }
                 Voronoi_texture voro;
+                voro.Distance=minDistance;
                 voro.Color=hash_vector3_to_color(cellPosition + targetOffset);
+                voro.Position=targetPosition + cellPosition;
                 return voro;
             }
            

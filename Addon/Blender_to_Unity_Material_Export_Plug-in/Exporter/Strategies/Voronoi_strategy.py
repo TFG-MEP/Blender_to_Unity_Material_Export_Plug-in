@@ -15,6 +15,7 @@ class VaronoiNode(Strategy):
     def add_function(self, node, node_properties, shader_content):
         
         #functions for 3D
+        functions=[]
         functions = ["hash_uint4","hash_uint3","hashnoisef3", "hashnoisef4", "hash_vector4_to_float",
                        "hash_vector3_to_float","hash_vector3_to_color","hash_vector3_to_vector3","voronoi_distance_f3"]
 
@@ -36,6 +37,13 @@ class VaronoiNode(Strategy):
             input_node = exit_connection.to_node
             input_property = exit_connection.to_socket
             shader_content = write_struct_property(node_name, "Color", "float3", input_node, input_property, shader_content)
-
+        for exit_connection in node.outputs["Position"].links :
+            input_node = exit_connection.to_node
+            input_property = exit_connection.to_socket
+            shader_content = write_struct_property(node_name, "Position", "float3", input_node, input_property, shader_content)
+        for exit_connection in node.outputs["Distance"].links :
+            input_node = exit_connection.to_node
+            input_property = exit_connection.to_socket
+            shader_content = write_struct_property(node_name, "Distance", "float", input_node, input_property, shader_content)
         return shader_content
 
