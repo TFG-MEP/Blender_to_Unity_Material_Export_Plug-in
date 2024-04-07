@@ -1,0 +1,33 @@
+            Voronoi_texture voronoi_2D_F1_function(float3 coorde, float VoronoiTexture_W, float sclae,float VoronoiTexture_Smoothness, float VoronoiTexture_Exponent, float randomness,int distance)
+            {
+                float2 coord=float2(coorde.x,coorde.z);
+                coord *= sclae;
+                float2 cellPosition = floor(coord);
+                float2 localPosition = coord - cellPosition;
+
+
+
+                float minDistance = FLT_MAX;
+                float2 targetOffset = float2(0.0, 0.0);
+                float2 targetPosition = float2(0.0, 0.0);
+                for (int j = -1; j <= 1; j++) {
+                    for (int i = -1; i <= 1; i++) {
+                    float2 cellOffset = float2(i, j);
+                    float2 pointPosition = cellOffset + hash_vector2_to_vector2(cellPosition + cellOffset) *
+                                                        randomness;
+                    float distanceToPoint = voronoi_distance_f2(pointPosition, localPosition,distance,VoronoiTexture_Exponent);
+                    if (distanceToPoint < minDistance) {
+                        targetOffset = cellOffset;
+                        minDistance = distanceToPoint;
+                        targetPosition = pointPosition;
+                    }
+                    }
+
+                }
+                Voronoi_texture voro;
+                voro.Distance=minDistance;
+                voro.Color=hash_vector2_to_color(cellPosition + targetOffset);
+                voro.Position=float3(targetPosition + cellPosition,0);
+                return voro;
+
+            }        
