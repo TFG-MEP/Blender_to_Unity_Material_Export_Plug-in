@@ -12,7 +12,12 @@ def generate_textures(path, imagesMap):
     """
      
     imageVariables = {}
+    path = os.path.join(path, 'textures')
     for image_path, node_names in imagesMap.items():
+        try:
+            os.mkdir(path)
+        except FileExistsError:
+            print(f'The floder"textures" already exists: {path}')
         # Copy image to the path
         shutil.copy(image_path, path)
         image_name = os.path.basename(image_path)

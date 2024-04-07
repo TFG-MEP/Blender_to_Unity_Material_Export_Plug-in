@@ -106,6 +106,7 @@
     <None Include="Assets\Free Stylized Skybox\CubeMap\Materials\matVoro.shader" />
     <None Include="Assets\Shaders\Celshade.shader" />
     <None Include="Assets\Materials\Pruebas\utils.hlsl" />
+    <None Include="Assets\Free Stylized Skybox\plastiliniso.shader" />
     <None Include="Assets\Shaders\ColorRamp\image.shader" />
     <None Include="Assets\PruebasCompare\New Folder\prueba2.shader" />
     <None Include="Assets\Materials\bbb\chequ.shader" />
