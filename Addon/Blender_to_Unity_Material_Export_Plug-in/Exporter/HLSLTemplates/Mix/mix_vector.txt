@@ -1,6 +1,24 @@
-Mix_vector mix_vector(float mixFactorFloat, float3 mixFactorVector, float floatA, float floatB, float3 vectorA, float3 vectorB, float4 colorA, float4 colorB, bool clampFactor) {
-		         Mix_vector mixed;
-                 float clampedFactor = clamp(mixFactorVector, 0.0, 1.0);
-                 mixed.Result=lerp(vectorA, vectorB, clampedFactor);
+Mix_vector mix_vector(float mixFactorFloat, float3 mixFactorVector, float floatA, float floatB, float3 vectorA, float3 vectorB, float4 colorA, float4 colorB, bool clampFactor, bool factorModeUniform) {
+                Mix_vector mixed;
+
+                if (factorModeUniform)
+                {
+                    if (clampFactor){
+                        mixFactorFloat = clamp(mixFactorFloat, 0.0, 1.0);
+                    }
+                    mixed.Result=lerp(vectorA, vectorB, mixFactorFloat);
+                }
+                else
+                {
+                    if (clampFactor){
+                        mixFactorVector = clamp(mixFactorVector, 0.0, 1.0);
+                    }    
+                    float A = lerp(vectorA[0], vectorB[0], mixFactorVector[0]);
+                    float B = lerp(vectorA[1], vectorB[1], mixFactorVector[1]);
+                    float C = lerp(vectorA[2], vectorB[2], mixFactorVector[2]);
+
+                    mixed.Result = float3(A, B, C);
+                }
+               
                 return mixed;
             }
