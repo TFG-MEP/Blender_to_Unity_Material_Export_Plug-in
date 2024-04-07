@@ -43,7 +43,7 @@ Shader "Unlit/NewUnlitShader"
                 UNITY_TRANSFER_FOG(o,o.vertex);
                 return o;
             }
-
+          
             fixed4 frag (v2f i) : SV_Target
             {
              

@@ -16,8 +16,8 @@ class Strategy(ABC):
         shaderContent = self.add_includes(node=node, node_properties=node_properties, shader_content=shaderContent)
         shaderContent = self.add_defines(node=node, node_properties=node_properties, shader_content=shaderContent)
         node_properties, shaderContent = self.add_custom_properties(node=node, node_properties=node_properties, shader_content=shaderContent)
-        shaderContent = self.add_struct(node=node, node_properties=node_properties, shader_content=shaderContent)
         shaderContent = self.add_function(node=node, node_properties=node_properties, shader_content=shaderContent)
+        shaderContent = self.add_struct(node=node, node_properties=node_properties, shader_content=shaderContent)
         shaderContent = self.write_outputs(node=node, node_properties=node_properties, shader_content=shaderContent)
         return shaderContent
 

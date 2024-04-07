@@ -87,6 +87,7 @@
     <None Include="Assets\Materials\bbb\prueba.shader" />
     <None Include="Assets\Shaders\NuevosShaders\Oro.shader" />
     <None Include="Assets\PruebasCompare\New Folder\prueba.shader" />
+    <None Include="Assets\Free Stylized Skybox\CubeMap\Materials\plastiliniso.shader" />
     <None Include="Assets\Shaders\NewUnlitShader.shader" />
     <None Include="Assets\Shaders\PruebaOro.shader" />
     <None Include="Assets\PruebasCompare\sombras.shader" />

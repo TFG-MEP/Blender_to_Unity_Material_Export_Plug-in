@@ -1,5 +1,5 @@
                 
-            Voronoi_texture voronoi_f1_3D_function(float3 coord, float VoronoiTexture_W, float sclae,float VoronoiTexture_Smoothness, float VoronoiTexture_Exponent, float randomness)
+            Voronoi_texture voronoi_3D_F1_function(float3 coord, float VoronoiTexture_W, float sclae,float VoronoiTexture_Smoothness, float VoronoiTexture_Exponent, float randomness,int distance)
             {                               
                 coord *= sclae;
                 float3 cellPosition = floor(coord);
@@ -14,7 +14,7 @@
                             float3 cellOffset = float3(i, j, k);
                             float3 pointPosition = cellOffset + hash_vector3_to_vector3(cellPosition + cellOffset) *
                                                                     randomness;
-                            float distanceToPoint = voronoi_distance_f3(pointPosition, localPosition);
+                            float distanceToPoint = voronoi_distance_f3(pointPosition, localPosition,distance,VoronoiTexture_Exponent);
                             if (distanceToPoint < minDistance) {
                                 targetOffset = cellOffset;
                                 minDistance = distanceToPoint;

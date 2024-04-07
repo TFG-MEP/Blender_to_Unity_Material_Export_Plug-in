@@ -500,7 +500,7 @@ float PrincipledBSDF_EmissionStrength,float PrincipledBSDF_Alpha, float3 Princip
 			// Add methods
             float4 frag (v2f i) : SV_Target
             {
-
+                string s="hola";
                 float3 ImageTexture_Vector = float3(i.uv,0);
 				Image_texture ImageTexture = image_texture(ImageTexture_Vector, ImageTexture_Image);
 				float4 Mix_A_Color = float3_to_float4(ImageTexture.Color);
