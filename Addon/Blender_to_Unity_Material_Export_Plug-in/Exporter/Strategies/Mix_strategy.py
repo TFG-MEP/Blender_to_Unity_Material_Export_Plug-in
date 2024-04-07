@@ -7,11 +7,11 @@ class MixNode(Strategy) : # TODO : revisar esta estrategia, se repiten muchos FO
     mix_node_properties = {
         'VALUE':{
             'function_path' : "HLSLTemplates/Mix/mix_float.txt",
-            'function_name' : 'mix_value',
+            'function_name' : 'mix_float',
             'struct_path' : "HLSLTemplates/Mix/struct_float.txt",
-            'struct_name' : 'Mix_value',
+            'struct_name' : 'Mix_float',
             'struct_type' : 'float',
-            'node_name_suffix' : '_value'
+            'node_name_suffix' : '_float'
         },
         'VECTOR':{
             'function_path' : "HLSLTemplates/Mix/mix_vector.txt",
@@ -74,9 +74,22 @@ class MixNode(Strategy) : # TODO : revisar esta estrategia, se repiten muchos FO
                     variable_line = f'bool {node_name}_Clamp_Result;\n\t\t\t'
                     shader_content = write_variable(variable_line, shader_content)
 
-                    # self.blending_mode = node.blend_type #TODO
                 elif data_type == 'VECTOR':
-                    factor_mode = node.factor_mode #TODO
+                    factor_mode = node.factor_mode
+                    print(node.factor_mode)
+                    if (factor_mode == "UNIFORM") : # If factor mode is Uniform, set bool to true
+                        factor_mode = 1
+                    else : # False otherwise
+                        factor_mode = 0
+
+                    node_properties.append(node_name + "_Factor_Mode_Uniform")
+
+                    property_line = f'{node_name}_Factor_Mode_Uniform("Uniform Vector Mix", Int) = {factor_mode}\n\t\t'
+                    shader_content = write_property(property_line, shader_content)
+
+                    variable_line = f'bool {node_name}_Factor_Mode_Uniform;\n\t\t\t'
+                    shader_content = write_variable(variable_line, shader_content)
+
 
         return node_properties, shader_content
     
@@ -84,6 +97,7 @@ class MixNode(Strategy) : # TODO : revisar esta estrategia, se repiten muchos FO
         node_name = self.node_name(node)
         all_parameters = ', '.join(node_properties) #Revisar si es necesario
 
+        print(all_parameters)
         for output in node.outputs :
             if output.is_linked:
                 struct_prop='Result'
@@ -135,7 +149,6 @@ class MixNode(Strategy) : # TODO : revisar esta estrategia, se repiten muchos FO
     
     def write_outputs(self, node, node_properties, shader_content) :
         node_name = self.node_name(node)
-
         for output in node.outputs :
             if output.is_linked:
                 data_type = output.type

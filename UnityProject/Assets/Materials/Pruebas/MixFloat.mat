@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: MixFloat
+  m_Shader: {fileID: 4800000, guid: a65c3b967bcb488eb0f0835a19fbc73c, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _NormalTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - Mix_A_Float: 10
+    - Mix_B_Float: 0
+    - Mix_Clamp_Factor: 1
+    - Mix_Factor_Float: -100
+    - _BlendOp: 0
+    - _DstFactor: 10
+    - _SrcFactor: 5
+    m_Colors:
+    - Mix_A_Color: {r: 1, g: 0.21172532, b: 0.48027343, a: 1}
+    - Mix_A_Vector: {r: 0, g: 0, b: 0, a: 1}
+    - Mix_B_Color: {r: 0.2219817, g: 0.22406518, b: 1, a: 1}
+    - Mix_B_Vector: {r: 0, g: 0, b: 0, a: 1}
+    - Mix_Factor_Vector: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_BuildTextureStacks: []
