@@ -1,7 +1,16 @@
-Mix_color mix_color(float mixFactorFloat, float3 mixFactorVector, float floatA, float floatB, float3 vectorA, float3 vectorB, float4 colorA, float4 colorB) {
+float4 blending_function(float3 color_1, float3 color_2, float fac){
+                // Add blending function
+            }
+
+            Mix_color mix_color(float mixFactorFloat, float3 mixFactorVector, float floatA, float floatB, float3 vectorA, float3 vectorB, float4 colorA, float4 colorB, bool clampFactor, bool clampResult) {
 		        Mix_color mixed;
-                float clampedFactor = clamp(mixFactorFloat, 0.0, 1.0);
-                mixed.Result=lerp(colorA, colorB, clampedFactor);
-                mixed.Result.w = clamp(mixed.Result.w, 0.0, 1.0);
+                if (clampFactor){
+                    mixFactorFloat = clamp(mixFactorFloat, 0.0, 1.0);
+                }
+                mixed.Result = blending_function(colorA, colorB, mixFactorFloat);
+
+                if (clampResult){
+                    mixed.Result = clamp(mixed.Result, 0.0, 1.0);
+                }
                 return mixed;
             }

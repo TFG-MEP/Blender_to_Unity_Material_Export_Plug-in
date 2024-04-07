@@ -24,6 +24,11 @@ def blender_value_to_hlsl(blender_input, input_type) :
     """
     if (input_type == 'Float') :
         return blender_input
+    elif (input_type == 'Bool') :
+        if blender_input :
+            return 1
+        else :
+            return 0
     elif (input_type == 'Color') :
         # Apply gamma correction to colors
         blender_color = (blender_input[0], blender_input[1], blender_input[2])
