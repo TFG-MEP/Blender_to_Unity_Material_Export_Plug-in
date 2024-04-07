@@ -22,7 +22,41 @@ Material:
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: []m_Ints: []
-    m_Floats: []
-    m_Colors: []
+    m_TexEnvs:
+    - _NormalTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - PrincipledBSDF001_Alpha: 0.5127273
+    - PrincipledBSDF001_Anisotropic: 0
+    - PrincipledBSDF001_AnisotropicRotation: 0
+    - PrincipledBSDF001_Clearcoat: 0
+    - PrincipledBSDF001_ClearcoatRoughness: 0.03
+    - PrincipledBSDF001_EmissionStrength: -0.05
+    - PrincipledBSDF001_IOR: 1.45
+    - PrincipledBSDF001_Metallic: 0
+    - PrincipledBSDF001_Roughness: 0.121818185
+    - PrincipledBSDF001_Sheen: 0
+    - PrincipledBSDF001_SheenTint: 0.5
+    - PrincipledBSDF001_Specular: 0.5
+    - PrincipledBSDF001_SpecularTint: 0
+    - PrincipledBSDF001_Subsurface: 0
+    - PrincipledBSDF001_SubsurfaceAnisotropy: 0
+    - PrincipledBSDF001_SubsurfaceIOR: 1.4
+    - PrincipledBSDF001_Transmission: 0
+    - PrincipledBSDF001_TransmissionRoughness: 0
+    - PrincipledBSDF001_Weight: 0
+    - _BlendOp: 0
+    - _DstFactor: 10
+    - _SrcFactor: 5
+    m_Colors:
+    - PrincipledBSDF001_BaseColor: {r: 0.90354544, g: 0.12410668, b: 0.25526002, a: 1}
+    - PrincipledBSDF001_ClearcoatNormal: {r: 0, g: 0, b: 0, a: 1}
+    - PrincipledBSDF001_Emission: {r: 1, g: 1, b: 1, a: 1}
+    - PrincipledBSDF001_Normal: {r: 0, g: 0, b: 0, a: 1}
+    - PrincipledBSDF001_SubsurfaceColor: {r: 0.90354544, g: 0.90354544, b: 0.90354544, a: 1}
+    - PrincipledBSDF001_SubsurfaceRadius: {r: 1, g: 0.2, b: 0.1, a: 1}
+    - PrincipledBSDF001_Tangent: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

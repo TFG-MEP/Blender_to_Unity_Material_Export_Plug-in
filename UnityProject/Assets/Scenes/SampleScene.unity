@@ -923,7 +923,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f8d5989813f9b83408d57ccac999644d, type: 2}
+  - {fileID: 2100000, guid: ecd7bf2d4784c9d449eb4ada80e36339, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1680,7 +1680,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 575ae673e3eadc54cb23ababfa633eb7, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 13a56b404d4448ad9ab64964e4cbcf68, type: 2}
+      objectReference: {fileID: 2100000, guid: f45971fa70e94b70b6fe985ef910e4bb, type: 2}
     - target: {fileID: 919132149155446097, guid: 575ae673e3eadc54cb23ababfa633eb7, type: 3}
       propertyPath: m_Name
       value: Sphere (11)
@@ -2898,11 +2898,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2126d23efdda68d41963bee657985f5d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.14
+      value: 2.92
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2126d23efdda68d41963bee657985f5d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 24.852964
+      value: 24.58
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2126d23efdda68d41963bee657985f5d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2939,7 +2939,7 @@ PrefabInstance:
     - target: {fileID: 6317578925029434746, guid: 2126d23efdda68d41963bee657985f5d, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 3d4d359167874b5eb64e92277cedee83, type: 2}
+      objectReference: {fileID: 2100000, guid: 0d97de71f5aa47eabe71469f31a23707, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: -8700617353114198275, guid: 2126d23efdda68d41963bee657985f5d, type: 3}

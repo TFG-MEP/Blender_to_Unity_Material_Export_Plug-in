@@ -39,7 +39,7 @@ Material:
     - PrincipledBSDF_AnisotropicRotation: 0
     - PrincipledBSDF_Clearcoat: 0
     - PrincipledBSDF_ClearcoatRoughness: 0.03
-    - PrincipledBSDF_EmissionStrength: 1
+    - PrincipledBSDF_EmissionStrength: 108.96
     - PrincipledBSDF_IOR: 1.45
     - PrincipledBSDF_Metallic: 0
     - PrincipledBSDF_Roughness: 0.5
@@ -56,7 +56,7 @@ Material:
     m_Colors:
     - CheckerTexture_Color2: {r: 0.19253859, g: 0.13382068, b: 0.4811564, a: 1}
     - PrincipledBSDF_ClearcoatNormal: {r: 0, g: 0, b: 0, a: 1}
-    - PrincipledBSDF_Emission: {r: 0, g: 0, b: 0, a: 1}
+    - PrincipledBSDF_Emission: {r: 1, g: 0, b: 0, a: 1}
     - PrincipledBSDF_Normal: {r: 0, g: 0, b: 0, a: 1}
     - PrincipledBSDF_SubsurfaceColor: {r: 0.90354544, g: 0.90354544, b: 0.90354544, a: 1}
     - PrincipledBSDF_SubsurfaceRadius: {r: 1, g: 0.2, b: 0.1, a: 1}

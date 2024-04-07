@@ -81,5 +81,5 @@ Material:
     - PrincipledBSDF_SubsurfaceRadius: {r: 1, g: 0.2, b: 0.1, a: 1}
     - PrincipledBSDF_Tangent: {r: 0, g: 0, b: 0, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 0.56765074, g: 0, b: 0, a: 0}
+    - _EmissionColor: {r: 1024, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

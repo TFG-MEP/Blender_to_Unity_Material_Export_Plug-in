@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: prueba
-  m_Shader: {fileID: 4800000, guid: c48a2a01948e49d98c773ea19bd55753, type: 3}
+  m_Name: brillo
+  m_Shader: {fileID: 4800000, guid: 000d62e79c234a8ebb1663f731f64ebf, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -29,14 +29,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - PrincipledBSDF_Alpha: 1
+    - PrincipledBSDF_Alpha: -6.6
     - PrincipledBSDF_Anisotropic: 0
     - PrincipledBSDF_AnisotropicRotation: 0
     - PrincipledBSDF_Clearcoat: 0
     - PrincipledBSDF_ClearcoatRoughness: 0.03
-    - PrincipledBSDF_EmissionStrength: 106.77
+    - PrincipledBSDF_EmissionStrength: 2.27
     - PrincipledBSDF_IOR: 1.45
-    - PrincipledBSDF_Metallic: 0.6090909
+    - PrincipledBSDF_Metallic: 0
     - PrincipledBSDF_Roughness: 0.5
     - PrincipledBSDF_Sheen: 0
     - PrincipledBSDF_SheenTint: 0.5
@@ -46,15 +46,12 @@ Material:
     - PrincipledBSDF_SubsurfaceAnisotropy: 0
     - PrincipledBSDF_SubsurfaceIOR: 1.4
     - PrincipledBSDF_Transmission: 0
-    - PrincipledBSDF_TransmissionRoughness: 0
+    - PrincipledBSDF_TransmissionRoughness: 3.05
     - PrincipledBSDF_Weight: 0
-    - _BlendOp: 0
-    - _DstFactor: 10
-    - _SrcFactor: 5
     m_Colors:
     - PrincipledBSDF_BaseColor: {r: 0.90354544, g: 0.90354544, b: 0.90354544, a: 1}
     - PrincipledBSDF_ClearcoatNormal: {r: 0, g: 0, b: 0, a: 1}
-    - PrincipledBSDF_Emission: {r: 1, g: 0, b: 0, a: 1}
+    - PrincipledBSDF_Emission: {r: 0.4340737, g: 0.21115166, b: 0.6132076, a: 1}
     - PrincipledBSDF_Normal: {r: 0, g: 0, b: 0, a: 1}
     - PrincipledBSDF_SubsurfaceColor: {r: 0.90354544, g: 0.90354544, b: 0.90354544, a: 1}
     - PrincipledBSDF_SubsurfaceRadius: {r: 1, g: 0.2, b: 0.1, a: 1}

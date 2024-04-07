@@ -65,7 +65,9 @@
     <Compile Include="Assets\Scripts\SimpleCameraController.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Free Stylized Skybox\CubeMap\Materials\brillo.shader" />
     <None Include="Assets\Materials\aaa\waveTexture.shader" />
+    <None Include="Assets\Shaders\NuevosShaders\Material.shader" />
     <None Include="Assets\Materials\Pruebas\Material.shader" />
     <None Include="Assets\Materials\aaa\MAQUINA\NOMBRE\BOTELLAS\BOTONES050.shader" />
     <None Include="Assets\Shaders\Oro_0.shader" />
@@ -123,6 +125,7 @@
     <None Include="Assets\Shaders\ColorRamp.shader" />
     <None Include="Assets\Materials\aaa\MAQUINA\NOMBRE\BOTELLAS\BOTONES054.shader" />
     <None Include="Assets\Materials\aaa\MAQUINA\NOMBRE\BOTELLAS\BOTONES051.shader" />
+    <None Include="Assets\Shaders\NuevosShaders\brillo.shader" />
     <None Include="Assets\Free Stylized Skybox\CubeMap\plastiliniso.shader" />
     <None Include="Assets\Free Stylized Skybox\CubeMap\Materials\matVoro.shader" />
     <None Include="Assets\Shaders\Celshade.shader" />
