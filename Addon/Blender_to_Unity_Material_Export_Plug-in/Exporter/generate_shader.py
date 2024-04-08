@@ -128,7 +128,6 @@ def generate_shader(destination_directory,material):
 
     #------------------------------------------------------BLENDING MODE AND CULLING MODE------------------------------------------------------
     get_common_values().blending_mode = material.blend_method
-    print(f'Blending mode: {get_common_values().blending_mode}')
     
     #Agregamos aqui el culling mode porque es parte de los ajustes del material, no corresponde a un nodo especifico
     if material.use_backface_culling == False :
