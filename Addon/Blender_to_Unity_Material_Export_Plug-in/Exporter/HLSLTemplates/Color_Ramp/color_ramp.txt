@@ -1,10 +1,10 @@
-Color_Ramp color_ramp( float at,int numcolors, int interpolate,float4 ramp[30],float pos[30] )
+Color_Ramp_struct color_ramp( float at,int numcolors, int interpolate,float4 ramp[30],float pos[30] )
             {
               float f = at;
               int table_size = numcolors;
               f  = clamp(at, 0.0, 1.0) ;
               float4 result=ramp[0];
-              Color_Ramp colores;
+              Color_Ramp_struct colores;
               if(numcolors>1&&f>=pos[numcolors-1]){
                   colores.Color = ramp[numcolors - 1].xyz;
                   colores.Alpha = ramp[numcolors - 1].w;

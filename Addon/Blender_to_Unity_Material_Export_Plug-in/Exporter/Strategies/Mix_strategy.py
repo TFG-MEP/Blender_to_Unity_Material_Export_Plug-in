@@ -3,7 +3,6 @@ from ..writing_utils import *
 
 class MixNode(Strategy) : # TODO : revisar esta estrategia, se repiten muchos FOR
 
-
     mix_node_properties = {
         'VALUE':{
             'function_path' : "HLSLTemplates/Mix/mix_float.txt",
@@ -26,7 +25,7 @@ class MixNode(Strategy) : # TODO : revisar esta estrategia, se repiten muchos FO
             'function_name' : 'mix_color',
             'struct_path' : "HLSLTemplates/Mix/struct_color.txt",
             'struct_name' : 'Mix_color',
-            'struct_type' : 'float4',
+            'struct_type' : 'float3',
             'node_name_suffix' : '_color'
         }
     }
@@ -97,7 +96,10 @@ class MixNode(Strategy) : # TODO : revisar esta estrategia, se repiten muchos FO
         node_name = self.node_name(node)
         all_parameters = ', '.join(node_properties) #Revisar si es necesario
 
-        print(all_parameters)
+        for output in node.outputs :
+            print("Label: ", output.bl_label)
+            print("Type: ", output.type)
+
         for output in node.outputs :
             if output.is_linked:
                 struct_prop='Result'
@@ -137,7 +139,7 @@ class MixNode(Strategy) : # TODO : revisar esta estrategia, se repiten muchos FO
                         shader_content = write_function(function_path, shader_content)
 
                         if data_type == 'RGBA' :
-                            print("Blending Mode: ", node.blend_type)
+                            #print("Blending Mode: ", node.blend_type)
                             shader_content = self.write_blending_function(node.blend_type, shader_content)
 
                     else:

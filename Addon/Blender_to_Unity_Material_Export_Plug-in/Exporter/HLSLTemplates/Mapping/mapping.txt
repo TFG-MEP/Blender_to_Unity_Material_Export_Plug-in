@@ -1,5 +1,5 @@
-Mapping mapping( float3 vectore,float3 location, float3 rotation, float3 scale) {
-                		Mapping map;
+Mapping_struct mapping( float3 vectore,float3 location, float3 rotation, float3 scale) {
+                		Mapping_struct map;
 				// Añade la ubicación para la traslación
 				vectore += location;
 

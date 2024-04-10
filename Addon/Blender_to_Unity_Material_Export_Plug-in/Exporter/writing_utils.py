@@ -3,6 +3,23 @@ import re
 from .format_conversion_utils import *
 from .common_utils import *
 
+
+def get_function_name_from_path(path) :
+    """ 
+    Args:
+        path (str) :  Path that points to a file
+    Returns:
+        str: Name of the file the path directs to with no extension.
+    """
+
+    index_slash = max(path.rfind('/'), path.rfind('\\'))
+    index_dot = path.rfind('.')
+    
+    if index_dot == -1 or index_dot < index_slash:
+        return path[index_slash + 1:]
+    else:
+        return path[index_slash + 1:index_dot]
+
 def write_include(include_file_path, shader_content):
     """ Add an HLSL include 
 
@@ -261,6 +278,34 @@ def assign_variable(line, shader_content) :
 
     return shader_content
 
+def write_struct_members(basic_struct_path, struct_name, outputs, shader_content) :
+
+    if struct_name in get_common_values().added_structs :
+        return shader_content
+    else :
+        get_common_values().added_structs.add(struct_name)
+
+    with open(basic_struct_path, "r") as struct_file:
+        basic_struct = struct_file.read()
+
+    # name the struct accordingly
+    basic_struct = basic_struct.replace("Struct_name", struct_name)
+    
+    # add all of the nodes exits as struct members
+    members_index = basic_struct.find("// add members")
+    for output in outputs :
+        output_type = blender_type_to_hlsl(output.bl_label)
+        output_name = output.name.replace(" ", "_")
+        
+        line = output_type + " " + output_name + ";\n\t\t\t"
+        basic_struct = basic_struct[:members_index] + line + basic_struct[members_index:]
+
+    struct_index = shader_content.find("// Add structs")
+    shader_content = shader_content[:struct_index] + basic_struct + "\n\t\t\t" + shader_content[struct_index:]
+
+    return shader_content
+
+# TODO : borrar write_struct
 def write_struct(struct_file_path, shader_content) :
 
     struct_index = shader_content.find("// Add structs")
@@ -287,6 +332,7 @@ def write_defines(defines_file_path, shader_content) :
     
         shader_content = shader_content[:define_index] + struct + "\n\t\t\t" + shader_content[define_index:]
     return shader_content
+
 def write_struct_node(node_name, struct_name, function_name, function_parameters, shader_content) : 
 
     fragment_index = shader_content.find("// Call methods")

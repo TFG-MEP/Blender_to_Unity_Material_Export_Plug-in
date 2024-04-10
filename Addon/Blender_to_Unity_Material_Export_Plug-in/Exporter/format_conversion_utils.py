@@ -52,7 +52,7 @@ def blender_type_to_hlsl(blender_input):
     if blender_input == 'Float':
         output = 'float'
     elif blender_input == 'Color' :
-        output = 'float4'
+        output = 'float3'
     elif blender_input == 'Vector' :
         output = 'float3'
     elif blender_input == 'Shader' :

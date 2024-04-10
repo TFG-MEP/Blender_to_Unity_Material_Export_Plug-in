@@ -1,7 +1,7 @@
-Checker checker(float3  ip, float4 color1, float4 color2,float Scale)
+Checker_Texture_struct checker(float3  ip, float3 color1, float3 color2,float Scale)
 {
-    Checker c;
-    ip *= Scale/2;
+    Checker_Texture_struct c;
+    ip *= Scale;
     float3 p;
     p[0] = (ip[0] + 0.000001) * 0.999999;
     p[1] = (ip[1] + 0.000001) * 0.999999;
@@ -12,10 +12,10 @@ Checker checker(float3  ip, float4 color1, float4 color2,float Scale)
     int zi = (int)abs(floor(p[2]));
     //SI SON PARES
     if ((xi % 2 == yi % 2) == (zi % 2)) {
-        c.Color=color2;
+        c.Color=color1;
     }
     else {
-        c.Color=color1;
+        c.Color=color2;
     }
     return c;
 }

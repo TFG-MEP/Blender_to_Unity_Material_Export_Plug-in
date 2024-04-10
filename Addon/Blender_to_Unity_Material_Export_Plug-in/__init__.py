@@ -45,7 +45,7 @@ class GeneraShader(bpy.types.Operator):
     def execute(self, context):
         
         directory = os.path.dirname(self.filepath)
-        print("holaaa"+os.path.dirname(os.path.abspath(__file__)))
+        print(os.path.dirname(os.path.abspath(__file__)))
         print("Ruta seleccionada:", directory)
         
         try :

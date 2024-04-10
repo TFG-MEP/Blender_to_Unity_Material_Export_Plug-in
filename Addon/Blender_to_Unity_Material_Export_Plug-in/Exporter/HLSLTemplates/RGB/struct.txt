@@ -1,3 +1,0 @@
-struct RGB_output{
-                float4 Color;
-            };

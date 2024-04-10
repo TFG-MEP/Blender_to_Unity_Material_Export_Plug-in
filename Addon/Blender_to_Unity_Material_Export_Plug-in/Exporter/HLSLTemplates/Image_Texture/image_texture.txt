@@ -1,6 +1,6 @@
 // función que crea una textura a partir de un sampler2D
-			Image_texture image_texture( float3 texcoord,sampler2D textura){
-				Image_texture tex;
+			Image_Texture_struct image_texture( float3 texcoord,sampler2D textura){
+				Image_Texture_struct tex;
 				float4 colorImage=tex2D(textura, texcoord.xy);
 				tex.Color=colorImage.xyz;
 				tex.Alpha=colorImage.w;

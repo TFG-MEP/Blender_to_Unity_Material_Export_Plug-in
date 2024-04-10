@@ -1,0 +1,3 @@
+struct Struct_name {
+                // add members
+            };

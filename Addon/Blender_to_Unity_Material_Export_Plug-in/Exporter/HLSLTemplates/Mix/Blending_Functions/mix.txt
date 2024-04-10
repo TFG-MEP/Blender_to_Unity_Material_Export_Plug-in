@@ -1,5 +1,5 @@
 float facm = 1.0f - fac;
-                float4 r_col = float4(0,0,0,1);
+                float3 r_col = float3(0,0,0);
                 r_col[0] = facm * color_1[0] + fac * color_2[0];
                 r_col[1] = facm * color_1[1] + fac * color_2[1];
                 r_col[2] = facm * color_1[2] + fac * color_2[2];
