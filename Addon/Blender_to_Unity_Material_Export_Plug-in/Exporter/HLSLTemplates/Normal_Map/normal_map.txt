@@ -1,7 +1,7 @@
- Normal_map normal_map(float strenght,float4 color){
+Normal_Map_struct normal_map(float strenght,float3 color){
                 float3 normal=UnpackNormal(color);
                 normal.rg*=strenght;
-                Normal_map output;
+                Normal_Map_struct output;
                 output.Normal=normal;
                 return output;
-}
+            }
