@@ -1,5 +1,5 @@
                 
-            Voronoi_texture voronoi_3D_F1_function(float3 coord, float VoronoiTexture_W, float sclae,float VoronoiTexture_Smoothness, float VoronoiTexture_Exponent, float randomness,int distance)
+            Voronoi_Texture_struct voronoi_3D_F1_function(float3 coord, float VoronoiTexture_W, float sclae,float VoronoiTexture_Smoothness, float VoronoiTexture_Exponent, float randomness,int distance)
             {                               
                 coord *= sclae;
                 float3 cellPosition = floor(coord);
@@ -23,7 +23,7 @@
                         }
                     }
                 }
-                Voronoi_texture voro;
+                Voronoi_Texture_struct voro;
                 voro.Distance=minDistance;
                 voro.Color=hash_vector3_to_color(cellPosition + targetOffset);
                 voro.Position=targetPosition + cellPosition;

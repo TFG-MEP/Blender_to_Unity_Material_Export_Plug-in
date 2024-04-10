@@ -1,5 +1,5 @@
-Shader_to_RGB shader_to_RGB(float4 shader){
-    Shader_to_RGB output;
+Shader_to_RGB_struct shader_to_RGB(float4 shader){
+    Shader_to_RGB_struct output;
     output.Color=shader.xyz;
     output.Alpha=shader.w;
     return output;
