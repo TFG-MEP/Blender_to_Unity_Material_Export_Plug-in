@@ -1,32 +1,27 @@
 from .strategy import Strategy
 from ..writing_utils import *
+from ..common_utils import *
 
 class MixNode(Strategy) : # TODO : revisar esta estrategia, se repiten muchos FOR
-
+    
     mix_node_properties = {
         'VALUE':{
             'function_path' : "HLSLTemplates/Mix/mix_float.txt",
             'function_name' : 'mix_float',
-            'struct_path' : "HLSLTemplates/Mix/struct_float.txt",
-            'struct_name' : 'Mix_float',
             'struct_type' : 'float',
-            'node_name_suffix' : '_float'
+            'struct_suffix' : "_value"
         },
         'VECTOR':{
             'function_path' : "HLSLTemplates/Mix/mix_vector.txt",
             'function_name' : 'mix_vector',
-            'struct_path' : "HLSLTemplates/Mix/struct_vector.txt",
-            'struct_name' : 'Mix_vector',
             'struct_type' : 'float3',
-            'node_name_suffix' : '_vector'
+            'struct_suffix' : "_vector"
         },
         'RGBA':{
             'function_path' : "HLSLTemplates/Mix/mix_color.txt",
             'function_name' : 'mix_color',
-            'struct_path' : "HLSLTemplates/Mix/struct_color.txt",
-            'struct_name' : 'Mix_color',
             'struct_type' : 'float3',
-            'node_name_suffix' : '_color'
+            'struct_suffix' : "_color"
         }
     }
     
@@ -73,6 +68,8 @@ class MixNode(Strategy) : # TODO : revisar esta estrategia, se repiten muchos FO
                     variable_line = f'bool {node_name}_Clamp_Result;\n\t\t\t'
                     shader_content = write_variable(variable_line, shader_content)
 
+                    self.function_name = "mix_color"
+
                 elif data_type == 'VECTOR':
                     factor_mode = node.factor_mode
                     print(node.factor_mode)
@@ -88,48 +85,19 @@ class MixNode(Strategy) : # TODO : revisar esta estrategia, se repiten muchos FO
 
                     variable_line = f'bool {node_name}_Factor_Mode_Uniform;\n\t\t\t'
                     shader_content = write_variable(variable_line, shader_content)
+                    
+                    self.function_name = "mix_vector"
+                
+                else :
+                    self.function_name = "mix_float"
 
 
         return node_properties, shader_content
-    
-    def add_struct(self, node, node_properties, shader_content):
-        node_name = self.node_name(node)
-        all_parameters = ', '.join(node_properties) #Revisar si es necesario
-
-        for output in node.outputs :
-            print("Label: ", output.bl_label)
-            print("Type: ", output.type)
-
-        for output in node.outputs :
-            if output.is_linked:
-                struct_prop='Result'
-
-                # Get the data type
-                data_type = output.type
-                mix_properties = self.mix_node_properties.get(data_type)
-
-                # Check if the properties for this data type are added
-                if (mix_properties) :
-                    struct_name = mix_properties['struct_name']
-                    node_name = self.node_name(node)
-                    node_name = node_name + mix_properties['node_name_suffix']
-                    function_name = mix_properties['function_name']
-                    struct_type = mix_properties['struct_type']
-                    struct_path = mix_properties['struct_path']
-                    function_path = mix_properties['function_path']
-
-                    shader_content = write_struct(struct_path, shader_content)
-
-                    shader_content = write_struct_node(node_name, struct_name, function_name, all_parameters, shader_content)
-                else:
-                    raise SystemExit("mix_properties not defined for this type of Mix mode")
-
-        return shader_content
    
     def add_function(self, node, node_properties, shader_content):
 
         for output in node.outputs :
-            if output.is_linked:
+            if output.is_linked: # write function for the connected output type
                 data_type = output.type
                 mix_properties = self.mix_node_properties.get(data_type)
 
@@ -138,7 +106,7 @@ class MixNode(Strategy) : # TODO : revisar esta estrategia, se repiten muchos FO
                     if function_path:
                         shader_content = write_function(function_path, shader_content)
 
-                        if data_type == 'RGBA' :
+                        if data_type == 'RGBA' : # For Color Mix, add the blending function
                             #print("Blending Mode: ", node.blend_type)
                             shader_content = self.write_blending_function(node.blend_type, shader_content)
 
@@ -149,21 +117,56 @@ class MixNode(Strategy) : # TODO : revisar esta estrategia, se repiten muchos FO
 
         return shader_content
     
+    # The Mix node has to implement its own version of add_struct because of how it's built in Blender
+    def add_struct(self, node, node_properties, shader_content):
+
+        for output in node.outputs :
+            if output.is_linked:
+                data_type = output.type
+                mix_properties = self.mix_node_properties.get(data_type)
+                struct_suffix = mix_properties.get('struct_suffix')
+
+                struct_name = node.bl_label.replace(" ", "_") + struct_suffix + "_struct"
+
+                if struct_name not in get_common_values().added_structs :
+                    get_common_values().added_structs.add(struct_name)
+                    with open(self.basic_struct_path, "r") as struct_file:
+                        basic_struct = struct_file.read()
+
+                    # name the struct accordingly
+                    basic_struct = basic_struct.replace("Struct_name", struct_name)
+                    
+                    # add all of the nodes exits as struct members
+                    members_index = basic_struct.find("// add members")
+
+                    output_type = blender_type_to_hlsl(output.bl_label)
+                    output_name = output.name.replace(" ", "_")
+                    
+                    line = output_type + " " + output_name + ";\n\t\t\t"
+                    basic_struct = basic_struct[:members_index] + line + basic_struct[members_index:]
+
+                    struct_index = shader_content.find("// Add structs")
+                    shader_content = shader_content[:struct_index] + basic_struct + "\n\t\t\t" + shader_content[struct_index:]
+                
+                all_parameters = ', '.join(node_properties)
+                shader_content = write_struct_node(self.node_name(node), struct_name, self.function_name, all_parameters, shader_content)
+
+        return shader_content
+
+
+
     def write_outputs(self, node, node_properties, shader_content) :
         node_name = self.node_name(node)
         for output in node.outputs :
             if output.is_linked:
                 data_type = output.type
                 mix_properties = self.mix_node_properties.get(data_type)
-
-                struct_prop = 'Result'
                 struct_type = mix_properties['struct_type']
-                node_name = node_name + mix_properties['node_name_suffix']
 
                 for link in output.links :
                     input_node = link.to_node
                     input_property = link.to_socket
-                    shader_content = write_struct_property(node_name, struct_prop, struct_type, input_node, input_property, shader_content)
+                    shader_content = write_struct_property(node_name, "Result", struct_type, input_node, input_property, shader_content)
                 
         return shader_content
 

@@ -1,5 +1,5 @@
-Mix_vector mix_vector(float mixFactorFloat, float3 mixFactorVector, float floatA, float floatB, float3 vectorA, float3 vectorB, float4 colorA, float4 colorB, bool clampFactor, bool factorModeUniform) {
-                Mix_vector mixed;
+Mix_vector_struct mix_vector(float mixFactorFloat, float3 mixFactorVector, float floatA, float floatB, float3 vectorA, float3 vectorB, float3 colorA, float3 colorB, bool clampFactor, bool factorModeUniform) {
+                Mix_vector_struct mixed;
 
                 if (factorModeUniform)
                 {
