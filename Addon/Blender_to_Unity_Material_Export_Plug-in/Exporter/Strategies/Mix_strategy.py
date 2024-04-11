@@ -26,17 +26,15 @@ class MixNode(Strategy) : # TODO : revisar esta estrategia, se repiten muchos FO
     }
     
     blending_function_paths = {
-        'MIX' : "HLSLTemplates/Mix/Blending_Functions/mix.txt",
-        'ADD' : "HLSLTemplates/Mix/Blending_Functions/add.txt"
+        'MIX' : "HLSLTemplates/Mix/Blending_Functions/blending_mix.txt",
+        'ADD' : "HLSLTemplates/Mix/Blending_Functions/blending_add.txt"
     }
     
     def write_blending_function(self, blending_mode, shader_content):
         file_path = self.blending_function_paths.get(blending_mode)
-        with open(file_path, "r") as func_file:
-            blending_function = func_file.read()
+        shader_content = write_function(file_path, shader_content)
 
-        index = shader_content.find("// Add blending function")
-        shader_content = shader_content[:index] + blending_function + shader_content[index:]
+        shader_content = shader_content.replace("// Add blend function", get_function_name_from_path(file_path))
 
         return shader_content
 
@@ -104,11 +102,12 @@ class MixNode(Strategy) : # TODO : revisar esta estrategia, se repiten muchos FO
                 if mix_properties:
                     function_path = mix_properties.get('function_path')
                     if function_path:
-                        shader_content = write_function(function_path, shader_content)
 
                         if data_type == 'RGBA' : # For Color Mix, add the blending function
                             #print("Blending Mode: ", node.blend_type)
                             shader_content = self.write_blending_function(node.blend_type, shader_content)
+
+                        shader_content = write_function(function_path, shader_content)
 
                     else:
                         raise SystemExit("function_path not defined for this type of Mix mode")
