@@ -33,11 +33,12 @@ class MixNode(Strategy) : # TODO : revisar esta estrategia, se repiten muchos FO
     def write_blending_function(self, blending_mode, shader_content):
         file_path = self.blending_function_paths.get(blending_mode)
         shader_content = write_function(file_path, shader_content)
-
-        shader_content = shader_content.replace("// Add blend function", get_function_name_from_path(file_path))
-
         return shader_content
 
+    def write_blending_function_call(self, blending_mode, shader_content) :
+        file_path = self.blending_function_paths.get(blending_mode)
+        shader_content = shader_content.replace("// Add blend function", get_function_name_from_path(file_path))
+        return shader_content
 
     def add_custom_properties(self, node, node_properties, shader_content):
         node_name = self.node_name(node)
@@ -108,6 +109,9 @@ class MixNode(Strategy) : # TODO : revisar esta estrategia, se repiten muchos FO
                             shader_content = self.write_blending_function(node.blend_type, shader_content)
 
                         shader_content = write_function(function_path, shader_content)
+
+                        if data_type == 'RGBA' : # For Color Mix, call the blending function
+                            shader_content = self.write_blending_function_call(node.blend_type, shader_content)
 
                     else:
                         raise SystemExit("function_path not defined for this type of Mix mode")
