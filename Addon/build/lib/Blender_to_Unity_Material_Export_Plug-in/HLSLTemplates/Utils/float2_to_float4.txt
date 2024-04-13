@@ -1,3 +1,0 @@
-float4 float2_to_float4(float2 vec){
-    return float4(vec.x, vec.y, 1, 1);
-}

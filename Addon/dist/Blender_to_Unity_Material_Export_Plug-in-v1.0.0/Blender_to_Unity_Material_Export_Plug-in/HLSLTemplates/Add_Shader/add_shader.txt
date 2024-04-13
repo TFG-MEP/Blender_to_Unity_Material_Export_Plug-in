@@ -1,5 +1,0 @@
-Add_shader add_shader(float4 shader1, float4 shader2) {
-                Add_shader output;
-                output.Shader=shader1+shader2;
-                return output;
-            }

@@ -1,3 +1,0 @@
-struct Value{
-                float Value;
-            };

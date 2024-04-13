@@ -1,3 +1,0 @@
-float4 float_to_float4(float val){
-    return float4(val, val, val, val);
-}

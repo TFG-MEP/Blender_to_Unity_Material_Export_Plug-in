@@ -1,6 +1,0 @@
-Value value(float input_value)
-            {
-                Value output_value;
-                output_value.Value = input_value;
-                return output_value;
-            }

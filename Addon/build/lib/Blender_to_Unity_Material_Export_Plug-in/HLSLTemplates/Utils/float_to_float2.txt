@@ -1,3 +1,0 @@
-float2 float_to_float2(float val){
-    return float2(val, val);
-}

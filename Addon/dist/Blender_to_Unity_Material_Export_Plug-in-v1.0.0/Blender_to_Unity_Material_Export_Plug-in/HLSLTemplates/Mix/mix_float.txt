@@ -1,6 +1,0 @@
-Mix_float mix_float(float mixFactorFloat, float3 mixFactorVector, float floatA, float floatB, float3 vectorA, float3 vectorB, float4 colorA, float4 colorB) {
-		        Mix_float mixed;
-                float clampedFactor = clamp(mixFactorFloat, 0.0, 1.0);
-                mixed.Result=lerp(floatA, floatB, clampedFactor);
-                return mixed;
-            }

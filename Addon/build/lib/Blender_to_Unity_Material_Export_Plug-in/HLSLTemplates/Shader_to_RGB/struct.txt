@@ -1,4 +1,0 @@
-struct Shader_to_RGB{
-                float3 Color;
-                float Alpha;
-            };

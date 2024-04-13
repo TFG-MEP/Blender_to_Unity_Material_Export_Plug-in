@@ -1,3 +1,0 @@
-struct Normal_map{
-                float3 Normal;
-            };
