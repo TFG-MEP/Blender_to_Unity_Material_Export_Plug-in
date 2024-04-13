@@ -74,7 +74,6 @@
     <None Include="Assets\Materials\aaa\MAQUINA\NOMBRE\BOTELLAS\BOTONES050.shader" />
     <None Include="Assets\Shaders\Oro_0.shader" />
     <None Include="Assets\Materials\aaa\plastiliniso.shader" />
-    <None Include="Assets\Pruebas Usuarios\Joseda\Ears002.shader" />
     <None Include="Assets\Free Stylized Skybox\CubeMap\Materials\Material001.shader" />
     <None Include="Assets\Materials\aaa\MAQUINA\outline004.shader" />
     <None Include="Assets\Shaders\NuevosShaders\CristalAlfa.shader" />
@@ -109,6 +108,7 @@
     <None Include="Assets\PruebasCompare\New Folder\prueba.shader" />
     <None Include="Assets\Free Stylized Skybox\CubeMap\Materials\plastiliniso.shader" />
     <None Include="Assets\Shaders\NewUnlitShader.shader" />
+    <None Include="Assets\Pruebas Usuarios\Joseda\Eyes002.shader" />
     <None Include="Assets\Shaders\PruebaOro.shader" />
     <None Include="Assets\PruebasCompare\sombras.shader" />
     <None Include="Assets\Materials\aaa\MAQUINA\NOMBRE\BOTELLAS\BOTONES039.shader" />
@@ -121,6 +121,7 @@
     <None Include="Assets\Shaders\prueba.shader" />
     <None Include="Assets\Materials\aaa\MAQUINA\NOMBRE\BOTELLAS\BOTELLA2011.shader" />
     <None Include="Assets\Materials\aaa\MAQUINA\NOMBRE\BOTELLAS\BOTONES042.shader" />
+    <None Include="Assets\Pruebas Usuarios\Joseda\Ears002.shader" />
     <None Include="Assets\Materials\aaa\voronai.shader" />
     <None Include="Assets\Materials\Pruebas\foto.shader" />
     <None Include="Assets\Free Stylized Skybox\ReadMe.txt" />
@@ -151,14 +152,12 @@
     <None Include="Assets\Shaders\NuevosShaders\utils.hlsl" />
     <None Include="Assets\Shaders\NuevosShaders\Trans.shader" />
     <None Include="Assets\Materials\Pruebas\RefactorizacionStructs\NormalMap.shader" />
-    <None Include="Assets\Pruebas Usuarios\Joseda\Skin002.shader" />
     <None Include="Assets\Shaders\s.shader" />
     <None Include="Assets\PruebasCompare\chquea.shader" />
     <None Include="Assets\Materials\Pruebas\MixVector.shader" />
     <None Include="Assets\Materials\aaa\node_hash.hlsl" />
     <None Include="Assets\Materials\aaa\MAQUINA\NOMBRE\BOTELLAS\BOTONES044.shader" />
     <None Include="Assets\Materials\aaa\MAQUINA\NOMBRE\BOTELLAS\BOTONES056.shader" />
-    <None Include="Assets\Pruebas Usuarios\Joseda\Eyes002.shader" />
     <None Include="Assets\Shaders\MyFirstShader.shader" />
     <None Include="Assets\Free Stylized Skybox\CubeMap\Materials\NewUnlitShader.shader" />
     <None Include="Assets\Shaders\aaa.shader" />
@@ -170,6 +169,7 @@
     <None Include="Assets\Materials\aaa\colorRamp.shader" />
     <None Include="Assets\Materials\Pruebas\Mix.shader" />
     <None Include="Assets\Materials\aaa\chequerOk.shader" />
+    <None Include="Assets\Pruebas Usuarios\Joseda\Skin002.shader" />
     <None Include="Assets\Materials\aaa\MAQUINA\NOMBRE\BOTELLAS\BOTONES052.shader" />
     <None Include="Assets\Materials\aaa\MAQUINA\NOMBRE\BOTELLAS\oscuro013.shader" />
     <None Include="Assets\Shaders\NuevosShaders\colorramp2.shader" />

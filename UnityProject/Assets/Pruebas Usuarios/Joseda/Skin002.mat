@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Skin002
-  m_Shader: {fileID: 4800000, guid: 5caf98690f2648699cf0df25f0fe7fd8, type: 3}
+  m_Shader: {fileID: 4800000, guid: 6e8556a904a84ac9a36b413e4467821b, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -24,7 +24,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs: 
     - Image_Texture_Image:
-        m_Texture: {fileID: 2800000, guid: 5ba9549458574bdfbe69e2bc01351014, type: 3}
+        m_Texture: {fileID: 2800000, guid: 699bb0d9c6f04eedaa5a6938ecf9df5d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []

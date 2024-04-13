@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Eyes002
-  m_Shader: {fileID: 4800000, guid: fc20dd03c5b04c43905c91667bab09b6, type: 3}
+  m_Shader: {fileID: 4800000, guid: 95e55a2c5b434cf895350d29294ac019, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -24,7 +24,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs: 
     - Image_Texture_Image:
-        m_Texture: {fileID: 2800000, guid: 10547a5f37064d868f7d55dca059ea7b, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2f84482c37c74ec9a4a3ff8f99183260, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []

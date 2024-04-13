@@ -23,6 +23,8 @@ def blender_value_to_hlsl(blender_input, input_type) :
         str: The input value converted to HLSL-compatible format.
     """
     if (input_type == 'Float') :
+        if abs(blender_input) < 0.0001:  # Puedes ajustar el valor 0.0001 según tu necesidad
+            blender_input = 0.0
         return blender_input
     elif (input_type == 'Bool') :
         if blender_input :

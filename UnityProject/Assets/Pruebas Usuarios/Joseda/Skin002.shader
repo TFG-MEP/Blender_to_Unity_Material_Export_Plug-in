@@ -3,15 +3,24 @@ Shader "Custom/ShaderSkin002_"
      Properties
     {
         _NormalTex("Normal Map", 2D) = "bump" {}
-        Image_Texture_Image("Texture", 2D) = "white" {}
+        Mapping_Location("Location", Vector) = (0.0, 0.0, 0.0)
+		Mapping_Rotation("Rotation", Vector) = (0.0, 0.0, 0.0)
+		Mapping_Scale("Scale", Vector) = (1.0, 1.0, 1.0)
+		Image_Texture_Image("Texture", 2D) = "white" {}
 		VoronoiTexture_W("W", float) = 0.0
-		VoronoiTexture_Scale("Scale", float) = 2.2899999618530273
+		VoronoiTexture_Scale("Scale", float) = 0.5
 		VoronoiTexture_Smoothness("Smoothness", float) = 1.0
 		VoronoiTexture_Exponent("Exponent", float) = 0.5
 		VoronoiTexture_Randomness("Randomness", float) = 1.0
 		CheckerTexture_Color1("Color1", Color) = (0.903545437039038,0.903545437039038,0.903545437039038, 1.0)
 		CheckerTexture_Color2("Color2", Color) = (0.48115650831128215,0.48115650831128215,0.48115650831128215, 1.0)
-		CheckerTexture_Scale("Scale", float) = 3.2100000381469727
+		CheckerTexture_Scale("Scale", float) = 0.0
+		Color_Ramp_Color0("Color_Ramp_Color0", Color) = (0.7195821983749527,0.14825765773435431,0.310859240710854, 1.0)
+		Color_Ramp_Pos0("Color_Ramp_Pos0", Float) = 0.0
+		Color_Ramp_Color1("Color_Ramp_Color1", Color) = (0.39843828844944823,1.0,0.2659523501046064, 1.0)
+		Color_Ramp_Pos1("Color_Ramp_Pos1", Float) = 0.5252100229263306
+		Color_Ramp_Color2("Color_Ramp_Color2", Color) = (0.7195821983749527,0.14825765773435431,0.310859240710854, 1.0)
+		Color_Ramp_Pos2("Color_Ramp_Pos2", Float) = 0.8991607427597046
 		PrincipledBSDF_Subsurface("Subsurface", float) = 0.0
 		PrincipledBSDF_SubsurfaceRadius("SubsurfaceRadius", Vector) = (1.0, 0.20000000298023224, 0.10000000149011612)
 		PrincipledBSDF_SubsurfaceColor("SubsurfaceColor", Color) = (0.903545437039038,0.903545437039038,0.903545437039038, 1.0)
@@ -146,7 +155,11 @@ Shader "Custom/ShaderSkin002_"
                 float3 worldPos : TEXCOORD8;
                 float3 normalOS:TEXCOORD9;
             };
-            struct Image_Texture_struct {
+            struct Mapping_struct {
+                float3 Vector;
+			// add members
+            };
+			struct Image_Texture_struct {
                 float Alpha;
 			float3 Color;
 			// add members
@@ -164,13 +177,21 @@ Shader "Custom/ShaderSkin002_"
 			float3 Color;
 			// add members
             };
+			struct Color_Ramp_struct {
+                float Alpha;
+			float3 Color;
+			// add members
+            };
 			struct Principled_BSDF_struct {
                 float4 BSDF;
 			// add members
             };
 			// Add structs
 
-            sampler2D Image_Texture_Image;
+            float3 Mapping_Location;
+			float3 Mapping_Rotation;
+			float3 Mapping_Scale;
+			sampler2D Image_Texture_Image;
 			float VoronoiTexture_W;
 			float VoronoiTexture_Scale;
 			float VoronoiTexture_Smoothness;
@@ -179,6 +200,12 @@ Shader "Custom/ShaderSkin002_"
 			float3 CheckerTexture_Color1;
 			float3 CheckerTexture_Color2;
 			float CheckerTexture_Scale;
+			float4 Color_Ramp_Color0;
+			float Color_Ramp_Pos0;
+			float4 Color_Ramp_Color1;
+			float Color_Ramp_Pos1;
+			float4 Color_Ramp_Color2;
+			float Color_Ramp_Pos2;
 			float PrincipledBSDF_Subsurface;
 			float3 PrincipledBSDF_SubsurfaceRadius;
 			float3 PrincipledBSDF_SubsurfaceColor;
@@ -235,7 +262,25 @@ Shader "Custom/ShaderSkin002_"
                 return o;
             }
             
-            // función que crea una textura a partir de un sampler2D
+            Mapping_struct mapping( float3 vectore,float3 location, float3 rotation, float3 scale) {
+                		Mapping_struct map;
+				// Añade la ubicación para la traslación
+				vectore += location;
+
+				// Aplica la rotación (en radianes)
+        			float3 rotated_vector;
+        			rotated_vector.x = vectore.x * cos(rotation.y) * cos(rotation.z) - vectore.y * (sin(rotation.x) * sin(rotation.z) - cos(rotation.x) * cos(rotation.z) * sin(rotation.y)) + vectore.z * (cos(rotation.x) * sin(rotation.z) + cos(rotation.z) * sin(rotation.x) * sin(rotation.y));
+        			rotated_vector.y = vectore.x * sin(rotation.y) * cos(rotation.z) + vectore.y * (cos(rotation.x) * cos(rotation.z) + sin(rotation.x) * sin(rotation.y) * sin(rotation.z)) - vectore.z * (cos(rotation.y) * sin(rotation.x) - cos(rotation.x) * sin(rotation.y) * sin(rotation.z));
+        			rotated_vector.z = -vectore.x * sin(rotation.z) + vectore.y * cos(rotation.z) * sin(rotation.x) + vectore.z * cos(rotation.x) * cos(rotation.y);
+
+        			// Aplica la escala
+        			rotated_vector *= scale;
+
+        			map.Vector = rotated_vector;
+        
+        			return map;
+      			}
+			// función que crea una textura a partir de un sampler2D
 			Image_Texture_struct image_texture( float3 texcoord,sampler2D textura){
 				Image_Texture_struct tex;
 				float4 colorImage=tex2D(textura, texcoord.xy);
@@ -379,14 +424,47 @@ if (metric == 0) {
     int zi = (int)abs(floor(p[2]));
     //SI SON PARES
     if ((xi % 2 == yi % 2) == (zi % 2)) {
-        c.Color=color2;
+        c.Color=color1;
     }
     else {
-        c.Color=color1;
+        c.Color=color2;
     }
     return c;
 }
 
+			float float3_to_float(float3 vec){
+    return (vec.x + vec.y + vec.z) / 3.0;
+}
+
+			Color_Ramp_struct color_ramp( float at,int numcolors, int interpolate,float4 ramp[30],float pos[30] )
+            {
+              float f = at;
+              int table_size = numcolors;
+              f  = clamp(at, 0.0, 1.0) ;
+              float4 result=ramp[0];
+              Color_Ramp_struct colores;
+              if(numcolors>1&&f>=pos[numcolors-1]){
+                  colores.Color = ramp[numcolors - 1].xyz;
+                  colores.Alpha = ramp[numcolors - 1].w;
+                  return colores;
+              }
+              for (int i = 0; i < numcolors - 1; ++i) {
+                  if (f  >= pos[i] && f  <= pos[i + 1]){
+                      if (interpolate){
+                          result=ramp[i];
+                          float t = (f - (float)pos[i])/(pos[i+1]-pos[i]);
+                          result = (1.0 - t) * result + t * ramp[i + 1];
+                      } 
+                      else{
+                          result= ramp[i];
+                      }
+                    
+                  }
+              }
+              colores.Color=result.xyz;
+              colores.Alpha=result.w;
+              return colores;
+            }
 			Principled_BSDF_struct principled_bsdf(v2f i, float3 PrincipledBSDF_BaseColor,float PrincipledBSDF_Subsurface, float3 PrincipledBSDF_SubsurfaceRadius, float3 PrincipledBSDF_SubsurfaceColor,float PrincipledBSDF_SubsurfaceIOR,float PrincipledBSDF_SubsurfaceAnisotropy,
 float PrincipledBSDF_Metallic, float PrincipledBSDF_Specular,float PrincipledBSDF_SpecularTint,float PrincipledBSDF_Roughness,float PrincipledBSDF_Anisotropic, float PrincipledBSDF_AnisotropicRotation,float PrincipledBSDF_Sheen, 
 float PrincipledBSDF_SheenTint,float PrincipledBSDF_Clearcoat,float PrincipledBSDF_ClearcoatRoughness,float PrincipledBSDF_IOR,float PrincipledBSDF_Transmission,float PrincipledBSDF_TransmissionRoughness,float3 PrincipledBSDF_Emission,
@@ -456,13 +534,25 @@ float PrincipledBSDF_EmissionStrength,float PrincipledBSDF_Alpha, float3 Princip
             float4 frag (v2f i) : SV_Target
             {
 
-                float3 ImageTexture_Vector = float3(i.uv,0);
+                float3 Mapping_Vector = (i.worldPos + float3(1,1,1))/2;;
+				Mapping_struct Mapping = mapping(Mapping_Vector, Mapping_Location, Mapping_Rotation, Mapping_Scale);
+				float3 ImageTexture_Vector = Mapping.Vector;
 				Image_Texture_struct Image_Texture = image_texture(ImageTexture_Vector, Image_Texture_Image);
 				float3 VoronoiTexture_Vector = Image_Texture.Color;
 				Voronoi_Texture_struct Voronoi_Texture = voronoi_3D_SMOOTH_F1_function(VoronoiTexture_Vector, VoronoiTexture_W, VoronoiTexture_Scale, VoronoiTexture_Smoothness, VoronoiTexture_Exponent, VoronoiTexture_Randomness, 0);
 				float3 CheckerTexture_Vector = Voronoi_Texture.Position;
 				Checker_Texture_struct Checker_Texture = checker(CheckerTexture_Vector, CheckerTexture_Color1, CheckerTexture_Color2, CheckerTexture_Scale);
-				float3 PrincipledBSDF_BaseColor = Checker_Texture.Color;
+				float ColorRamp_Fac = float3_to_float(Checker_Texture.Color);
+				float Color_Ramp_pos[30];
+				float4 Color_Ramp_ramp[30];
+				Color_Ramp_ramp[0]=Color_Ramp_Color0;
+				Color_Ramp_pos[0]=Color_Ramp_Pos0;
+				Color_Ramp_ramp[1]=Color_Ramp_Color1;
+				Color_Ramp_pos[1]=Color_Ramp_Pos1;
+				Color_Ramp_ramp[2]=Color_Ramp_Color2;
+				Color_Ramp_pos[2]=Color_Ramp_Pos2;
+				Color_Ramp_struct Color_Ramp = color_ramp(ColorRamp_Fac, 3, 0, Color_Ramp_ramp, Color_Ramp_pos);
+				float3 PrincipledBSDF_BaseColor = Color_Ramp.Color;
 				Principled_BSDF_struct Principled_BSDF = principled_bsdf(i, PrincipledBSDF_BaseColor, PrincipledBSDF_Subsurface, PrincipledBSDF_SubsurfaceRadius, PrincipledBSDF_SubsurfaceColor, PrincipledBSDF_SubsurfaceIOR, PrincipledBSDF_SubsurfaceAnisotropy, PrincipledBSDF_Metallic, PrincipledBSDF_Specular, PrincipledBSDF_SpecularTint, PrincipledBSDF_Roughness, PrincipledBSDF_Anisotropic, PrincipledBSDF_AnisotropicRotation, PrincipledBSDF_Sheen, PrincipledBSDF_SheenTint, PrincipledBSDF_Clearcoat, PrincipledBSDF_ClearcoatRoughness, PrincipledBSDF_IOR, PrincipledBSDF_Transmission, PrincipledBSDF_TransmissionRoughness, PrincipledBSDF_Emission, PrincipledBSDF_EmissionStrength, PrincipledBSDF_Alpha, PrincipledBSDF_Normal, PrincipledBSDF_ClearcoatNormal, PrincipledBSDF_Tangent, PrincipledBSDF_Weight);
 				float4 MaterialOutput_Surface = Principled_BSDF.BSDF;
 				// Call methods
