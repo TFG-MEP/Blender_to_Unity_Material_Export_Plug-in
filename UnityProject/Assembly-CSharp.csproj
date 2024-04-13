@@ -146,6 +146,7 @@
     <None Include="Assets\Materials\bbb\chequ.shader" />
     <None Include="Assets\Shaders\NormalVectors.shader" />
     <None Include="Assets\Shaders\ColorRamp\colorramp2.shader" />
+    <None Include="Assets\Material.shader" />
     <None Include="Assets\Materials\Pruebas\RefactorizacionStructs\Prueba.shader" />
     <None Include="Assets\Materials\aaa\MAQUINA\NOMBRE\BOTELLAS\BOTELLA2009.shader" />
     <None Include="Assets\Materials\aaa\chequ.shader" />
