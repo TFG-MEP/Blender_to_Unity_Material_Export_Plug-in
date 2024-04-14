@@ -97,6 +97,7 @@
     <None Include="Assets\Shaders\TextureShader.shader" />
     <None Include="Assets\Materials\aaa\MAQUINA\NOMBRE\BOTELLAS\oscuro012.shader" />
     <None Include="Assets\Materials\aaa\MAQUINA\NOMBRE\BOTELLAS\BOTONES055.shader" />
+    <None Include="Assets\MESHES\Glow.shader" />
     <None Include="Assets\Shaders\NormalMat.shader" />
     <None Include="Assets\Materials\Pruebas\colorramp.shader" />
     <None Include="Assets\ShaderlabVSCode\ScriptTemplates\HLSL Shader-New HLSL Shader.hlsl.txt" />
@@ -109,12 +110,14 @@
     <None Include="Assets\Free Stylized Skybox\CubeMap\Materials\plastiliniso.shader" />
     <None Include="Assets\Shaders\NewUnlitShader.shader" />
     <None Include="Assets\Pruebas Usuarios\Joseda\Eyes002.shader" />
+    <None Include="Assets\MESHES\Aeons.shader" />
     <None Include="Assets\Shaders\PruebaOro.shader" />
     <None Include="Assets\PruebasCompare\sombras.shader" />
     <None Include="Assets\Materials\aaa\MAQUINA\NOMBRE\BOTELLAS\BOTONES039.shader" />
     <None Include="Assets\Materials\aaa\MAQUINA\NOMBRE\BOTELLAS\BOTELLA2010.shader" />
     <None Include="Assets\Materials\Pruebas\MixFloat.shader" />
     <None Include="Assets\Materials\bbb\textures\colorramp2.shader" />
+    <None Include="Assets\MESHES\CLOAK.shader" />
     <None Include="Assets\PruebasCompare\prueba.shader" />
     <None Include="Assets\Materials\aaa\MAQUINA\NOMBRE\BOTELLAS\LATAS1006.shader" />
     <None Include="Assets\Materials\Pruebas\RefactorizacionStructs\CheckerBueno.shader" />
@@ -132,6 +135,8 @@
     <None Include="Assets\Shaders\NuevosShaders\PruebaAdd.shader" />
     <None Include="Assets\Shaders\ColorRamp.shader" />
     <None Include="Assets\Materials\aaa\MAQUINA\NOMBRE\BOTELLAS\BOTONES054.shader" />
+    <None Include="Assets\MESHES\LEGS_ARMS.shader" />
+    <None Include="Assets\MESHES\MASKS.shader" />
     <None Include="Assets\Materials\aaa\MAQUINA\NOMBRE\BOTELLAS\BOTONES051.shader" />
     <None Include="Assets\Shaders\NuevosShaders\brillo.shader" />
     <None Include="Assets\Free Stylized Skybox\CubeMap\plastiliniso.shader" />
@@ -154,6 +159,7 @@
     <None Include="Assets\Shaders\NuevosShaders\Trans.shader" />
     <None Include="Assets\Materials\Pruebas\RefactorizacionStructs\NormalMap.shader" />
     <None Include="Assets\Shaders\s.shader" />
+    <None Include="Assets\MESHES\TORSO.shader" />
     <None Include="Assets\PruebasCompare\chquea.shader" />
     <None Include="Assets\Materials\Pruebas\MixVector.shader" />
     <None Include="Assets\Materials\aaa\node_hash.hlsl" />
