@@ -47,7 +47,7 @@ def export(path, export):
     # Export if export flag is set to True
     if export:
         # Generate 3D model
-        generate_3D_model(path)
+        fbx_guid=generate_3D_model(path)
 
 
 
