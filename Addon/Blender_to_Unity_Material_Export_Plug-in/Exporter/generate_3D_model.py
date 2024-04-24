@@ -10,4 +10,4 @@ def generate_3D_model(destination_directory):
     path_fbx = destination_directory+'\\' + name_object + ".fbx"
 
     # Export object to fbx
-    bpy.ops.export_scene.fbx(filepath=path_fbx, use_selection=True, axis_forward='-Z', axis_up='Y', object_types={'MESH'})
+    bpy.ops.export_scene.fbx(filepath=path_fbx, use_selection=True, axis_forward='-Z', axis_up='Y', object_types={'MESH'},bake_space_transform=True)
