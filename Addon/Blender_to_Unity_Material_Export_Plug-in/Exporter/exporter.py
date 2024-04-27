@@ -2,9 +2,11 @@ from .generate_material import generate_material
 from .generate_shader import generate_shader
 from .generate_3D_model import generate_3D_model
 from .generate_textures import generate_textures
+from .generate_prefab import generate_prefab
 
 import os
 import bpy
+
 def exportMaterial(path,material):
     # Generate .shader file
     material_name, imagesMap, shader_guid = generate_shader(path,material)
@@ -13,10 +15,11 @@ def exportMaterial(path,material):
     imageVariables = generate_textures(path, imagesMap)
     
     # Generate .material and .meta files
-    generate_material(path, material_name, imageVariables, shader_guid)
+    material_guid = generate_material(path, material_name, imageVariables, shader_guid)
 
-from .prueba import test
-def export(path, export):
+    return material_name, material_guid
+
+def export(path, exportFbx):
     """
     Export materials, textures, shaders, and 3D model to the specified path.
 
@@ -24,8 +27,6 @@ def export(path, export):
         path (str): The directory path where the exported files will be saved.
         export (bool): Flag indicating whether to perform the export operation.
     """
-
-    test()
 
     # Change the current working directory to the directory containing this script
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -40,7 +41,14 @@ def export(path, export):
                    
                     if material.use_nodes:
                         material.use_nodes = True  
-                        exportMaterial(path,material)
+                        material_name, material_guid = exportMaterial(path, material)
+
+                        if exportFbx:
+                            # Generate 3D model
+                            fbx_guid = generate_3D_model(path, material_name)
+                            # And Prefab
+                            generate_prefab(path, material_name, fbx_guid, material_guid)
+
                     else:
                         print("The material is None")
         else:
@@ -48,10 +56,8 @@ def export(path, export):
     else:
         raise SystemExit("No object is selected.")
 
-    # Export if export flag is set to True
-    if export:
-        # Generate 3D model
-        fbx_guid=generate_3D_model(path)
+   
+
 
 
 

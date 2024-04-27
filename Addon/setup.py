@@ -22,7 +22,7 @@ setup(
     # Here are listed first level dependencies needed by the module. Themselves
     # may require dependencies. The actual modules to be shipped with the addon
     # are cherry picked in setup.cfg
-    install_requires=['jinja2']
+    install_requires=['jinja2', 'xxhash']
 )
 
 

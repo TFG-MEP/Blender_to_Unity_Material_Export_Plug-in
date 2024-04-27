@@ -25,4 +25,6 @@ def generate_material(path, material_name,imageVariables,shader_guid):
     material_file_path = f"{path}/{material_name}.mat"
     save_to_file(material_file_path, material_content)
     material_guid = generate_meta_file('FileTemplates/template.mat.meta',path,material_name,'.mat')
+
+    return material_guid
     
