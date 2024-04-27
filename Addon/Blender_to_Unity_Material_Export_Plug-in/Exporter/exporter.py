@@ -15,6 +15,7 @@ def exportMaterial(path,material):
     # Generate .material and .meta files
     generate_material(path, material_name, imageVariables, shader_guid)
 
+from .prueba import test
 def export(path, export):
     """
     Export materials, textures, shaders, and 3D model to the specified path.
@@ -23,6 +24,9 @@ def export(path, export):
         path (str): The directory path where the exported files will be saved.
         export (bool): Flag indicating whether to perform the export operation.
     """
+
+    test()
+
     # Change the current working directory to the directory containing this script
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
     
