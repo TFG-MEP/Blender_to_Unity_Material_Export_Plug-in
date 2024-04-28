@@ -30,7 +30,7 @@ def export(path, exportFbx):
 
     # Change the current working directory to the directory containing this script
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
-    
+    material_guids=[]
     if bpy.context.active_object is not None:
         selected_object = bpy.context.active_object
         # Check if there's a material assigned to the object
@@ -42,6 +42,7 @@ def export(path, exportFbx):
                     if material.use_nodes:
                         material.use_nodes = True  
                         material_name, material_guid = exportMaterial(path, material)
+                        material_guids.append(material_guid)
 
                        
 
@@ -56,7 +57,7 @@ def export(path, exportFbx):
         # Generate 3D model
         fbx_guid,name_FBX = generate_3D_model(path)
         # And Prefab
-        generate_prefab(path, name_FBX, fbx_guid, material_guid)
+        generate_prefab(path, name_FBX, fbx_guid, material_guids)
 
    
 
