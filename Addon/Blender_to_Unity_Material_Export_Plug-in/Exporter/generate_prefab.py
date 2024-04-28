@@ -12,7 +12,7 @@ def generate_unity_mesh_fileID(mesh_name) :
 
     return result
 
-def generate_prefab(destination_path, fbx_name, fbx_guid, material_guids) :
+def generate_prefab(destination_path, fbx_name, file_name, fbx_guid, material_guids) :
 
     fbx_fileID = generate_unity_mesh_fileID(fbx_name)
 
@@ -27,7 +27,7 @@ def generate_prefab(destination_path, fbx_name, fbx_guid, material_guids) :
     }
     prefab_template_str = load_template_from_file('FileTemplates/template.prefab')
     prefab_content = render_template(prefab_template_str, context_prefab)
-    prefab_file_path = f"{destination_path}/{fbx_name}.prefab"
+    prefab_file_path = f"{destination_path}/{file_name}.prefab"
     save_to_file(prefab_file_path, prefab_content)
    
     

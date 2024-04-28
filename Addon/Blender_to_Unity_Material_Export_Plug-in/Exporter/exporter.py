@@ -55,9 +55,10 @@ def export(path, exportFbx):
     
     if exportFbx:
         # Generate 3D model
-        fbx_guid,name_FBX = generate_3D_model(path)
+        fbx_guid, clean_name = generate_3D_model(path)
         # And Prefab
-        generate_prefab(path, name_FBX, fbx_guid, material_guids)
+        objeto = bpy.context.active_object
+        generate_prefab(path, objeto.name, clean_name, fbx_guid, material_guids)
 
    
 
