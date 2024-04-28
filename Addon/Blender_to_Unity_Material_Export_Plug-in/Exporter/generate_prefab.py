@@ -27,6 +27,6 @@ def generate_prefab(destination_path, fbx_name, fbx_guid, material_guid) :
     }
     prefab_template_str = load_template_from_file('FileTemplates/template.prefab')
     prefab_content = render_template(prefab_template_str, context_prefab)
-    prefab_file_path = f"{destination_path}/{prefab_name}.prefab"
+    prefab_file_path = f"{destination_path}/{fbx_name}.prefab"
     save_to_file(prefab_file_path, prefab_content)
     
