@@ -43,11 +43,7 @@ def export(path, exportFbx):
                         material.use_nodes = True  
                         material_name, material_guid = exportMaterial(path, material)
 
-                        if exportFbx:
-                            # Generate 3D model
-                            fbx_guid = generate_3D_model(path, material_name)
-                            # And Prefab
-                            generate_prefab(path, material_name, fbx_guid, material_guid)
+                       
 
                     else:
                         print("The material is None")
@@ -55,6 +51,12 @@ def export(path, exportFbx):
             raise SystemExit("No material is assigned to the object.")
     else:
         raise SystemExit("No object is selected.")
+    
+    if exportFbx:
+        # Generate 3D model
+        fbx_guid,name_FBX = generate_3D_model(path)
+        # And Prefab
+        generate_prefab(path, name_FBX, fbx_guid, material_guid)
 
    
 
