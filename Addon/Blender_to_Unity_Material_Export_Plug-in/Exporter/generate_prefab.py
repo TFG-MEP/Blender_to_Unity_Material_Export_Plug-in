@@ -1,6 +1,6 @@
 import xxhash
 import struct
-
+from .meta_generator import *
 def generate_unity_mesh_fileID(mesh_name) :
 
     s = f"Type:Mesh->{mesh_name}0"
