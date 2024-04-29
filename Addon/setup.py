@@ -16,7 +16,7 @@ setup(
         'Topic :: Multimedia :: Graphics :: 3D Rendering',
         'Programming Language :: Python :: 3 :: Only'
     ],
-    packages=find_packages(),
+    packages=['Blender_to_Unity_Material_Export_Plug-in'],
     keywords='blender',
 
     # Here are listed first level dependencies needed by the module. Themselves
