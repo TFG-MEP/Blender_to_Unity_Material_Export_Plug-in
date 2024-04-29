@@ -1,0 +1,8 @@
+Mix_value_struct mix_float(float mixFactorFloat, float3 mixFactorVector, float floatA, float floatB, float3 vectorA, float3 vectorB, float3 colorA, float3 colorB, bool clampFactor) {
+		        Mix_value_struct mixed;
+                if (clampFactor){
+                    mixFactorFloat = clamp(mixFactorFloat, 0.0, 1.0);
+                }
+                mixed.Result=lerp(floatA, floatB, mixFactorFloat);
+                return mixed;
+            }

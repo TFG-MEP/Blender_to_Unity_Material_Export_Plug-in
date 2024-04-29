@@ -1,0 +1,5 @@
+float hash_float_to_float(float k)
+{
+    return hashnoise(k);
+
+}

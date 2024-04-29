@@ -1,0 +1,65 @@
+Principled_BSDF_struct principled_bsdf(v2f i, float3 PrincipledBSDF_BaseColor,float PrincipledBSDF_Subsurface, float3 PrincipledBSDF_SubsurfaceRadius, float3 PrincipledBSDF_SubsurfaceColor,float PrincipledBSDF_SubsurfaceIOR,float PrincipledBSDF_SubsurfaceAnisotropy,
+float PrincipledBSDF_Metallic, float PrincipledBSDF_Specular,float PrincipledBSDF_SpecularTint,float PrincipledBSDF_Roughness,float PrincipledBSDF_Anisotropic, float PrincipledBSDF_AnisotropicRotation,float PrincipledBSDF_Sheen, 
+float PrincipledBSDF_SheenTint,float PrincipledBSDF_Clearcoat,float PrincipledBSDF_ClearcoatRoughness,float PrincipledBSDF_IOR,float PrincipledBSDF_Transmission,float PrincipledBSDF_TransmissionRoughness,float3 PrincipledBSDF_Emission,
+float PrincipledBSDF_EmissionStrength,float PrincipledBSDF_Alpha, float3 PrincipledBSDF_Normal,float3 PrincipledBSDF_ClearcoatNormal, float3 PrincipledBSDF_Tangent, float PrincipledBSDF_Weight)
+            { 
+                SurfaceData surfacedata;
+                surfacedata.albedo = PrincipledBSDF_BaseColor;
+                surfacedata.specular = 0;
+                surfacedata.metallic = clamp(PrincipledBSDF_Metallic,0,1);
+                surfacedata.smoothness = clamp(1-PrincipledBSDF_Roughness,0,1);
+                if(PrincipledBSDF_Normal.x==0&&PrincipledBSDF_Normal.y==0&&PrincipledBSDF_Normal.z==0){
+                    surfacedata.normalTS = UnpackNormal(tex2D(_NormalTex, i.uv));  
+                } 
+                else surfacedata.normalTS =PrincipledBSDF_Normal;  
+               
+
+                PrincipledBSDF_Emission.rgb *= PrincipledBSDF_EmissionStrength;
+                surfacedata.emission = PrincipledBSDF_Emission;
+                surfacedata.occlusion = 1; //"Ambient occlusion"
+                surfacedata.alpha = 1;
+                surfacedata.clearCoatMask = 0;
+                surfacedata.clearCoatSmoothness = 0;
+
+                // Emission output.
+                #if USE_EMISSION_ON
+                PrincipledBSDF_Emission.rgb *= PrincipledBSDF_EmissionStrength;
+                surfaceData.emission = PrincipledBSDF_Emission;;
+                #endif
+               
+                InputData inputData = (InputData)0;
+                // Position input.
+                inputData.positionWS = i.positionWS;
+                // Normal input.
+                float3 bitangent = i.tangentWS.w * cross(i.normalWS, 
+                i.tangentWS.xyz);
+                inputData.tangentToWorld = float3x3(i.tangentWS.xyz, bitangent, 
+                i.normalWS);
+                inputData.normalWS = TransformTangentToWorld(surfacedata.normalTS, inputData.
+                tangentToWorld);
+                inputData.normalWS = NormalizeNormalPerPixel(inputData.normalWS);
+                // View direction input.
+                inputData.viewDirectionWS = SafeNormalize(i.viewDirWS);
+                // Shadow coords.
+                inputData.shadowCoord = TransformWorldToShadowCoord 
+                (inputData .positionWS);
+                // Baked lightmaps.
+                #if defined(DYNAMICLIGHTMAP_ON)
+                inputData.bakedGI = SAMPLE_GI(i.staticLightmapUV, 
+                i.dynamicLightmapUV, i.vertexSH, inputData.normalWS);
+             
+
+                #else
+                inputData.bakedGI = SAMPLE_GI(i.staticLightmapUV, i.vertexSH, 
+                inputData.normalWS);
+                #endif
+                inputData.normalizedScreenSpaceUV = GetNormalizedScreenSpaceUV(i.
+                positionCS);
+                inputData.shadowMask = SAMPLE_SHADOWMASK(i.staticLightmapUV);
+               
+
+                Principled_BSDF_struct output;
+                output.BSDF= UniversalFragmentPBR(inputData, surfacedata);
+                return output;
+
+            }

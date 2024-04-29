@@ -1,0 +1,7 @@
+Mix_Shader_struct mix_shader(float mixFactor, float4 shader1, float4 shader2) {
+        Mix_Shader_struct mixed;
+		float clampedFactor = clamp(mixFactor, 0.0, 1.0);
+        mixed.Shader=lerp(shader1, shader2, clampedFactor);
+        mixed.Shader.w = clamp(mixed.Shader.w, 0.0, 1.0);
+                return mixed;
+            }

@@ -1,0 +1,12 @@
+uint hash_uint3(uint kx, uint ky, uint kz)
+{
+    uint a, b, c;
+    a = b = c = 0xdeadbeef + (3 << 2) + 13;
+
+    c += kz;
+    b += ky;
+    a += kx;
+    final(a, b, c);
+
+    return c;
+}

@@ -1,0 +1,15 @@
+uint hash_uint4(uint kx, uint ky, uint kz, uint kw)
+{
+    uint a, b, c;
+    a = b = c = 0xdeadbeef + (4 << 2) + 13;
+
+    a += kx;
+    b += ky;
+    c += kz;
+    mix(a, b, c);
+
+    a += kw;
+    final(a, b, c);
+
+    return c;
+}

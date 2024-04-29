@@ -1,0 +1,6 @@
+struct Voronoi_Texture_struct{
+                float3 Color;
+                float Distance;
+                float3 Position;
+                float W;
+            };

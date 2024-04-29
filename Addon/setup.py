@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages,find_namespace_packages
 
 setup(
     name='Blender_to_Unity_Material_Export_Plug-in',
@@ -16,9 +16,11 @@ setup(
         'Topic :: Multimedia :: Graphics :: 3D Rendering',
         'Programming Language :: Python :: 3 :: Only'
     ],
-    packages=['Blender_to_Unity_Material_Export_Plug-in'],
+  
+  
     keywords='blender',
-
+    packages=['Blender_to_Unity_Material_Export_Plug-in','Blender_to_Unity_Material_Export_Plug-in\Exporter'],
+    package_data={'Blender_to_Unity_Material_Export_Plug-in\Exporter': ['*.*', '*/*.*', '*/*/*.*','*/*/*/*.*','*/*/*/*/*.*']},
     # Here are listed first level dependencies needed by the module. Themselves
     # may require dependencies. The actual modules to be shipped with the addon
     # are cherry picked in setup.cfg

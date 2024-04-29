@@ -1,0 +1,12 @@
+Mix_color_struct mix_color(float mixFactorFloat, float3 mixFactorVector, float floatA, float floatB, float3 vectorA, float3 vectorB, float3 colorA, float3 colorB, bool clampFactor, bool clampResult) {
+		        Mix_color_struct mixed;
+                if (clampFactor){
+                    mixFactorFloat = clamp(mixFactorFloat, 0.0, 1.0);
+                }
+                mixed.Result = // Add blend function(colorA, colorB, mixFactorFloat);
+
+                if (clampResult){
+                    mixed.Result = clamp(mixed.Result, 0.0, 1.0);
+                }
+                return mixed;
+            }

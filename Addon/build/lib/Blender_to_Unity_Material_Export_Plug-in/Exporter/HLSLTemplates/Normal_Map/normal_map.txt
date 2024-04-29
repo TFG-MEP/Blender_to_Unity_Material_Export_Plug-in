@@ -1,0 +1,7 @@
+Normal_Map_struct normal_map(float strenght,float3 color){
+                float3 normal=UnpackNormal(float4(color,1));
+                normal.rg*=strenght;
+                Normal_Map_struct output;
+                output.Normal=normal;
+                return output;
+            }

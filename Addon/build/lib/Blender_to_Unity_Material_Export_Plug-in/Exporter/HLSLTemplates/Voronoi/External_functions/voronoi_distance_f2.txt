@@ -1,0 +1,20 @@
+float voronoi_distance_f2(float2 a, float2 b, int metric,float exponent)
+{
+if (metric == 0) {
+    return length(a - b);
+  }
+  else if (metric == 1) {
+    return abs(a[0] - b[0]) + abs(a[1] - b[1]) ;
+  }
+  else if (metric == 2) {
+    return max(abs(a[0] - b[0]), abs(a[1] - b[1]));
+  }
+  else if (metric == 3) {
+    return pow(pow(abs(a[0] - b[0]), exponent) + pow(abs(a[1] - b[1]), exponent),
+               1.0 / exponent);
+  }
+  else {
+    return 0.0;
+  }
+               
+} 

@@ -1,0 +1,37 @@
+Voronoi_Texture_struct voronoi_3D_SMOOTH_F1_function(float3 coord, float VoronoiTexture_W, float sclae,float VoronoiTexture_Smoothness, float VoronoiTexture_Exponent, float randomness,int distance)
+{         
+
+    coord *= sclae;
+    float3 cellPosition = floor(coord);
+    float3 localPosition = coord - cellPosition;
+    float smoothDistance = 8.0;
+    float3 smoothColor = float3(0.0, 0.0, 0.0);
+    float3 smoothPosition = float3(0.0, 0.0, 0.0);
+   
+
+   for (int k = -2; k <= 2; k++) {
+     for (int j = -2; j <= 2; j++) {
+        for (int i = -2; i <= 2; i++) {
+                float3 cellOffset = float3(i, j, k);
+                float3 pointPosition = cellOffset + hash_vector3_to_vector3(cellPosition + cellOffset) *
+                                                        randomness;
+                float distanceToPoint =  voronoi_distance_f3(pointPosition, localPosition,distance,VoronoiTexture_Exponent);
+                float val=0.5 + 0.5 * (smoothDistance - distanceToPoint) / VoronoiTexture_Smoothness;
+                float x = clamp((val - 0.0) / (1.0 - 0.0), float(0.), float(1.));
+                float h= x * x * (3 - 2 * x);    
+                float correctionFactor = VoronoiTexture_Smoothness * h * (1.0 - h);
+                smoothDistance = 
+                lerp(smoothDistance, distanceToPoint, h) - correctionFactor;
+                correctionFactor=correctionFactor /( 1.0 + 3.0 * VoronoiTexture_Smoothness);
+                 float3 cellColor = hash_vector3_to_color(cellPosition + cellOffset);
+                 smoothColor = lerp(smoothColor, cellColor, h) - correctionFactor;
+                smoothPosition = lerp(smoothPosition, pointPosition, h) - correctionFactor;
+            }
+        }
+    }
+     Voronoi_Texture_struct voro;
+     voro.Distance=smoothDistance;
+    voro.Color=smoothColor;
+    voro.Position=cellPosition + smoothPosition;
+    return voro;
+} 

@@ -1,0 +1,8 @@
+float hashnoisef4(float4 p)
+{
+    const uint x =uint(p.x);
+    const uint y =uint(p.y);
+    const uint z = uint(p.z);
+    const uint w = uint(p.w);
+    return hash_uint4(x, y, z, w) /float(~0u);
+}

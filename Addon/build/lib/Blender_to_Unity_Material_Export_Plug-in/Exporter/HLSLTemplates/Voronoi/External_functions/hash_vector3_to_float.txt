@@ -1,0 +1,4 @@
+float hash_vector3_to_float(float3 k)
+{
+  return hashnoisef3(k);
+}

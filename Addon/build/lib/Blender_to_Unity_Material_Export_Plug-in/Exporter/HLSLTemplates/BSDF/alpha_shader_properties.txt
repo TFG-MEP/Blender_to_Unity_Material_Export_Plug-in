@@ -1,0 +1,4 @@
+        Property:[Enum(UnityEngine.Rendering.BlendMode)] _SrcFactor("SrcFactor", Float) = 5
+        Property:[Enum(UnityEngine.Rendering.BlendMode)] _DstFactor("DstFactor", Float) = 10
+        Property:[Enum(UnityEngine.Rendering.BlendOp)] _BlendOp("Blend Operation", Float) = 0
+        

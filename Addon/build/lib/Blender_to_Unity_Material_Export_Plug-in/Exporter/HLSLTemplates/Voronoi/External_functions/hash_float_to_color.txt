@@ -1,0 +1,6 @@
+float3 hash_float_to_color(float k)
+{
+    return float4(hash_float_to_float(k),
+                hash_vector2_to_float(float2(k, 1.0)),
+                hash_vector2_to_float(float2(k, 2.0)));
+}

@@ -1,0 +1,4 @@
+float hash_vector4_to_float(float4 k)
+{
+ return hashnoisef4(float4(k.x, k.y, k.z,k.w));
+}

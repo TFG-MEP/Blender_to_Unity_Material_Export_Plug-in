@@ -1,0 +1,6 @@
+Add_Shader_struct add_shader(float4 shader1, float4 shader2) {
+                Add_Shader_struct output;
+                output.Shader=shader1+shader2;
+                output.Shader.w = clamp(output.Shader.w, 0.0, 1.0);
+                return output;
+            }
