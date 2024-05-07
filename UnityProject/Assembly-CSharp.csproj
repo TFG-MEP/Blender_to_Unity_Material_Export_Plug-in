@@ -81,6 +81,7 @@
     <None Include="Assets\Free Stylized Skybox\matVoro.shader" />
     <None Include="Assets\Materials\Pruebas\RefactorizacionStructs\Voronoi.shader" />
     <None Include="Assets\Materials\aaa\MAQUINA\NOMBRE\BOTELLAS\LATAS1007.shader" />
+    <None Include="Assets\Materials\Pruebas\WTAF\TestUVs.shader" />
     <None Include="Assets\Materials\aaa\smooth.shader" />
     <None Include="Assets\Shaders\NuevosShaders\EsferaLitPaula.shader" />
     <None Include="Assets\Materials\Pruebas\fotobsdf.shader" />
@@ -124,6 +125,7 @@
     <None Include="Assets\Shaders\prueba.shader" />
     <None Include="Assets\Materials\aaa\MAQUINA\NOMBRE\BOTELLAS\BOTELLA2011.shader" />
     <None Include="Assets\Materials\aaa\MAQUINA\NOMBRE\BOTELLAS\BOTONES042.shader" />
+    <None Include="Assets\Materials\Pruebas\WTAF\Material001.shader" />
     <None Include="Assets\Pruebas Usuarios\Joseda\Ears002.shader" />
     <None Include="Assets\Materials\aaa\voronai.shader" />
     <None Include="Assets\Materials\Pruebas\foto.shader" />
@@ -167,6 +169,7 @@
     <None Include="Assets\Materials\aaa\MAQUINA\NOMBRE\BOTELLAS\BOTONES044.shader" />
     <None Include="Assets\Materials\aaa\MAQUINA\NOMBRE\BOTELLAS\BOTONES056.shader" />
     <None Include="Assets\Shaders\MyFirstShader.shader" />
+    <None Include="Assets\preee\Material001.shader" />
     <None Include="Assets\Free Stylized Skybox\CubeMap\Materials\NewUnlitShader.shader" />
     <None Include="Assets\Shaders\aaa.shader" />
     <None Include="Assets\Materials\Pruebas\RefactorizacionStructs\MixPhoto.shader" />

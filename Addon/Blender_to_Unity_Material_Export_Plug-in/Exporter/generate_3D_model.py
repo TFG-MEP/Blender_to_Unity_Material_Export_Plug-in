@@ -6,8 +6,7 @@ def generate_3D_model(destination_directory):
     name_Object = re.sub(r'[^\w\s]', '', objeto.name).replace(' ', '')
     if name_Object == "" :
         raise SystemExit("FBX name contains only invalid symbols. Please use alphanumeric characters.")
-    # Appy Transforms to the object
-    bpy.ops.object.transform_apply(location=False, rotation=True, scale=True)
+   
 
     path_fbx = destination_directory+'\\' + name_Object + ".fbx"
 
