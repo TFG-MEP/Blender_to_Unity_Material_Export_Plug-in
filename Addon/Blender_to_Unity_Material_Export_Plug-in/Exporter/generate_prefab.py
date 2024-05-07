@@ -1,15 +1,14 @@
-import xxhash
-import struct
 from .meta_generator import *
+from .unity_hash import xxh64, unsigned_to_signed
+
 def generate_unity_mesh_fileID(mesh_name) :
 
     s = f"Type:Mesh->{mesh_name}0"
     buffer = s.encode('utf-8')
-    hash_value = xxhash.xxh64(buffer, seed=0).intdigest()
 
-    # Convert from ulong (64-bit unsigned) to long (64-bit signed)
-    result = struct.unpack('q', struct.pack('Q', hash_value))[0]
-
+    hash_value = xxh64(buffer, seed=0)
+    result = unsigned_to_signed(hash_value, bits=64)
+    
     return result
 
 def generate_prefab(destination_path, fbx_name, file_name, fbx_guid, material_guids) :
