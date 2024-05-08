@@ -22,7 +22,9 @@ Material:
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: []m_Ints: []
+    m_TexEnvs: []
+    m_Ints: []
     m_Floats: []
-    m_Colors: []
+    m_Colors: 
+    - _BoundingBoxMin: {r: 0, g: 0, b: 0, a: 1}   
   m_BuildTextureStacks: []

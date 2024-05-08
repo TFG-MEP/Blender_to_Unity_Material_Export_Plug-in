@@ -26,7 +26,7 @@ class TextureCoordinateNode(Strategy):
 
         elif node.outputs.get('Generated').is_linked:            
             exit_connections = node.outputs["Generated"].links
-            parameter='(i.worldPos + float3(1,1,1))/2;'
+            parameter='(i.worldPos - _BoundingBoxMin) /( _BoundingBoxMax - _BoundingBoxMin);'
         elif node.outputs.get('Normal').is_linked:          
             exit_connections = node.outputs["Normal"].links
             parameter='normalize(i.normalOS);'

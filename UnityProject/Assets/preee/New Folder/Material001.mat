@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Material001
-  m_Shader: {fileID: 4800000, guid: 542ac1d1a131492f930554879dbea2ad, type: 3}
+  m_Shader: {fileID: 4800000, guid: babf70f5a7fd45578f7ed6c9641914e6, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -24,5 +24,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs: []m_Ints: []
     m_Floats: []
-    m_Colors: []
+    m_Colors:
+    - _BoundingBoxMin: {r: -1.3671875, g: -0.984375, b: -0.8515625, a: 1}
+    - _BoundingBoxMax: {r: 1.3671875, g: 0.984375, b: 0.8515625, a: 1}     
   m_BuildTextureStacks: []

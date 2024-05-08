@@ -102,7 +102,6 @@
     <None Include="Assets\Shaders\NormalMat.shader" />
     <None Include="Assets\Materials\Pruebas\colorramp.shader" />
     <None Include="Assets\ShaderlabVSCode\ScriptTemplates\HLSL Shader-New HLSL Shader.hlsl.txt" />
-    <None Include="Assets\preee\New Folder\Material001.shader" />
     <None Include="Assets\Materials\aaa\MAQUINA\Material020.shader" />
     <None Include="Assets\Materials\aaa\MAQUINA\NOMBRE\BOTELLAS\FONDOMAQUINA002.shader" />
     <None Include="Assets\Shaders\NuevosShaders\Transparencia.shader" />
@@ -150,6 +149,7 @@
     <None Include="Assets\Materials\Pruebas\utils.hlsl" />
     <None Include="Assets\Free Stylized Skybox\CubeMap\Materials\smooth.shader" />
     <None Include="Assets\Free Stylized Skybox\plastiliniso.shader" />
+    <None Include="Assets\preee\New Folder\Material001.shader" />
     <None Include="Assets\Shaders\ColorRamp\image.shader" />
     <None Include="Assets\PruebasCompare\New Folder\prueba2.shader" />
     <None Include="Assets\Materials\bbb\chequ.shader" />

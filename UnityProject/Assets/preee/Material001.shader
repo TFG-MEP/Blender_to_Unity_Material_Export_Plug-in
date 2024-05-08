@@ -3,6 +3,7 @@ Shader "Custom/ShaderMaterial001_"
      Properties
     {
         _NormalTex("Normal Map", 2D) = "bump" {}
+        _BoundingBoxMin("minBoundBox", Vector) = (0.903545437039038,0.903545437039038,0.903545437039038)
         CheckerTexture_Color1("Color1", Color) = (0.903545437039038,0.903545437039038,0.903545437039038, 1.0)
 		CheckerTexture_Color2("Color2", Color) = (0.0,0.08625463835564803,0.4811541292373489, 1.0)
 		CheckerTexture_Scale("Scale", float) = 5.0
@@ -143,8 +144,8 @@ Shader "Custom/ShaderMaterial001_"
             }
             inline float3 NormalizePosition(float3 vertex)
         {
-            float3 bboxSize = _BoundingBoxMax - _BoundingBoxMin;
-            return (vertex - _BoundingBoxMin) / bboxSize;
+       
+            return (vertex - _BoundingBoxMin) /( _BoundingBoxMax - _BoundingBoxMin);
         }
 			// Add methods
             float4 frag (v2f i) : SV_Target
@@ -156,7 +157,7 @@ Shader "Custom/ShaderMaterial001_"
                 float3 halfSize = boundSize / 2.0f;
                 _BoundingBoxMin = centerPosition - halfSize;
                 _BoundingBoxMax = centerPosition + halfSize;
-                float3 CheckerTexture_Vector = NormalizePosition(i.worldPos);
+                float3 CheckerTexture_Vector = (i.worldPos - _BoundingBoxMin) /( _BoundingBoxMax - _BoundingBoxMin);
 				Checker_Texture_struct Checker_Texture = checker(CheckerTexture_Vector, CheckerTexture_Color1, CheckerTexture_Color2, CheckerTexture_Scale);
 				float4 MaterialOutput_Surface = float3_to_float4(Checker_Texture.Color);
 				// Call methods

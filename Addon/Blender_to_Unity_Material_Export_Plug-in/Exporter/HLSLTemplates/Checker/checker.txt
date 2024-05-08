@@ -12,10 +12,10 @@ Checker_Texture_struct checker(float3  ip, float3 color1, float3 color2,float Sc
     int zi = (int)abs(floor(p[2]));
     //SI SON PARES
     if ((xi % 2 == yi % 2) == (zi % 2)) {
-        c.Color=color2;
+        c.Color=color1;
     }
     else {
-        c.Color=color1;
+        c.Color=color2;
     }
     return c;
 }
