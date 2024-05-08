@@ -8,7 +8,7 @@ Shader "Custom/ShaderMaterial001_"
 
         CheckerTexture_Color1("Color1", Color) = (0.903545437039038,0.903545437039038,0.903545437039038, 1.0)
 		CheckerTexture_Color2("Color2", Color) = (0.385582905772204,0.19843234788396072,0.4811556772665124, 1.0)
-		CheckerTexture_Scale("Scale", float) = 4.0
+		CheckerTexture_Scale("Scale", float) = 2.4000000953674316
 		PrincipledBSDF_Subsurface("Subsurface", float) = 0.0
 		PrincipledBSDF_SubsurfaceRadius("SubsurfaceRadius", Vector) = (1.0, 0.20000000298023224, 0.10000000149011612)
 		PrincipledBSDF_SubsurfaceColor("SubsurfaceColor", Color) = (0.903545437039038,0.903545437039038,0.903545437039038, 1.0)

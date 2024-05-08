@@ -17,8 +17,8 @@ def exportMaterial(path,material,obj):
     boundingBoxMin = centerPosition - halfSize;
     boundingBoxMax = centerPosition + halfSize;
     bounding_box_values = [
-        ("_BoundingBoxMin", boundingBoxMin),
-        ("_BoundingBoxMax", boundingBoxMax)
+        ("_BoundingBoxMin", (-boundingBoxMin[0],boundingBoxMin[1],-boundingBoxMin[2])),
+        ("_BoundingBoxMax", (-boundingBoxMax[0],boundingBoxMax[1],-boundingBoxMax[2]))
     ]
     # Generate .shader file
     material_name, imagesMap, shader_guid = generate_shader(path,material)

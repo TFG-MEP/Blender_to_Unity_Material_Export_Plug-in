@@ -12,7 +12,7 @@ def texturesInMaterial(imageVariables):
 def colorsInMaterial(Variables):
     textList = [] 
     for idx, (name, value) in enumerate(Variables):
-        entrada = f' {name}: {{r: {value[0]}, g: {value[2]}, b: {value[1]}, a: 1}}'
+        entrada = f' {name}: {{r: {value[0]}, g: {value[1]}, b: {value[2]}, a: 1}}'
         # Si no es el último elemento, agrega un salto de línea
         if idx != len(Variables) - 1:
             entrada += '\n    '
