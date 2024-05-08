@@ -83,8 +83,6 @@ Shader "Custom/ShaderMaterial001_"
             float3 CheckerTexture_Color1;
 			float3 CheckerTexture_Color2;
 			float CheckerTexture_Scale;
-            float3 _BoundingBoxMax=float3(1.367,0.9845,0.8515);
-            float3 _BoundingBoxMin=float3(-1.367,-0.9845,-0.8515);
 			// Add variables
     
             sampler2D _NormalTex;
@@ -141,22 +139,11 @@ Shader "Custom/ShaderMaterial001_"
 						float4 float3_to_float4(float3 vec){
                 return float4(vec,1);
             }
-            inline float3 NormalizePosition(float3 vertex)
-        {
-            float3 bboxSize = _BoundingBoxMax - _BoundingBoxMin;
-            return (vertex - _BoundingBoxMin) / bboxSize;
-        }
 			// Add methods
             float4 frag (v2f i) : SV_Target
             {
-                float3 centerPosition =  float3(0, 0, 0); // Puedes obtener esto de alguna manera, por ejemplo, utilizando los métodos de la malla en Unity.
-                float3 boundSize = float3(2.734, 1.969, 1.703);
-                
-                // Calcula _BoundingBoxMin y _BoundingBoxMax
-                float3 halfSize = boundSize / 2.0f;
-                _BoundingBoxMin = centerPosition - halfSize;
-                _BoundingBoxMax = centerPosition + halfSize;
-                float3 CheckerTexture_Vector = NormalizePosition(i.worldPos);
+
+                float3 CheckerTexture_Vector = -(i.worldPos + float3(1,1,1))/2;;
 				Checker_Texture_struct Checker_Texture = checker(CheckerTexture_Vector, CheckerTexture_Color1, CheckerTexture_Color2, CheckerTexture_Scale);
 				float4 MaterialOutput_Surface = float3_to_float4(Checker_Texture.Color);
 				// Call methods
