@@ -1,11 +1,14 @@
-from .generate_material import generate_material
-from .generate_shader import generate_shader
-from .generate_3D_model import generate_3D_model
-from .generate_textures import generate_textures
-from .generate_prefab import generate_prefab
-from mathutils import Vector
+import sys
 import os
 import bpy
+sys.path.append("./FileGenerators")
+from .FileGenerators.generate_material import generate_material
+from .FileGenerators.generate_shader import generate_shader
+from .FileGenerators.generate_3D_model import generate_3D_model
+from .FileGenerators.generate_textures import generate_textures
+from .FileGenerators.generate_prefab import generate_prefab
+from mathutils import Vector
+
 
 def exportMaterial(path,material,obj):
 

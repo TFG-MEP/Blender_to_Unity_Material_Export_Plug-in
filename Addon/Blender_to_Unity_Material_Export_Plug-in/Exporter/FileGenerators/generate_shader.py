@@ -1,9 +1,11 @@
 import bpy
-from .strategies_importer import *
-from .format_conversion_utils import *
-from .writing_utils import *
+from ..strategies_importer import *
+import sys
 from .meta_generator import *
-from .common_utils import *
+sys.path.append("./Utils")
+from ..Utils.writing_utils import *
+from ..Utils.format_conversion_utils import *
+from ..Utils.common_utils import *
 
 class Context():
 

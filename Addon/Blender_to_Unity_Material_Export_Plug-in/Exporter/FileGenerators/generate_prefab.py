@@ -1,5 +1,5 @@
 from .meta_generator import *
-from .unity_hash import xxh64, unsigned_to_signed
+from ..Utils.unity_hash import xxh64, unsigned_to_signed
 
 def generate_unity_mesh_fileID(mesh_name) :
 
