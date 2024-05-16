@@ -14,8 +14,7 @@ class ColorRampNode(Strategy):
      
         color_ramp = node.color_ramp
         positions = [color.position for color in color_ramp.elements]
-        colors = [ blender_value_to_hlsl(color.color, 'Color') for color in color_ramp.elements]
-
+        colors = [ blender_value_to_hlsl(color.color.default_value, 'Color') for color in color_ramp.elements]
         node_properties.append( str(len(colors)))
 
         type_interpolation = color_ramp.interpolation

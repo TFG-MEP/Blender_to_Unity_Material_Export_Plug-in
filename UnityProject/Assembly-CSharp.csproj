@@ -113,6 +113,7 @@
     <None Include="Assets\Pruebas Usuarios\Joseda\Eyes002.shader" />
     <None Include="Assets\MESHES\Aeons.shader" />
     <None Include="Assets\Shaders\PruebaOro.shader" />
+    <None Include="Assets\Pruebas Usuarios\Material001.shader" />
     <None Include="Assets\PruebasCompare\sombras.shader" />
     <None Include="Assets\Materials\aaa\MAQUINA\NOMBRE\BOTELLAS\BOTONES039.shader" />
     <None Include="Assets\Materials\aaa\MAQUINA\NOMBRE\BOTELLAS\BOTELLA2010.shader" />
