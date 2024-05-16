@@ -112,8 +112,8 @@
     <None Include="Assets\Shaders\NewUnlitShader.shader" />
     <None Include="Assets\Pruebas Usuarios\Joseda\Eyes002.shader" />
     <None Include="Assets\MESHES\Aeons.shader" />
+    <None Include="Assets\Pruebas Usuarios\Javi\Material002.shader" />
     <None Include="Assets\Shaders\PruebaOro.shader" />
-    <None Include="Assets\Pruebas Usuarios\Material001.shader" />
     <None Include="Assets\PruebasCompare\sombras.shader" />
     <None Include="Assets\Materials\aaa\MAQUINA\NOMBRE\BOTELLAS\BOTONES039.shader" />
     <None Include="Assets\Materials\aaa\MAQUINA\NOMBRE\BOTELLAS\BOTELLA2010.shader" />
@@ -144,6 +144,7 @@
     <None Include="Assets\Materials\aaa\MAQUINA\NOMBRE\BOTELLAS\BOTONES051.shader" />
     <None Include="Assets\Shaders\NuevosShaders\brillo.shader" />
     <None Include="Assets\Free Stylized Skybox\CubeMap\plastiliniso.shader" />
+    <None Include="Assets\Pruebas Usuarios\Javi\Material001.shader" />
     <None Include="Assets\Free Stylized Skybox\CubeMap\Materials\matVoro.shader" />
     <None Include="Assets\Shaders\Celshade.shader" />
     <None Include="Assets\Materials\aaa\MAQUINA\NOMBRE\BOTELLAS\BOTONES043.shader" />

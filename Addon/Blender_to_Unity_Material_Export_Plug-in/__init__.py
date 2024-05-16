@@ -40,7 +40,7 @@ class GeneraShader(bpy.types.Operator):
     bl_idname = "object.generar_unity_material"
     bl_label = "Generate Material"
     filepath: StringProperty(subtype="FILE_PATH")
-    export_fbx: BoolProperty(name="Export FBX", default=False)
+    export_fbx: BoolProperty(name="Export Prefab", default=True)
     # Aqui se determina qué ocurre al seleccionar esta opción del panel
     def execute(self, context):
         
