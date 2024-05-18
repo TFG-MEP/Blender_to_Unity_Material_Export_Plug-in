@@ -6,11 +6,7 @@ Shader "Custom/Shaderbase_"
         _BoundingBoxMin("minBoundBox", Vector) = (0,0,0)
         _BoundingBoxMax("maxBoundBox", Vector) = (0,0,0)
 
-        VoronoiTexture_W("W", float) = 0.0
-		VoronoiTexture_Scale("Scale", float) = 55.999996185302734
-		VoronoiTexture_Smoothness("Smoothness", float) = 1.0
-		VoronoiTexture_Exponent("Exponent", float) = 0.5
-		VoronoiTexture_Randomness("Randomness", float) = 1.0
+        Image_Texture_Image("Texture", 2D) = "white" {}
 		Color_Ramp_Color0("Color_Ramp_Color0", Color) = (0.3620557067710194,0.33986072003471407,0.24082920818344242, 1.0)
 		Color_Ramp_Pos0("Color_Ramp_Pos0", Float) = 0.25454607605934143
 		Color_Ramp_Color1("Color_Ramp_Color1", Color) = (1.0,0.7801366326558787,0.3903622462852875, 1.0)
@@ -79,49 +75,7 @@ Shader "Custom/Shaderbase_"
 			#pragma multi_compile _ DYNAMICLIGHTMAP_ON
 			//Add includes 
             
-            
-#define FLT_MAX 3.402823466e+38  
-#define rot(x, k) (((x) << (k)) | ((x) >> (32 - (k))))
-#define mix(a, b, c) \
-{ \
-    a -= c; \
-    a ^= rot(c, 4); \
-    c += b; \
-    b -= a; \
-    b ^= rot(a, 6); \
-    a += c; \
-    c -= b; \
-    c ^= rot(b, 8); \
-    b += a; \
-    a -= c; \
-    a ^= rot(c, 16); \
-    c += b; \
-    b -= a; \
-    b ^= rot(a, 19); \
-    a += c; \
-    c -= b; \
-    c ^= rot(b, 4); \
-    b += a; \
-} \
-
-#define final(a, b, c) \
-{ \
-    c ^= b; \
-    c -= rot(b, 14); \
-    a ^= c; \
-    a -= rot(c, 11); \
-    b ^= a; \
-    b -= rot(a, 25); \
-    c ^= b; \
-    c -= rot(b, 16); \
-    a ^= c; \
-    a -= rot(c, 4); \
-    b ^= a; \
-    b -= rot(a, 14); \
-    c ^= b; \
-    c -= rot(b, 24); \
-}    
-			// Add defines
+            // Add defines
 
             
             //Datos de entrada en el vertex shader
@@ -151,12 +105,9 @@ Shader "Custom/Shaderbase_"
                 float3 worldPos : TEXCOORD8;
                 float3 normalOS:TEXCOORD9;
             };
-            struct Voronoi_Texture_struct {
-                float Radius;
-			float W;
-			float3 Position;
+            struct Image_Texture_struct {
+                float Alpha;
 			float3 Color;
-			float Distance;
 			// add members
             };
 			struct Color_Ramp_struct {
@@ -170,11 +121,7 @@ Shader "Custom/Shaderbase_"
             };
 			// Add structs
 
-            float VoronoiTexture_W;
-			float VoronoiTexture_Scale;
-			float VoronoiTexture_Smoothness;
-			float VoronoiTexture_Exponent;
-			float VoronoiTexture_Randomness;
+            sampler2D Image_Texture_Image;
 			float4 Color_Ramp_Color0;
 			float Color_Ramp_Pos0;
 			float4 Color_Ramp_Color1;
@@ -240,128 +187,19 @@ Shader "Custom/Shaderbase_"
                 return o;
             }
             
-            uint hash_uint4(uint kx, uint ky, uint kz, uint kw)
-{
-    uint a, b, c;
-    a = b = c = 0xdeadbeef + (4 << 2) + 13;
+            // función que crea una textura a partir de un sampler2D
+			Image_Texture_struct image_texture( float3 texcoord,sampler2D textura){
+				Image_Texture_struct tex;
+				float4 colorImage=tex2D(textura, texcoord.xy);
+				tex.Color=colorImage.xyz;
+				tex.Alpha=colorImage.w;
+				return tex;
+			}
 
-    a += kx;
-    b += ky;
-    c += kz;
-    mix(a, b, c);
+			float float3_to_float(float3 vec){
+    return (vec.x + vec.y + vec.z) / 3.0;
+}
 
-    a += kw;
-    final(a, b, c);
-
-    return c;
-}
-			uint hash_uint3(uint kx, uint ky, uint kz)
-{
-    uint a, b, c;
-    a = b = c = 0xdeadbeef + (3 << 2) + 13;
-
-    c += kz;
-    b += ky;
-    a += kx;
-    final(a, b, c);
-
-    return c;
-}
-			float hashnoisef3(float3 p)
-{
-    const uint x = uint(p.x);
-    const uint y = uint(p.y);
-    const uint z =uint(p.z);
-    return hash_uint3(x, y, z) /float(~0u);
-}
-			float hashnoisef4(float4 p)
-{
-    const uint x =uint(p.x);
-    const uint y =uint(p.y);
-    const uint z = uint(p.z);
-    const uint w = uint(p.w);
-    return hash_uint4(x, y, z, w) /float(~0u);
-}
-			float hash_vector4_to_float(float4 k)
-{
- return hashnoisef4(float4(k.x, k.y, k.z,k.w));
-}
-			float hash_vector3_to_float(float3 k)
-{
-  return hashnoisef3(k);
-}
-			float3 hash_vector3_to_color(float3 k)
-{
-  return float3(hash_vector3_to_float(k),
-               hash_vector4_to_float(float4(k[0], k[1], k[2], 1.0)),
-               hash_vector4_to_float(float4(k[0], k[1], k[2], 2.0)));
-}
-			float3 hash_vector3_to_vector3(float3 k)
-{
-  return float3(hash_vector3_to_float(k),
-                 hash_vector4_to_float(float4(k[0], k[1], k[2], 1.0)),
-                 hash_vector4_to_float(float4(k[0], k[1], k[2], 2.0)));
-}
-			float voronoi_distance_f3(float3 a, float3 b, int metric,float exponent)
-{
-if (metric == 0) {
-    return length(a - b);
-  }
-  else if (metric == 1) {
-    return abs(a[0] - b[0]) + abs(a[1] - b[1]) + abs(a[2] - b[2]);
-  }
-  else if (metric == 2) {
-    return max(abs(a[0] - b[0]), max(abs(a[1] - b[1]), abs(a[2] - b[2])));
-  }
-  else if (metric == 3) {
-    return pow(pow(abs(a[0] - b[0]), exponent) + pow(abs(a[1] - b[1]), exponent) +
-                   pow(abs(a[2] - b[2]), exponent),
-               1.0 / exponent);
-  }
-  else {
-    return 0.0;
-  }
-               
-} 
-
-			Voronoi_Texture_struct voronoi_3D_SMOOTH_F1_function(float3 coord, float VoronoiTexture_W, float sclae,float VoronoiTexture_Smoothness, float VoronoiTexture_Exponent, float randomness,int distance)
-{         
-    randomness = clamp(randomness,0,1);
-    VoronoiTexture_Smoothness=clamp(VoronoiTexture_Smoothness,0,1); 
-    coord *= sclae;
-    float3 cellPosition = floor(coord);
-    float3 localPosition = coord - cellPosition;
-    float smoothDistance = 8.0;
-    float3 smoothColor = float3(0.0, 0.0, 0.0);
-    float3 smoothPosition = float3(0.0, 0.0, 0.0);
-   
-
-   for (int k = -2; k <= 2; k++) {
-     for (int j = -2; j <= 2; j++) {
-        for (int i = -2; i <= 2; i++) {
-                float3 cellOffset = float3(i, j, k);
-                float3 pointPosition = cellOffset + hash_vector3_to_vector3(cellPosition + cellOffset) *
-                                                        randomness;
-                float distanceToPoint =  voronoi_distance_f3(pointPosition, localPosition,distance,VoronoiTexture_Exponent);
-                float val=0.5 + 0.5 * (smoothDistance - distanceToPoint) / VoronoiTexture_Smoothness;
-                float x = clamp((val - 0.0) / (1.0 - 0.0), float(0.), float(1.));
-                float h= x * x * (3 - 2 * x);    
-                float correctionFactor = VoronoiTexture_Smoothness * h * (1.0 - h);
-                smoothDistance = 
-                lerp(smoothDistance, distanceToPoint, h) - correctionFactor;
-                correctionFactor=correctionFactor /( 1.0 + 3.0 * VoronoiTexture_Smoothness);
-                 float3 cellColor = hash_vector3_to_color(cellPosition + cellOffset);
-                 smoothColor = lerp(smoothColor, cellColor, h) - correctionFactor;
-                smoothPosition = lerp(smoothPosition, pointPosition, h) - correctionFactor;
-            }
-        }
-    }
-     Voronoi_Texture_struct voro;
-     voro.Distance=smoothDistance;
-    voro.Color=smoothColor;
-    voro.Position=cellPosition + smoothPosition;
-    return voro;
-} 
 			Color_Ramp_struct color_ramp( float at,int numcolors, int interpolate,float4 ramp[30],float pos[30] )
             {
               float f = at;
@@ -369,20 +207,23 @@ if (metric == 0) {
               f  = clamp(at, 0.0, 1.0) ;
               float4 result=ramp[0];
               Color_Ramp_struct colores;
+
               if(numcolors>1&&f>=pos[numcolors-1]){
                   colores.Color = ramp[numcolors - 1].xyz;
                   colores.Alpha = ramp[numcolors - 1].w;
                   return colores;
               }
+             
+              
               for (int i = 0; i < numcolors - 1; ++i) {
-                  if (f  >= pos[i] && f  <= pos[i + 1]){
+                  if (f  >= pos[i] && f  < pos[i + 1]){
                       if (interpolate){
                           result=ramp[i];
                           float t = (f - (float)pos[i])/(pos[i+1]-pos[i]);
                           result = (1.0 - t) * result + t * ramp[i + 1];
                       } 
                       else{
-                          result= ramp[i];
+                          result= ramp[i+1];
                       }
                     
                   }
@@ -460,9 +301,9 @@ float PrincipledBSDF_EmissionStrength,float PrincipledBSDF_Alpha, float3 Princip
             float4 frag (v2f i) : SV_Target
             {
 
-                float3 VoronoiTexture_Vector = (i.worldPos - _BoundingBoxMin) /( _BoundingBoxMax - _BoundingBoxMin);;
-				Voronoi_Texture_struct Voronoi_Texture = voronoi_3D_SMOOTH_F1_function(VoronoiTexture_Vector, VoronoiTexture_W, VoronoiTexture_Scale, VoronoiTexture_Smoothness, VoronoiTexture_Exponent, VoronoiTexture_Randomness, 0);
-				float ColorRamp_Fac = Voronoi_Texture.Distance;
+                float3 ImageTexture_Vector = float3(i.uv,0);
+				Image_Texture_struct Image_Texture = image_texture(ImageTexture_Vector, Image_Texture_Image);
+				float ColorRamp_Fac = float3_to_float(Image_Texture.Color);
 				float Color_Ramp_pos[30];
 				float4 Color_Ramp_ramp[30];
 				Color_Ramp_ramp[0]=Color_Ramp_Color0;

@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: base
-  m_Shader: {fileID: 4800000, guid: 3cb660cb11d34e0e9969eccaa9a2c5ef, type: 3}
+  m_Shader: {fileID: 4800000, guid: da96902cad1e4323ace83b872daf11ad, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -22,51 +22,14 @@ Material:
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs:
-    - _NormalTex:
-        m_Texture: {fileID: 0}
+    m_TexEnvs: 
+    - Image_Texture_Image:
+        m_Texture: {fileID: 2800000, guid: cd0a6f7b298c4b79b6fc7d4e1ac33be3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats:
-    - Color_Ramp_Pos0: 0.25454608
-    - Color_Ramp_Pos1: 0.37272757
-    - Color_Ramp_Pos2: 0.50000006
-    - PrincipledBSDF_Alpha: 1
-    - PrincipledBSDF_Anisotropic: 0
-    - PrincipledBSDF_AnisotropicRotation: 0
-    - PrincipledBSDF_Clearcoat: 0
-    - PrincipledBSDF_ClearcoatRoughness: 0.03
-    - PrincipledBSDF_EmissionStrength: 1
-    - PrincipledBSDF_IOR: 1.45
-    - PrincipledBSDF_Metallic: 0
-    - PrincipledBSDF_Roughness: 0.5
-    - PrincipledBSDF_Sheen: 0
-    - PrincipledBSDF_SheenTint: 0.5
-    - PrincipledBSDF_Specular: 0.5
-    - PrincipledBSDF_SpecularTint: 0
-    - PrincipledBSDF_Subsurface: 0
-    - PrincipledBSDF_SubsurfaceAnisotropy: 0
-    - PrincipledBSDF_SubsurfaceIOR: 1.4
-    - PrincipledBSDF_Transmission: 0
-    - PrincipledBSDF_TransmissionRoughness: 0
-    - PrincipledBSDF_Weight: 0
-    - VoronoiTexture_Exponent: 0.5
-    - VoronoiTexture_Randomness: 1
-    - VoronoiTexture_Scale: 55.999996
-    - VoronoiTexture_Smoothness: 1
-    - VoronoiTexture_W: 0
+    m_Floats: []
     m_Colors:
-    - Color_Ramp_Color0: {r: 0.3620557, g: 0.33986068, b: 0.24082917, a: 1}
-    - Color_Ramp_Color1: {r: 1, g: 0.78013664, b: 0.3903622, a: 1}
-    - Color_Ramp_Color2: {r: 0.43789908, g: 0.70048815, b: 0.45958257, a: 1}
-    - PrincipledBSDF_ClearcoatNormal: {r: 0, g: 0, b: 0, a: 1}
-    - PrincipledBSDF_Emission: {r: 0, g: 0, b: 0, a: 1}
-    - PrincipledBSDF_Normal: {r: 0, g: 0, b: 0, a: 1}
-    - PrincipledBSDF_SubsurfaceColor: {r: 0.90354544, g: 0.90354544, b: 0.90354544, a: 1}
-    - PrincipledBSDF_SubsurfaceRadius: {r: 1, g: 0.2, b: 0.1, a: 1}
-    - PrincipledBSDF_Tangent: {r: 0, g: 0, b: 0, a: 1}
-    - _BoundingBoxMax: {r: -1.3671875, g: 0.8515625, b: -0.984375, a: 1}
     - _BoundingBoxMin: {r: 1.3671875, g: -0.8515625, b: 0.984375, a: 1}
-    - m_BuildTextureStacks: {r: -1.3671875, g: 0.8515625, b: -0.984375, a: 1}
+    - _BoundingBoxMax: {r: -1.3671875, g: 0.8515625, b: -0.984375, a: 1}     
   m_BuildTextureStacks: []

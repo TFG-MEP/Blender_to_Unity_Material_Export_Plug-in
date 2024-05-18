@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: eyes
-  m_Shader: {fileID: 4800000, guid: bdcc7ed5cc90415cb418f743321793ec, type: 3}
+  m_Shader: {fileID: 4800000, guid: 1504717b84e44754b2b5b6a207504ed2, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
