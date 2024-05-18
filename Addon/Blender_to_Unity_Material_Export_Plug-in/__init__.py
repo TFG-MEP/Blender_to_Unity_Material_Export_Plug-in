@@ -36,11 +36,10 @@ site.addsitedir(third_party_modules_sitedir())
 from Exporter.exporter import export
 
 class GeneraShader(bpy.types.Operator):
-   
     bl_idname = "object.generar_unity_material"
     bl_label = "Generate Material"
     filepath: StringProperty(subtype="FILE_PATH")
-    export_fbx: BoolProperty(name="Export Prefab", default=True)
+    # export_fbx: BoolProperty(name="Export Prefab", default=True)
     # Aqui se determina qué ocurre al seleccionar esta opción del panel
     def execute(self, context):
         
@@ -49,7 +48,7 @@ class GeneraShader(bpy.types.Operator):
         print("Ruta seleccionada:", directory)
         
         try :
-            export(directory,self.export_fbx)
+            export(directory, context.scene.createPrefab)
         except SystemExit as e:
             error_message = "Execution stopped due to error: " + str(e)
             self.report({'ERROR'}, error_message)
@@ -62,17 +61,19 @@ class GeneraShader(bpy.types.Operator):
     
 
 class PT_Panel(bpy.types.Panel):
-    bl_label = "Generate Unity Material"
+    bl_label = "Generate Unity Asset"
     bl_idname = "PT_Panel"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
-    bl_category = 'Tool'
+    bl_category = 'Asset Blender to Unity'
     
     def draw(self, context):
         layout = self.layout
         # Aqui se determina que aparece en el panel
+        layout.row().prop(context.scene, "createPrefab")
         
         layout.operator("object.generar_unity_material")
+
 
 def menu_func(self, context):
     self.layout.operator(GeneraShader.bl_idname)
@@ -80,11 +81,17 @@ def menu_func(self, context):
 def register():
     bpy.utils.register_class(GeneraShader)
     bpy.types.Scene.selected_directory = bpy.props.StringProperty()
+    bpy.types.Scene.createPrefab = bpy.props.BoolProperty(
+        name='Generate Prefab',
+        description = "If true will generate a prefab Unity asset",
+        default=True
+    )
     bpy.utils.register_class(PT_Panel)
  
 
 def unregister():
     bpy.utils.unregister_class(GeneraShader)
+    bpy.types.Scene.createPrefab = bpy.props.BoolProperty()
     bpy.utils.unregister_class(PT_Panel)
  
 

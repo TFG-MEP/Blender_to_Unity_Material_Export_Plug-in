@@ -164,6 +164,7 @@
     <None Include="Assets\Shaders\NuevosShaders\utils.hlsl" />
     <None Include="Assets\Shaders\NuevosShaders\Trans.shader" />
     <None Include="Assets\Materials\Pruebas\RefactorizacionStructs\NormalMap.shader" />
+    <None Include="Assets\Scenes\joseda\base.shader" />
     <None Include="Assets\Shaders\s.shader" />
     <None Include="Assets\MESHES\TORSO.shader" />
     <None Include="Assets\PruebasCompare\chquea.shader" />
@@ -176,6 +177,7 @@
     <None Include="Assets\Free Stylized Skybox\CubeMap\Materials\NewUnlitShader.shader" />
     <None Include="Assets\Shaders\aaa.shader" />
     <None Include="Assets\Materials\Pruebas\RefactorizacionStructs\MixPhoto.shader" />
+    <None Include="Assets\Scenes\joseda\eyes.shader" />
     <None Include="Assets\Materials\aaa\MAQUINA\MORADOmAQUINA002.shader" />
     <None Include="Assets\Materials\Pruebas\RefactorizacionStructs\ShaderToRGB.shader" />
     <None Include="Assets\Shaders\wavetexture.shader" />
