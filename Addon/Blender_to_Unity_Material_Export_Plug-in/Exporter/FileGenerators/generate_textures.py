@@ -17,7 +17,7 @@ def generate_textures(path, imagesMap):
         try:
             os.mkdir(path)
         except FileExistsError:
-            print(f'The floder"textures" already exists: {path}')
+            print(f'The folder "textures" already exists: {path}')
         # Copy image to the path
         shutil.copy(image_path, path)
         image_name = os.path.basename(image_path)

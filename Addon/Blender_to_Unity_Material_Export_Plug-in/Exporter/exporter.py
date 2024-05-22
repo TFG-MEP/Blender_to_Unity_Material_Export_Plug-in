@@ -17,8 +17,8 @@ def exportMaterial(path,material,obj):
     centerPosition = sum((Vector(corner) for corner in bound_box_corners), Vector()) / 8
     dimensions = obj.dimensions
     halfSize = dimensions / 2.0
-    boundingBoxMin = centerPosition - halfSize;
-    boundingBoxMax = centerPosition + halfSize;
+    boundingBoxMin = centerPosition - halfSize
+    boundingBoxMax = centerPosition + halfSize
     bounding_box_values = [
         ("_BoundingBoxMin", (-boundingBoxMin[0],boundingBoxMin[1],-boundingBoxMin[2])),
         ("_BoundingBoxMax", (-boundingBoxMax[0],boundingBoxMax[1],-boundingBoxMax[2]))
