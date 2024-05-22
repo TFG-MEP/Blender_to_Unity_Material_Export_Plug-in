@@ -1,6 +1,7 @@
 Voronoi_Texture_struct voronoi_3D_SMOOTH_F1_function(float3 coord, float VoronoiTexture_W, float sclae,float VoronoiTexture_Smoothness, float VoronoiTexture_Exponent, float randomness,int distance)
 {         
-
+    randomness = clamp(randomness,0,1);
+    VoronoiTexture_Smoothness=clamp(VoronoiTexture_Smoothness,0,1); 
     coord *= sclae;
     float3 cellPosition = floor(coord);
     float3 localPosition = coord - cellPosition;

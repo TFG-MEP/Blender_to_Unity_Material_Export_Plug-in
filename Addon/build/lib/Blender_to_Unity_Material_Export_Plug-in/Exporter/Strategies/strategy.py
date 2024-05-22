@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from ..writing_utils import *
+from ..Utils.writing_utils import *
 
 class Strategy(ABC):
     """

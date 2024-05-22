@@ -27,5 +27,7 @@ Material:
     -${tex_env_string}${% endfor -%}{% endif -%}
     m_Ints: []
     m_Floats: []
-    m_Colors: []
+    m_Colors:
+    {% for variable in colors_strings -%}
+    -${variable}${% endfor %}     
   m_BuildTextureStacks: []

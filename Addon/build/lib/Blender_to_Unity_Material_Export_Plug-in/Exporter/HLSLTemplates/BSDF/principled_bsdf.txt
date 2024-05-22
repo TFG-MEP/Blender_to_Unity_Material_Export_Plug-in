@@ -8,8 +8,8 @@ float PrincipledBSDF_EmissionStrength,float PrincipledBSDF_Alpha, float3 Princip
                 surfacedata.specular = 0;
                 surfacedata.metallic = clamp(PrincipledBSDF_Metallic,0,1);
                 surfacedata.smoothness = clamp(1-PrincipledBSDF_Roughness,0,1);
-                if(PrincipledBSDF_Normal.x==0&&PrincipledBSDF_Normal.y==0&&PrincipledBSDF_Normal.z==0){
-                    surfacedata.normalTS = UnpackNormal(tex2D(_NormalTex, i.uv));  
+                if(PrincipledBSDF_Normal.x <= 0.0 && PrincipledBSDF_Normal.y <= 0.0 && PrincipledBSDF_Normal.z <= 0.0){
+                    surfacedata.normalTS = UnpackNormal(tex2D(_NormalTex, i.uv));
                 } 
                 else surfacedata.normalTS =PrincipledBSDF_Normal;  
                

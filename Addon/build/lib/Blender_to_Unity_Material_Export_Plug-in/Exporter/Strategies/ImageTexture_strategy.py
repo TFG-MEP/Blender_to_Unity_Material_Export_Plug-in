@@ -1,6 +1,6 @@
 from .strategy import Strategy
-from ..writing_utils import *
-from ..common_utils import *
+from ..Utils.writing_utils import *
+from ..Utils.common_utils import *
 
 class ImageTextureNode(Strategy):
 

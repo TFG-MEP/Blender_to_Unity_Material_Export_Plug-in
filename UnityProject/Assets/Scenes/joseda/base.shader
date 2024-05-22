@@ -6,38 +6,11 @@ Shader "Custom/Shaderbase_"
         _BoundingBoxMin("minBoundBox", Vector) = (0,0,0)
         _BoundingBoxMax("maxBoundBox", Vector) = (0,0,0)
 
-        Image_Texture_Image("Texture", 2D) = "white" {}
-		Color_Ramp_Color0("Color_Ramp_Color0", Color) = (0.3620557067710194,0.33986072003471407,0.24082920818344242, 1.0)
-		Color_Ramp_Pos0("Color_Ramp_Pos0", Float) = 0.25454607605934143
-		Color_Ramp_Color1("Color_Ramp_Color1", Color) = (1.0,0.7801366326558787,0.3903622462852875, 1.0)
-		Color_Ramp_Pos1("Color_Ramp_Pos1", Float) = 0.37272757291793823
-		Color_Ramp_Color2("Color_Ramp_Color2", Color) = (0.43789912437978196,0.7004881317168405,0.4595826175810619, 1.0)
-		Color_Ramp_Pos2("Color_Ramp_Pos2", Float) = 0.5000000596046448
-		PrincipledBSDF_Subsurface("Subsurface", float) = 0.0
-		PrincipledBSDF_SubsurfaceRadius("SubsurfaceRadius", Vector) = (1.0, 0.20000000298023224, 0.10000000149011612)
-		PrincipledBSDF_SubsurfaceColor("SubsurfaceColor", Color) = (0.903545437039038,0.903545437039038,0.903545437039038, 1.0)
-		PrincipledBSDF_SubsurfaceIOR("SubsurfaceIOR", float) = 1.399999976158142
-		PrincipledBSDF_SubsurfaceAnisotropy("SubsurfaceAnisotropy", float) = 0.0
-		PrincipledBSDF_Metallic("Metallic", float) = 0.0
-		PrincipledBSDF_Specular("Specular", float) = 0.5
-		PrincipledBSDF_SpecularTint("SpecularTint", float) = 0.0
-		PrincipledBSDF_Roughness("Roughness", float) = 0.5
-		PrincipledBSDF_Anisotropic("Anisotropic", float) = 0.0
-		PrincipledBSDF_AnisotropicRotation("AnisotropicRotation", float) = 0.0
-		PrincipledBSDF_Sheen("Sheen", float) = 0.0
-		PrincipledBSDF_SheenTint("SheenTint", float) = 0.5
-		PrincipledBSDF_Clearcoat("Clearcoat", float) = 0.0
-		PrincipledBSDF_ClearcoatRoughness("ClearcoatRoughness", float) = 0.029999999329447746
-		PrincipledBSDF_IOR("IOR", float) = 1.4500000476837158
-		PrincipledBSDF_Transmission("Transmission", float) = 0.0
-		PrincipledBSDF_TransmissionRoughness("TransmissionRoughness", float) = 0.0
-		PrincipledBSDF_Emission("Emission", Color) = (0.0,0.0,0.0, 1.0)
-		PrincipledBSDF_EmissionStrength("EmissionStrength", float) = 1.0
-		PrincipledBSDF_Alpha("Alpha", float) = 1.0
-		PrincipledBSDF_Normal("Normal", Vector) = (0.0, 0.0, 0.0)
-		PrincipledBSDF_ClearcoatNormal("ClearcoatNormal", Vector) = (0.0, 0.0, 0.0)
-		PrincipledBSDF_Tangent("Tangent", Vector) = (0.0, 0.0, 0.0)
-		PrincipledBSDF_Weight("Weight", float) = 0.0
+        VoronoiTexture_W("W", float) = 0.0
+		VoronoiTexture_Scale("Scale", float) = 42.999996185302734
+		VoronoiTexture_Smoothness("Smoothness", float) = 1.0
+		VoronoiTexture_Exponent("Exponent", float) = 0.5
+		VoronoiTexture_Randomness("Randomness", float) = 1.0
 		// Add properties
     }
 
@@ -75,7 +48,49 @@ Shader "Custom/Shaderbase_"
 			#pragma multi_compile _ DYNAMICLIGHTMAP_ON
 			//Add includes 
             
-            // Add defines
+            
+#define FLT_MAX 3.402823466e+38  
+#define rot(x, k) (((x) << (k)) | ((x) >> (32 - (k))))
+#define mix(a, b, c) \
+{ \
+    a -= c; \
+    a ^= rot(c, 4); \
+    c += b; \
+    b -= a; \
+    b ^= rot(a, 6); \
+    a += c; \
+    c -= b; \
+    c ^= rot(b, 8); \
+    b += a; \
+    a -= c; \
+    a ^= rot(c, 16); \
+    c += b; \
+    b -= a; \
+    b ^= rot(a, 19); \
+    a += c; \
+    c -= b; \
+    c ^= rot(b, 4); \
+    b += a; \
+} \
+
+#define final(a, b, c) \
+{ \
+    c ^= b; \
+    c -= rot(b, 14); \
+    a ^= c; \
+    a -= rot(c, 11); \
+    b ^= a; \
+    b -= rot(a, 25); \
+    c ^= b; \
+    c -= rot(b, 16); \
+    a ^= c; \
+    a -= rot(c, 4); \
+    b ^= a; \
+    b -= rot(a, 14); \
+    c ^= b; \
+    c -= rot(b, 24); \
+}    
+			// Add defines
 
             
             //Datos de entrada en el vertex shader
@@ -105,54 +120,21 @@ Shader "Custom/Shaderbase_"
                 float3 worldPos : TEXCOORD8;
                 float3 normalOS:TEXCOORD9;
             };
-            struct Image_Texture_struct {
-                float Alpha;
+            struct Voronoi_Texture_struct {
+                float Radius;
+			float W;
+			float3 Position;
 			float3 Color;
-			// add members
-            };
-			struct Color_Ramp_struct {
-                float Alpha;
-			float3 Color;
-			// add members
-            };
-			struct Principled_BSDF_struct {
-                float4 BSDF;
+			float Distance;
 			// add members
             };
 			// Add structs
 
-            sampler2D Image_Texture_Image;
-			float4 Color_Ramp_Color0;
-			float Color_Ramp_Pos0;
-			float4 Color_Ramp_Color1;
-			float Color_Ramp_Pos1;
-			float4 Color_Ramp_Color2;
-			float Color_Ramp_Pos2;
-			float PrincipledBSDF_Subsurface;
-			float3 PrincipledBSDF_SubsurfaceRadius;
-			float3 PrincipledBSDF_SubsurfaceColor;
-			float PrincipledBSDF_SubsurfaceIOR;
-			float PrincipledBSDF_SubsurfaceAnisotropy;
-			float PrincipledBSDF_Metallic;
-			float PrincipledBSDF_Specular;
-			float PrincipledBSDF_SpecularTint;
-			float PrincipledBSDF_Roughness;
-			float PrincipledBSDF_Anisotropic;
-			float PrincipledBSDF_AnisotropicRotation;
-			float PrincipledBSDF_Sheen;
-			float PrincipledBSDF_SheenTint;
-			float PrincipledBSDF_Clearcoat;
-			float PrincipledBSDF_ClearcoatRoughness;
-			float PrincipledBSDF_IOR;
-			float PrincipledBSDF_Transmission;
-			float PrincipledBSDF_TransmissionRoughness;
-			float3 PrincipledBSDF_Emission;
-			float PrincipledBSDF_EmissionStrength;
-			float PrincipledBSDF_Alpha;
-			float3 PrincipledBSDF_Normal;
-			float3 PrincipledBSDF_ClearcoatNormal;
-			float3 PrincipledBSDF_Tangent;
-			float PrincipledBSDF_Weight;
+            float VoronoiTexture_W;
+			float VoronoiTexture_Scale;
+			float VoronoiTexture_Smoothness;
+			float VoronoiTexture_Exponent;
+			float VoronoiTexture_Randomness;
 			// Add variables
     
             sampler2D _NormalTex;
@@ -187,135 +169,148 @@ Shader "Custom/Shaderbase_"
                 return o;
             }
             
-            // función que crea una textura a partir de un sampler2D
-			Image_Texture_struct image_texture( float3 texcoord,sampler2D textura){
-				Image_Texture_struct tex;
-				float4 colorImage=tex2D(textura, texcoord.xy);
-				tex.Color=colorImage.xyz;
-				tex.Alpha=colorImage.w;
-				return tex;
-			}
+            uint hash_uint4(uint kx, uint ky, uint kz, uint kw)
+{
+    uint a, b, c;
+    a = b = c = 0xdeadbeef + (4 << 2) + 13;
 
-			float float3_to_float(float3 vec){
-    return (vec.x + vec.y + vec.z) / 3.0;
+    a += kx;
+    b += ky;
+    c += kz;
+    mix(a, b, c);
+
+    a += kw;
+    final(a, b, c);
+
+    return c;
+}
+			uint hash_uint3(uint kx, uint ky, uint kz)
+{
+    uint a, b, c;
+    a = b = c = 0xdeadbeef + (3 << 2) + 13;
+
+    c += kz;
+    b += ky;
+    a += kx;
+    final(a, b, c);
+
+    return c;
+}
+float mix1(float a, float b, float t)
+{
+    return a + t * (b - a);
 }
 
-			Color_Ramp_struct color_ramp( float at,int numcolors, int interpolate,float4 ramp[30],float pos[30] )
-            {
-              float f = at;
-              int table_size = numcolors;
-              f  = clamp(at, 0.0, 1.0) ;
-              float4 result=ramp[0];
-              Color_Ramp_struct colores;
 
-              if(numcolors>1&&f>=pos[numcolors-1]){
-                  colores.Color = ramp[numcolors - 1].xyz;
-                  colores.Alpha = ramp[numcolors - 1].w;
-                  return colores;
-              }
-             
-              
-              for (int i = 0; i < numcolors - 1; ++i) {
-                  if (f  >= pos[i] && f  < pos[i + 1]){
-                      if (interpolate){
-                          result=ramp[i];
-                          float t = (f - (float)pos[i])/(pos[i+1]-pos[i]);
-                          result = (1.0 - t) * result + t * ramp[i + 1];
-                      } 
-                      else{
-                          result= ramp[i+1];
-                      }
-                    
-                  }
-              }
-              colores.Color=result.xyz;
-              colores.Alpha=result.w;
-              return colores;
+			float hashnoisef3(float3 p)
+{
+    const uint x = uint(p.x);
+    const uint y = uint(p.y);
+    const uint z =uint(p.z);
+    return hash_uint3(x, y, z) /float(~0u);
+}
+			float hashnoisef4(float4 p)
+{
+    const uint x =uint(p.x);
+    const uint y =uint(p.y);
+    const uint z = uint(p.z);
+    const uint w = uint(p.w);
+    return hash_uint4(x, y, z, w) /float(~0u);
+}
+			float hash_vector4_to_float(float4 k)
+{
+ return hashnoisef4(float4(k.x, k.y, k.z,k.w));
+}
+			float hash_vector3_to_float(float3 k)
+{
+  return hashnoisef3(k);
+}
+			float3 hash_vector3_to_color(float3 k)
+{
+  return float3(hash_vector3_to_float(k),
+               hash_vector4_to_float(float4(k[0], k[1], k[2], 1.0)),
+               hash_vector4_to_float(float4(k[0], k[1], k[2], 2.0)));
+}
+			float3 hash_vector3_to_vector3(float3 k)
+{
+  return float3(hash_vector3_to_float(k),
+                 hash_vector4_to_float(float4(k[0], k[1], k[2], 1.0)),
+                 hash_vector4_to_float(float4(k[0], k[1], k[2], 2.0)));
+}
+			float voronoi_distance_f3(float3 a, float3 b, int metric,float exponent)
+{
+if (metric == 0) {
+    return length(a - b);
+  }
+  else if (metric == 1) {
+    return abs(a[0] - b[0]) + abs(a[1] - b[1]) + abs(a[2] - b[2]);
+  }
+  else if (metric == 2) {
+    return max(abs(a[0] - b[0]), max(abs(a[1] - b[1]), abs(a[2] - b[2])));
+  }
+  else if (metric == 3) {
+    return pow(pow(abs(a[0] - b[0]), exponent) + pow(abs(a[1] - b[1]), exponent) +
+                   pow(abs(a[2] - b[2]), exponent),
+               1.0 / exponent);
+  }
+  else {
+    return 0.0;
+  }
+               
+} 
+
+
+			Voronoi_Texture_struct voronoi_3D_SMOOTH_F1_function(float3 coord, float VoronoiTexture_W, float sclae,float VoronoiTexture_Smoothness, float VoronoiTexture_Exponent, float randomness,int distance)
+{         
+    randomness = clamp(randomness,0,1);
+    VoronoiTexture_Smoothness=clamp(VoronoiTexture_Smoothness,0,1); 
+    coord *= sclae;
+    float3 cellPosition = floor(coord);
+    float3 localPosition = coord - cellPosition;
+    float smoothDistance = 8.0;
+    float3 smoothColor = float3(0.0, 0.0, 0.0);
+    float3 smoothPosition = float3(0.0, 0.0, 0.0);
+   
+
+   for (int k = -2; k <= 2; k++) {
+     for (int j = -2; j <= 2; j++) {
+        for (int i = -2; i <= 2; i++) {
+                float3 cellOffset = float3(i, j, k);
+                float3 pointPosition = cellOffset + hash_vector3_to_vector3(cellPosition + cellOffset) *
+                                                        randomness;
+                float distanceToPoint =  voronoi_distance_f3(pointPosition, localPosition,distance,VoronoiTexture_Exponent);
+                float val=0.5 + 0.5 * (smoothDistance - distanceToPoint) / VoronoiTexture_Smoothness;
+                float x = clamp((val - 0.0) / (1.0 - 0.0), float(0.), float(1.));
+                float h= x * x * (3 - 2 * x);
+                // float h = smoothstep(
+                //     0.0, 1.0, 0.5 + 0.5 * (smoothDistance - distanceToPoint) / smoothness);    
+                float correctionFactor = VoronoiTexture_Smoothness * h * (1.0 - h);
+                smoothDistance = 
+                mix1(smoothDistance, distanceToPoint, h) - correctionFactor;
+                correctionFactor=correctionFactor /( 1.0 + 3.0 * VoronoiTexture_Smoothness);
+                 float3 cellColor = hash_vector3_to_color(cellPosition + cellOffset);
+                 smoothColor = mix1(smoothColor, cellColor, h) - correctionFactor;
+                smoothPosition = mix1(smoothPosition, pointPosition, h) - correctionFactor;
             }
-			Principled_BSDF_struct principled_bsdf(v2f i, float3 PrincipledBSDF_BaseColor,float PrincipledBSDF_Subsurface, float3 PrincipledBSDF_SubsurfaceRadius, float3 PrincipledBSDF_SubsurfaceColor,float PrincipledBSDF_SubsurfaceIOR,float PrincipledBSDF_SubsurfaceAnisotropy,
-float PrincipledBSDF_Metallic, float PrincipledBSDF_Specular,float PrincipledBSDF_SpecularTint,float PrincipledBSDF_Roughness,float PrincipledBSDF_Anisotropic, float PrincipledBSDF_AnisotropicRotation,float PrincipledBSDF_Sheen, 
-float PrincipledBSDF_SheenTint,float PrincipledBSDF_Clearcoat,float PrincipledBSDF_ClearcoatRoughness,float PrincipledBSDF_IOR,float PrincipledBSDF_Transmission,float PrincipledBSDF_TransmissionRoughness,float3 PrincipledBSDF_Emission,
-float PrincipledBSDF_EmissionStrength,float PrincipledBSDF_Alpha, float3 PrincipledBSDF_Normal,float3 PrincipledBSDF_ClearcoatNormal, float3 PrincipledBSDF_Tangent, float PrincipledBSDF_Weight)
-            { 
-                SurfaceData surfacedata;
-                surfacedata.albedo = PrincipledBSDF_BaseColor;
-                surfacedata.specular = 0;
-                surfacedata.metallic = clamp(PrincipledBSDF_Metallic,0,1);
-                surfacedata.smoothness = clamp(1-PrincipledBSDF_Roughness,0,1);
-                if(PrincipledBSDF_Normal.x <= 0.0 && PrincipledBSDF_Normal.y <= 0.0 && PrincipledBSDF_Normal.z <= 0.0){
-                    surfacedata.normalTS = UnpackNormal(tex2D(_NormalTex, i.uv));
-                } 
-                else surfacedata.normalTS =PrincipledBSDF_Normal;  
-               
-
-                PrincipledBSDF_Emission.rgb *= PrincipledBSDF_EmissionStrength;
-                surfacedata.emission = PrincipledBSDF_Emission;
-                surfacedata.occlusion = 1; //"Ambient occlusion"
-                surfacedata.alpha = 1;
-                surfacedata.clearCoatMask = 0;
-                surfacedata.clearCoatSmoothness = 0;
-
-                // Emission output.
-                #if USE_EMISSION_ON
-                PrincipledBSDF_Emission.rgb *= PrincipledBSDF_EmissionStrength;
-                surfaceData.emission = PrincipledBSDF_Emission;;
-                #endif
-               
-                InputData inputData = (InputData)0;
-                // Position input.
-                inputData.positionWS = i.positionWS;
-                // Normal input.
-                float3 bitangent = i.tangentWS.w * cross(i.normalWS, 
-                i.tangentWS.xyz);
-                inputData.tangentToWorld = float3x3(i.tangentWS.xyz, bitangent, 
-                i.normalWS);
-                inputData.normalWS = TransformTangentToWorld(surfacedata.normalTS, inputData.
-                tangentToWorld);
-                inputData.normalWS = NormalizeNormalPerPixel(inputData.normalWS);
-                // View direction input.
-                inputData.viewDirectionWS = SafeNormalize(i.viewDirWS);
-                // Shadow coords.
-                inputData.shadowCoord = TransformWorldToShadowCoord 
-                (inputData .positionWS);
-                // Baked lightmaps.
-                #if defined(DYNAMICLIGHTMAP_ON)
-                inputData.bakedGI = SAMPLE_GI(i.staticLightmapUV, 
-                i.dynamicLightmapUV, i.vertexSH, inputData.normalWS);
-             
-
-                #else
-                inputData.bakedGI = SAMPLE_GI(i.staticLightmapUV, i.vertexSH, 
-                inputData.normalWS);
-                #endif
-                inputData.normalizedScreenSpaceUV = GetNormalizedScreenSpaceUV(i.
-                positionCS);
-                inputData.shadowMask = SAMPLE_SHADOWMASK(i.staticLightmapUV);
-               
-
-                Principled_BSDF_struct output;
-                output.BSDF= UniversalFragmentPBR(inputData, surfacedata);
-                return output;
-
-            }
+        }
+    }
+     Voronoi_Texture_struct voro;
+     voro.Distance=smoothDistance;
+    voro.Color=smoothColor;
+    voro.Position=cellPosition + smoothPosition;
+    return voro;
+} 
+			float4 float_to_float4(float val){
+    return float4(val, val, val, val);
+}
 			// Add methods
             float4 frag (v2f i) : SV_Target
             {
 
-                float3 ImageTexture_Vector = float3(i.uv,0);
-				Image_Texture_struct Image_Texture = image_texture(ImageTexture_Vector, Image_Texture_Image);
-				float ColorRamp_Fac = float3_to_float(Image_Texture.Color);
-				float Color_Ramp_pos[30];
-				float4 Color_Ramp_ramp[30];
-				Color_Ramp_ramp[0]=Color_Ramp_Color0;
-				Color_Ramp_pos[0]=Color_Ramp_Pos0;
-				Color_Ramp_ramp[1]=Color_Ramp_Color1;
-				Color_Ramp_pos[1]=Color_Ramp_Pos1;
-				Color_Ramp_ramp[2]=Color_Ramp_Color2;
-				Color_Ramp_pos[2]=Color_Ramp_Pos2;
-				Color_Ramp_struct Color_Ramp = color_ramp(ColorRamp_Fac, 3, 1, Color_Ramp_ramp, Color_Ramp_pos);
-				float3 PrincipledBSDF_BaseColor = Color_Ramp.Color;
-				Principled_BSDF_struct Principled_BSDF = principled_bsdf(i, PrincipledBSDF_BaseColor, PrincipledBSDF_Subsurface, PrincipledBSDF_SubsurfaceRadius, PrincipledBSDF_SubsurfaceColor, PrincipledBSDF_SubsurfaceIOR, PrincipledBSDF_SubsurfaceAnisotropy, PrincipledBSDF_Metallic, PrincipledBSDF_Specular, PrincipledBSDF_SpecularTint, PrincipledBSDF_Roughness, PrincipledBSDF_Anisotropic, PrincipledBSDF_AnisotropicRotation, PrincipledBSDF_Sheen, PrincipledBSDF_SheenTint, PrincipledBSDF_Clearcoat, PrincipledBSDF_ClearcoatRoughness, PrincipledBSDF_IOR, PrincipledBSDF_Transmission, PrincipledBSDF_TransmissionRoughness, PrincipledBSDF_Emission, PrincipledBSDF_EmissionStrength, PrincipledBSDF_Alpha, PrincipledBSDF_Normal, PrincipledBSDF_ClearcoatNormal, PrincipledBSDF_Tangent, PrincipledBSDF_Weight);
-				float4 MaterialOutput_Surface = Principled_BSDF.BSDF;
+                float3 VoronoiTexture_Vector = float3(i.uv,0);
+				Voronoi_Texture_struct Voronoi_Texture = voronoi_3D_SMOOTH_F1_function(VoronoiTexture_Vector, VoronoiTexture_W, VoronoiTexture_Scale, VoronoiTexture_Smoothness, VoronoiTexture_Exponent, VoronoiTexture_Randomness, 0);
+				float ColorRamp_Fac = Voronoi_Texture.Distance;
+				float4 MaterialOutput_Surface = float_to_float4(Voronoi_Texture.Distance);
 				// Call methods
               
                 // Add cutoff

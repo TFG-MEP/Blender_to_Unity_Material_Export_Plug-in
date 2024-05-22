@@ -1,5 +1,5 @@
 from .strategy import Strategy
-from ..writing_utils import *
+from ..Utils.writing_utils import *
 
 class RGBNode(Strategy):
 
