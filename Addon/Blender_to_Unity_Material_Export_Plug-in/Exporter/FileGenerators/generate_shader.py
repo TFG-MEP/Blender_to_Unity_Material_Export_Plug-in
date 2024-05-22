@@ -128,7 +128,9 @@ def generate_shader(destination_directory,material):
     # TODO : revisar pq la plantilla necesita el include
     shader_content = write_include("HLSLTemplates/BSDF/principled_bsdf_includes.txt",shader_content)
 
-    #------------------------------------------------------BLENDING MODE AND CULLING MODE------------------------------------------------------
+    #------------------------------------------------------
+    # BLENDING MODE AND CULLING MODE
+    # ------------------------------------------------------
     get_common_values().blending_mode = material.blend_method
     
     #Agregamos aqui el culling mode porque es parte de los ajustes del material, no corresponde a un nodo especifico
