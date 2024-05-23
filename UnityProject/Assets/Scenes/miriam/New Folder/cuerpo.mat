@@ -22,9 +22,45 @@ Material:
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: []m_Ints: []
-    m_Floats: []
+    m_TexEnvs:
+    - _NormalTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - Color_Ramp_001_Pos0: 0
+    - Color_Ramp_001_Pos1: 0.44
+    - PrincipledBSDF_Alpha: 1
+    - PrincipledBSDF_Anisotropic: 0
+    - PrincipledBSDF_AnisotropicRotation: 0
+    - PrincipledBSDF_Clearcoat: 0
+    - PrincipledBSDF_ClearcoatRoughness: 0.03
+    - PrincipledBSDF_EmissionStrength: 0
+    - PrincipledBSDF_IOR: 1.45
+    - PrincipledBSDF_Metallic: 0.14545454
+    - PrincipledBSDF_Roughness: 0.5954545
+    - PrincipledBSDF_Sheen: 0.8636364
+    - PrincipledBSDF_SheenTint: 0.5
+    - PrincipledBSDF_Specular: 0.5
+    - PrincipledBSDF_SpecularTint: 0
+    - PrincipledBSDF_Subsurface: 0
+    - PrincipledBSDF_SubsurfaceAnisotropy: 0
+    - PrincipledBSDF_SubsurfaceIOR: 1.4
+    - PrincipledBSDF_Transmission: 0
+    - PrincipledBSDF_TransmissionRoughness: 0
+    - PrincipledBSDF_Weight: 0
     m_Colors:
-    - _BoundingBoxMin: {r: -1.0021967887878418, g: 0.7950146198272705, b: 3.101578950881958, a: 1}
-    - _BoundingBoxMax: {r: -5.090237140655518, g: 5.504149436950684, b: -1.9693257808685303, a: 1}     
+    - Color_Ramp_001_Color0: {r: 0.16820112, g: 0.25310075, b: 0.34201127, a: 1}
+    - Color_Ramp_001_Color1: {r: 0.34765574, g: 0.759717, b: 0.6485535, a: 1}
+    - PrincipledBSDF_BaseColor: {r: 0.3573692, g: 0.76503575, b: 0.4769789, a: 1}
+    - PrincipledBSDF_ClearcoatNormal: {r: 0, g: 0, b: 0, a: 1}
+    - PrincipledBSDF_Emission: {r: 1, g: 1, b: 1, a: 1}
+    - PrincipledBSDF_Normal: {r: 0, g: 0, b: 0, a: 1}
+    - PrincipledBSDF_SubsurfaceColor: {r: 0.90354544, g: 0.90354544, b: 0.90354544, a: 1}
+    - PrincipledBSDF_SubsurfaceRadius: {r: 1, g: 0.2, b: 0.1, a: 1}
+    - PrincipledBSDF_Tangent: {r: 0, g: 0, b: 0, a: 1}
+    - _BoundingBoxMax: {r: -5.090237, g: 5.5041494, b: -1.9693258, a: 1}
+    - _BoundingBoxMin: {r: -1.0021968, g: 0.7950146, b: 3.101579, a: 1}
+    - m_BuildTextureStacks: {r: -5.090237, g: 5.5041494, b: -1.9693258, a: 1}
   m_BuildTextureStacks: []

@@ -2,7 +2,7 @@ Shader "Custom/ColorShader"
 {
      Properties
     {
-        _NormalTex("Normal Map", 2D) = "bump" {}
+        
         _BoundingBoxMin("minBoundBox", Vector) = (0,0,0)
         _BoundingBoxMax("maxBoundBox", Vector) = (0,0,0)
 
@@ -60,7 +60,7 @@ Shader "Custom/ColorShader"
 
             // Add variables
     
-            sampler2D _NormalTex;
+  
             float3 _BoundingBoxMin;
             float3 _BoundingBoxMax;
       

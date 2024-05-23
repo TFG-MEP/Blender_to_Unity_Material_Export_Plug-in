@@ -2,7 +2,7 @@ Shader "Custom/ShaderMaterial001_"
 {
      Properties
     {
-        _NormalTex("Normal Map", 2D) = "bump" {}
+        
         _BoundingBoxMin("minBoundBox", Vector) = (0,0,0)
         _BoundingBoxMax("maxBoundBox", Vector) = (0,0,0)
 
@@ -142,7 +142,7 @@ Shader "Custom/ShaderMaterial001_"
 			float PrincipledBSDF_Weight;
 			// Add variables
     
-            sampler2D _NormalTex;
+       
             float3 _BoundingBoxMin;
             float3 _BoundingBoxMax;
       
@@ -207,8 +207,8 @@ float PrincipledBSDF_EmissionStrength,float PrincipledBSDF_Alpha, float3 Princip
                 surfacedata.metallic = clamp(PrincipledBSDF_Metallic,0,1);
                 surfacedata.smoothness = clamp(1-PrincipledBSDF_Roughness,0,1);
                 if(PrincipledBSDF_Normal.x==0&&PrincipledBSDF_Normal.y==0&&PrincipledBSDF_Normal.z==0){
-                    surfacedata.normalTS = UnpackNormal(tex2D(_NormalTex, i.uv));  
-                } 
+                    surfacedata.normalTS = half3(0, 0, 1);  
+                 } 
                 else surfacedata.normalTS =PrincipledBSDF_Normal;  
                
 
