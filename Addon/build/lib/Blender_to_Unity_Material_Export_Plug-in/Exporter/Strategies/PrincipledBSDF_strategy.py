@@ -16,7 +16,6 @@ class PrincipledBSDFNode(Strategy):
     def add_function(self, node, node_properties, shader_content):
         #self.add_alpha_property(node,self.function_path,shader_content)
 
-        #TODO: metodo que adapte el shader content segun la transparencia/mover de sitio 
         if get_common_values().blending_mode != 'OPAQUE':
             shader_content=write_tags("HLSLTemplates/BSDF/principled_bsdf_tags.txt", shader_content)
             shader_content=write_property_from_file("HLSLTemplates/BSDF/alpha_shader_properties.txt", shader_content)
