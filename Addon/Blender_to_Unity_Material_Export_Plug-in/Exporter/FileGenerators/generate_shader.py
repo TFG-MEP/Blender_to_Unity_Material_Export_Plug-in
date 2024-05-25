@@ -1,8 +1,11 @@
 import bpy
-from ..strategies_importer import *
 import sys
+
 from .meta_generator import *
 sys.path.append("./Utils")
+
+from ..strategies_importer import *
+
 from ..Utils.writing_utils import *
 from ..Utils.format_conversion_utils import *
 from ..Utils.common_utils import *
@@ -20,17 +23,10 @@ class Context():
 
     @strategy.setter
     def strategy(self, strategy: Strategy) -> None:
-        """
-        The Context allows replacing a Strategy object at runtime.
-        """
 
         self._strategy = strategy
 
     def write_node(self, node, node_properties, shader_content) -> None:
-        """
-        The Context delegates some work to the Strategy object instead of
-        implementing multiple versions of the algorithm on its own.
-        """
 
         if self._strategy is None:
             print("Context: No strategy set. Cannot write data.")
@@ -58,8 +54,6 @@ def iterate_node(node, shader_content):
         return shader_content
     else :
         get_common_values().visited_nodes.add(node_name)
-
-    # print ("Iterating through node: " + node.type + "\n")
     
     # List of property names in this node
     node_properties = []
@@ -91,7 +85,6 @@ def iterate_node(node, shader_content):
             shader_content = shader_content[:fragment_index] + func_line + shader_content[fragment_index:]
         else :
             # Create an entry for this property in the shader properties
-            # print("Property of " + node_type + ": " + input_socket.name + " with type: " + input_socket.bl_label)
             shader_content = process_property(input_socket, node_name, node_type, shader_content)
 
     strategy = node_type_strategy_map.get(node.type)
@@ -102,6 +95,19 @@ def iterate_node(node, shader_content):
     return shader_content
 
 def clean_material_name(name) : 
+    """
+    Removes non-alphanumeric characters and spaces from the material name.
+
+    Args:
+        name (str): The material name to clean.
+
+    Returns:
+        str: The cleaned material name.
+
+    Raises:
+        SystemExit: If the name contains only invalid symbols.
+    """
+
     material_name = re.sub(r'[^\w\s]', '', name).replace(' ', '')
     if material_name == "" :
         raise SystemExit("Material name contains only invalid symbols. Please use alphanumeric characters.")
@@ -125,35 +131,32 @@ def generate_shader(destination_directory,material):
     shader_content = template_shader
     
     # Needed include to work with the template
-    # TODO : revisar pq la plantilla necesita el include
-    shader_content = write_include("HLSLTemplates/BSDF/principled_bsdf_includes.txt",shader_content)
+    shader_content = write_include("HLSLTemplates/BSDF/principled_bsdf_includes.txt", shader_content)
 
-    #------------------------------------------------------
-    # BLENDING MODE AND CULLING MODE
-    # ------------------------------------------------------
+    # Blending mode and culling mode
     get_common_values().blending_mode = material.blend_method
     
-    #Agregamos aqui el culling mode porque es parte de los ajustes del material, no corresponde a un nodo especifico
+    # Add the culling mode here because it's not specific to a certain node
+    # but rather a general material setting
     if material.use_backface_culling == False :
         shader_content= shader_content.replace("// Add culling", "Cull Off")
     
-    #TODO: escribir el valor exacto de este de cutoff en el shader
     if material.blend_method== 'CLIP' :
         get_common_values().cutoff = material.alpha_threshold
             
     node_tree = material.node_tree
     nodes = node_tree.nodes
-    # TODO : Qué pasa si hay más de un Material Output?
-    root_node = nodes.get("Material Output")
 
-    # TODO : eliminar cualquier posible caracter en el nombre del material
-    # que no pueda ir en el nombre del shader o como nombre de archivo
+    # Assume there is only one Material Output node
+    root_node = nodes.get("Material Output")
+    if (not root_node or not root_node.inputs['Surface'].is_linked) :
+        raise SystemExit("You must use a Material Output node with something linked to its surface.")
 
     # Rename the shader
-    #material_name = material.name.replace(" ", "").replace(".", "")
     shader_content = shader_content.replace("Custom/ColorShader", f"Custom/Shader{material_name}_")
 
     shader_filename = f"{material_name}.shader"
+    
     shader_filepath = f"{destination_directory}/{shader_filename}"
 
     shader_content = iterate_node(root_node, shader_content)
@@ -163,7 +166,5 @@ def generate_shader(destination_directory,material):
 
     print(f"{shader_filename} file successfully generated.")
     
-    #if (get_common_values().MaterialOutput_Surface_added == False) : # TODO : comprobar que esto se imprime bien
-    #    print("ERROR: You must use a Material Output node with something connected to Surface.")
     shader_guid = generate_meta_file('FileTemplates/template.shader.meta',destination_directory,material_name,'.shader')
     return material_name, get_common_values().imagesMap,shader_guid

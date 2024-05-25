@@ -2,17 +2,18 @@ import sys
 import os
 import bpy
 sys.path.append("./FileGenerators")
+
 from .FileGenerators.generate_material import generate_material
 from .FileGenerators.generate_shader import generate_shader
 from .FileGenerators.generate_3D_model import generate_3D_model
 from .FileGenerators.generate_textures import generate_textures
 from .FileGenerators.generate_prefab import generate_prefab
-from mathutils import Vector
 
+from mathutils import Vector
 
 def exportMaterial(path,material,obj):
 
-    #accessing to bound box
+    # Access the bound box
     bound_box_corners = obj.bound_box
     centerPosition = sum((Vector(corner) for corner in bound_box_corners), Vector()) / 8
     dimensions = obj.dimensions
@@ -23,6 +24,7 @@ def exportMaterial(path,material,obj):
         ("_BoundingBoxMin", (-boundingBoxMin[0],boundingBoxMin[1],-boundingBoxMin[2])),
         ("_BoundingBoxMax", (-boundingBoxMax[0],boundingBoxMax[1],-boundingBoxMax[2]))
     ]
+
     # Generate .shader file
     material_name, imagesMap, shader_guid = generate_shader(path,material)
     
@@ -58,9 +60,6 @@ def export(path, exportFbx):
                         material.use_nodes = True  
                         material_name, material_guid = exportMaterial(path, material,selected_object)
                         material_guids.append(material_guid)
-
-                       
-
                     else:
                         print("The material is None")
         else:

@@ -119,10 +119,6 @@ def write_node(function_file_path, function_parameters, destination_node, destin
     func_line = f'{prop_type} {destination_name} = {function_name}({all_parameters});\n\t\t\t\t'
     shader_content = shader_content[:fragment_index] + func_line + shader_content[fragment_index:]
 
-    # Check when the MeterialOutput node has been added to ensure correct shaders
-    if destination_name == 'MaterialOutput_Surface' :
-        MaterialOutput_Surface_added = True
-
     return shader_content
 
 def write_root( parameter, destination_node, destination_property, shader_content) : 
@@ -139,9 +135,6 @@ def write_root( parameter, destination_node, destination_property, shader_conten
     func_line = f'{prop_type} {destination_name} = {parameter};\n\t\t\t\t'
 
     shader_content = shader_content[:fragment_index] + func_line + shader_content[fragment_index:]
-
-    if destination_name == 'MaterialOutput_Surface' :
-        MaterialOutput_Surface_added = True
 
     return shader_content
 
@@ -183,7 +176,6 @@ def process_property(input_socket, node_name, node_type, shader_content):
     # Get the properties value
     prop_value = input_socket.default_value
     
-    # TODO : operaciones con el valor si es necesario: normalizar, convertir a valores que entienda el shader, etc.
     prop_value = blender_value_to_hlsl(prop_value, input_socket.bl_label)
 
     # Add property to template
@@ -305,7 +297,6 @@ def write_struct_members(basic_struct_path, struct_name, outputs, shader_content
 
     return shader_content
 
-# TODO : borrar write_struct
 def write_struct(struct_file_path, shader_content) :
 
     struct_index = shader_content.find("// Add structs")
@@ -314,11 +305,11 @@ def write_struct(struct_file_path, shader_content) :
         with open(struct_file_path, "r") as struct_file:
             struct = struct_file.read()
 
-        # TODO : revisar tabulación
         get_common_values().added_structs.add(struct_file_path)
     
         shader_content = shader_content[:struct_index] + struct + "\n\t\t\t" + shader_content[struct_index:]
     return shader_content
+
 def write_defines(defines_file_path, shader_content) :
 
     define_index = shader_content.find("// Add defines")
@@ -327,7 +318,6 @@ def write_defines(defines_file_path, shader_content) :
         with open(defines_file_path, "r") as struct_file:
             struct = struct_file.read()
 
-        # TODO : revisar tabulación
         get_common_values().added_structs.add(defines_file_path)
     
         shader_content = shader_content[:define_index] + struct + "\n\t\t\t" + shader_content[define_index:]

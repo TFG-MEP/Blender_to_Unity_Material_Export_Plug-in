@@ -2,7 +2,6 @@ import uuid
 import os
 from jinja2 import Template
 
-
 def generate_unity_style_guid():
     generated_uuid = uuid.uuid4()
     return generated_uuid.hex
@@ -20,11 +19,13 @@ def load_template_from_file(file_path):
         return file.read()
 
 def generate_meta_file(template_path,file_path,name,extension):
+
     #Generate guid
     guid = generate_unity_style_guid()
     context_shader_meta = {
         "guid": guid,
     }
+
     # Render and save the .meta
     meta_template_str = load_template_from_file(template_path)
     meta_content = render_template(meta_template_str, context_shader_meta)
