@@ -1,2 +1,2 @@
 # Blender to Unity Material Export Plug-in
-##  Paula Morillas Alonso, Elisa Todd Rodríguez,Miriam Martín Sánchez,
+##  Trabajo de Fin de grado realizado por Paula Morillas Alonso, Elisa Todd Rodríguez y Miriam Martín Sánchez.
