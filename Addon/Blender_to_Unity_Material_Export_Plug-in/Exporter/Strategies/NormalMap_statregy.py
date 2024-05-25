@@ -14,7 +14,6 @@ class NormalMapNode(Strategy):
         
         for link in node.outputs["Normal"].links :
             input_node = link.to_node
-            # la propiedad específica del nodo que lo recibe
             input_property = link.to_socket
             shader_content = write_struct_property(node_name, "Normal", "float3", input_node, input_property, shader_content)
 
