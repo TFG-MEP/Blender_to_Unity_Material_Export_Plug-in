@@ -1,4 +1,3 @@
-# Abstract Class
 from .Strategies.strategy import Strategy
 
 # Implementations
@@ -18,9 +17,6 @@ from .Strategies.ColorRamp_Strategy import ColorRampNode
 from .Strategies.ShaderToRGB_strategy import ShaderToRgbNode
 from .Strategies.Voronoi_strategy import VaronoiNode
 
-
-# Import all new strategies implemented in the Strategies Directory
-
 from .Strategies import *
 
 # Node type to strategy map
@@ -39,5 +35,4 @@ node_type_strategy_map = {
     'SHADERTORGB':ShaderToRgbNode(),
     'MIX' : MixNode(),
     'TEX_VORONOI' : VaronoiNode()
-
 }

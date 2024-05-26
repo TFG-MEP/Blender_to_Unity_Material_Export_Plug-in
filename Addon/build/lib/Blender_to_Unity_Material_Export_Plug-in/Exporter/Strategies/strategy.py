@@ -16,7 +16,7 @@ class Strategy(ABC):
     struct_path = None
     basic_struct_path = "HLSLTemplates/struct.txt"
 
-    def write_node(self, node, node_properties, shaderContent):
+    def write_node(self, node, node_properties, shaderContent): # TODO : Podemos mirar meter esta info en un "struct"
         shaderContent = self.add_includes(node=node, node_properties=node_properties, shader_content=shaderContent)
         shaderContent = self.add_defines(node=node, node_properties=node_properties, shader_content=shaderContent)
         node_properties, shaderContent = self.add_custom_properties(node=node, node_properties=node_properties, shader_content=shaderContent)

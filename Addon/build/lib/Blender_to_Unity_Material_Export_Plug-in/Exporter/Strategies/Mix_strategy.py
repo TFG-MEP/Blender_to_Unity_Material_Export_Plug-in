@@ -2,7 +2,7 @@ from .strategy import Strategy
 from ..Utils.writing_utils import *
 from ..Utils.common_utils import *
 
-class MixNode(Strategy) : # TODO : revisar esta estrategia, se repiten muchos FOR
+class MixNode(Strategy) :
     
     mix_node_properties = {
         'VALUE':{
@@ -105,7 +105,6 @@ class MixNode(Strategy) : # TODO : revisar esta estrategia, se repiten muchos FO
                     if function_path:
 
                         if data_type == 'RGBA' : # For Color Mix, add the blending function
-                            #print("Blending Mode: ", node.blend_type)
                             shader_content = self.write_blending_function(node.blend_type, shader_content)
 
                         shader_content = write_function(function_path, shader_content)
@@ -172,5 +171,3 @@ class MixNode(Strategy) : # TODO : revisar esta estrategia, se repiten muchos FO
                     shader_content = write_struct_property(node_name, "Result", struct_type, input_node, input_property, shader_content)
                 
         return shader_content
-
-    #TODO: comprobar funcionamiento para casos que no son color

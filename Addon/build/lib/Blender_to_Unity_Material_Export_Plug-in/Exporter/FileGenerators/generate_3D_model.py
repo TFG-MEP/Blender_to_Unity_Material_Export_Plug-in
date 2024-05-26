@@ -1,13 +1,14 @@
 import re
 import bpy
 from .meta_generator import *
+
 def generate_3D_model(destination_directory):
     objeto = bpy.context.active_object
     name_Object = re.sub(r'[^\w\s]', '', objeto.name).replace(' ', '')
+
     if name_Object == "" :
         raise SystemExit("FBX name contains only invalid symbols. Please use alphanumeric characters.")
    
-
     path_fbx = destination_directory+'\\' + name_Object + ".fbx"
 
     # Export object to fbx

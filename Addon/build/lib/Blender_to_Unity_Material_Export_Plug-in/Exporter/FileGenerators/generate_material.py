@@ -1,4 +1,5 @@
 from .meta_generator import *
+
 def texturesInMaterial(imageVariables):
     textList = []
     for index, (name, guid) in enumerate(imageVariables.items()):
@@ -9,11 +10,12 @@ def texturesInMaterial(imageVariables):
         entrada += '\n    '
         textList.append(entrada)
     return textList 
+
 def colorsInMaterial(Variables):
     textList = [] 
     for idx, (name, value) in enumerate(Variables):
         entrada = f' {name}: {{r: {value[0]}, g: {value[1]}, b: {value[2]}, a: 1}}'
-        # Si no es el último elemento, agrega un salto de línea
+        # If it's not the last element, add a new line
         if idx != len(Variables) - 1:
             entrada += '\n    '
         textList.append(entrada)
@@ -23,12 +25,10 @@ def generate_material(path, material_name,imageVariables,shader_guid,bounding_bo
 
     ## .MAT
     context_material = {
-        "material_name": material_name, # El nombre del material debe depender del nombre en blender
+        "material_name": material_name,
         "shader_guid":shader_guid,
         "tex_env_strings": texturesInMaterial(imageVariables),
         "colors_strings":colorsInMaterial(bounding_box_values)
-       
-        # aquí deben ir el resto de propiedades que se deban asignar al shader (textura, color, otros valores...)
     }
     material_template_str = load_template_from_file('FileTemplates/template.mat')
     material_content = render_template(material_template_str, context_material)

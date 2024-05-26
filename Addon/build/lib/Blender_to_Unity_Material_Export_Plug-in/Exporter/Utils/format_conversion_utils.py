@@ -23,7 +23,7 @@ def blender_value_to_hlsl(blender_input, input_type) :
         str: The input value converted to HLSL-compatible format.
     """
     if (input_type == 'Float') :
-        if abs(blender_input) < 0.0001:  # Puedes ajustar el valor 0.0001 según tu necesidad
+        if abs(blender_input) < 0.0001:
             blender_input = 0.0
         return blender_input
     elif (input_type == 'Bool') :
@@ -36,7 +36,6 @@ def blender_value_to_hlsl(blender_input, input_type) :
         blender_color = (blender_input[0], blender_input[1], blender_input[2])
         unity_color = gamma_correction(blender_color)
         return f'({unity_color[0]},{unity_color[1]},{unity_color[2]}, 1.0)'
-        #return f'({blender_input[0]},{blender_input[1]},{blender_input[2]}, 1.0)'
     elif(input_type == 'Vector') :
         return f'({blender_input[0]}, {blender_input[1]}, {blender_input[2]})'
     else : 
@@ -61,7 +60,7 @@ def blender_type_to_hlsl(blender_input):
         output = 'float4'
     else : 
         output = blender_input
-    # TODO : completar con todos los tipos de datos posibles
+
     return output
 
 def blender_type_to_properties(blender_input):
@@ -83,5 +82,5 @@ def blender_type_to_properties(blender_input):
         output = 'Color'
     else : 
         output = blender_input
-    # TODO : completar con todos los tipos de datos
+
     return output
