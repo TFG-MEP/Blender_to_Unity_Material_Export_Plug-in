@@ -1,6 +1,8 @@
 # Blender to Unity Material Export Add-On
 Blender add-on created by Paula Morillas Alonso, Elisa Todd Rodríguez y Miriam Martín Sánchez.
 This addon is used for exporting Blender materials and objects to Unity.
+You will find the add-on  [here](Addon/dist/Blender_to_Unity_Material_Export_Plug-in-v1.0.0.zip).
+
 #### Installation Guide
 -   Open Blender.
 -   Go to "Edit" -> "Preferences".
